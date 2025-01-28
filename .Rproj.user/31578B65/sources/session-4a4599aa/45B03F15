@@ -1,0 +1,27 @@
+{
+    "id": "45B03F15",
+    "path": "~/Library/CloudStorage/OneDrive-Aarhusuniversitet/AU ENVS/phyloENVS/R/data_to_phyloseq.R",
+    "project_path": "R/data_to_phyloseq.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1738052962771.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "10,9",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1738058645,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1738058645,
+    "read_only": false,
+    "read_only_alternatives": []
+}
