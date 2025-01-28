@@ -8,5 +8,5 @@
 #' @examples
 #' data_to_phyloseq(2)
 data_to_phyloseq <- function(x){
-  print(x+x+x)
+  print(x+x+x+x)
 }
