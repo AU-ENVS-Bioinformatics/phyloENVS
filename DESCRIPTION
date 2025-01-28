@@ -13,3 +13,9 @@ Description: This package provides tailored tools for visualizing and analyzing 
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.3.2
+Imports:
+  dplyr,
+  tidyr,
+  ggplot2,
+  phyloseq,
+  viridis
