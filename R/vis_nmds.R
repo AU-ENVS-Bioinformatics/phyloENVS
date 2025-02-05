@@ -11,11 +11,9 @@
 #' vis_nmds(physeq_rel, group_color, group_shape)
 vis_nmds <- function(physeq_rel, group_color, group_shape){
 
-  physeq_nmds <- ordinate(physeq_rel,
-                          method = "NMDS",
-                          distance = "bray")
-
-  invisible(physeq_nmds)
+  physeq_nmds <- invisible(ordinate(physeq_rel,
+                                    method = "NMDS",
+                                    distance = "bray"))
 
   nmds_df <- data.frame(sample_data(physeq_rel),
                         "NMDS1" = physeq_nmds$points[, 1],
