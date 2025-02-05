@@ -4,12 +4,12 @@
 #' @param group_color the parameter in metadata to color by.
 #' @param group_shape the parameter in metadata to shape by.
 #'
-#' @return
+#' @return NMDS plot created with ggplot.
 #' @export
 #'
 #' @examples
 #' vis_nmds(physeq_rel, group_color, group_shape)
-vis_nmds <- function(physeq_rel, group_color, group_shape){
+vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE){
 
   physeq_nmds <- invisible(ordinate(physeq_rel,
                                     method = "NMDS",
@@ -19,23 +19,50 @@ vis_nmds <- function(physeq_rel, group_color, group_shape){
                         "NMDS1" = physeq_nmds$points[, 1],
                         "NMDS2" = physeq_nmds$points[, 2])
 
-  ggplot(data = nmds_df,
-         mapping = aes(x = NMDS1,
-                       y = NMDS2,
-                       color = {{group_color}},
-                       shape = {{group_shape}})) +
-    theme_classic() +
+  group_color_num <- pull(nmds_df, {{group_color}})
+  group_color_num <- length(unique(group_color_num))
+
+  group_shape_num <- pull(nmds_df, {{group_shape}})
+  group_shape_num <- length(unique(group_shape_num))
+
+  plot <- ggplot(data = nmds_df,
+                 mapping = aes(x = NMDS1,
+                               y = NMDS2,
+                               color = {{group_color}},
+                               fill = {{group_color}},
+                               shape = {{group_shape}})) +
     geom_point(size = 4) +
+    theme_classic() +
     xlab("NMDS1") +
     ylab("NMDS2") +
-    scale_color_viridis(option = "D", discrete = TRUE) +
-    scale_shape_manual(values = c(15, 16, 17, 18, 14, 8, 7, 6, 12)) +
-    guides(fill = guide_legend(override.aes = list(shape = 21))) +
     theme(axis.title.x = element_text(face = "bold",
                                       vjust = -1),
           axis.title.y = element_text(face = "bold",
                                       vjust = 3),
-          panel.background = element_rect(fill = "#F7F7F7", color = NA))
+          #panel.background = element_rect(fill = "#F7F7F7", color = NA),
+          legend.title = element_text(face = "bold")) +
+    scale_fill_manual(values = fetch_color("main1", group_color_num)) +
+    scale_color_manual(values = fetch_color("main1", group_color_num)) +
+    scale_shape_manual(values = fetch_shape(group_shape_num)) +
+    guides(color = guide_legend(override.aes = list(shape = 15)))
+
+  if (encircle == TRUE){
+    plot <- plot +
+      geom_encircle(aes(group = {{group_color}},
+                        fill = {{group_color}}),
+                    alpha = 0.2,
+                    smoothing = 0,
+                    show.legend = FALSE)
+  }
+
+  if (group_shape_num <= 5){
+    plot <- plot +
+      scale_color_manual(values = fetch_color("main2", group_color_num)) +
+      guides(color = guide_legend(override.aes = list(shape = 22)))
+  }
+
+  return(plot)
+
 
 
   #plot_ordination(x, y, ...) +

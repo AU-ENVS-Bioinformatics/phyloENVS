@@ -13,6 +13,9 @@ vis_nmds(physeq_rel, group_color, group_shape)
 
 \item{group_shape}{the parameter in metadata to shape by.}
 }
+\value{
+NMDS plot created with ggplot.
+}
 \description{
 Plot the data i the new ordination after data reduction using NMDS
 }
