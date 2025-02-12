@@ -4,7 +4,13 @@
 \alias{vis_nmds}
 \title{Plot the data i the new ordination after data reduction using NMDS}
 \usage{
-vis_nmds(physeq_rel, group_color, group_shape)
+vis_nmds(
+  physeq_rel,
+  group_color,
+  group_shape,
+  encircle = FALSE,
+  fill_circle = FALSE
+)
 }
 \arguments{
 \item{physeq_rel}{a phyloseq object}

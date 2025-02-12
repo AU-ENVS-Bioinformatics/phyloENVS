@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' vis_nmds(physeq_rel, group_color, group_shape)
-vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE){
+vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE, fill_circle = FALSE){
 
   physeq_nmds <- invisible(ordinate(physeq_rel,
                                     method = "NMDS",
@@ -29,9 +29,32 @@ vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE){
                  mapping = aes(x = NMDS1,
                                y = NMDS2,
                                color = {{group_color}},
-                               fill = {{group_color}},
-                               shape = {{group_shape}})) +
-    geom_point(size = 4) +
+                               shape = {{group_shape}}))
+
+  if (encircle == TRUE){
+    x_range <- range(nmds_df$NMDS1) + c(-0.1, 0.1)
+    y_range <- range(nmds_df$NMDS2) + c(-0.1, 0.1)
+
+    if (fill_circle == TRUE){
+      plot <- plot +
+        geom_encircle(aes(group = {{group_color}},
+                          fill = {{group_color}}),
+                      size = 2,
+                      alpha = 0.2,
+                      show.legend = FALSE) +
+        expand_limits(x = x_range, y = y_range)
+    } else {
+      plot <- plot +
+        geom_encircle(aes(group = {{group_color}}),
+                      size = 2,
+                      alpha = 0.5,
+                      show.legend = FALSE) +
+        expand_limits(x = x_range, y = y_range)
+    }
+  }
+
+  plot <- plot + geom_point(mapping = aes(fill = {{group_color}}),
+                            size = 4) +
     theme_classic() +
     xlab("NMDS1") +
     ylab("NMDS2") +
@@ -39,21 +62,12 @@ vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE){
                                       vjust = -1),
           axis.title.y = element_text(face = "bold",
                                       vjust = 3),
-          #panel.background = element_rect(fill = "#F7F7F7", color = NA),
+          panel.background = element_rect(fill = "#F7F7F7", color = NA),
           legend.title = element_text(face = "bold")) +
     scale_fill_manual(values = fetch_color("main1", group_color_num)) +
     scale_color_manual(values = fetch_color("main1", group_color_num)) +
     scale_shape_manual(values = fetch_shape(group_shape_num)) +
     guides(color = guide_legend(override.aes = list(shape = 15)))
-
-  if (encircle == TRUE){
-    plot <- plot +
-      geom_encircle(aes(group = {{group_color}},
-                        fill = {{group_color}}),
-                    alpha = 0.2,
-                    smoothing = 0,
-                    show.legend = FALSE)
-  }
 
   if (group_shape_num <= 5){
     plot <- plot +
@@ -62,18 +76,4 @@ vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE){
   }
 
   return(plot)
-
-
-
-  #plot_ordination(x, y, ...) +
-    #geom_point(size = 4, aes_string(shape = facet_col, color = xaxis_col)) +  # Increase point size
-    #scale_color_viridis(option = "D", discrete = TRUE) +  # Use viridis color palette https://ggplot2.tidyverse.org/reference/scale_viridis.html
-    #"magma" (or "A") - "inferno" (or "B") - "plasma" (or "C") - "viridis" (or "D") - "cividis" (or "E") - "rocket" (or "F") - "mako" (or "G") - "turbo" (or "H")
-    #scale_shape_manual(values = c(15, 16, 17, 18, 14, 8, 7, 6, 12)) +  # Customize shapes https://ggplot2-book.org/scales-other#sec-scale-shape
-    #theme(legend.title = element_blank(),
-          #legend.position = "right",
-          #text = element_text(size = 12),
-          #axis.title = element_text(size = 14),
-          #axis.text = element_text(size = 12),
-          #panel.background = element_rect(fill = "#F7F7F7", color = NA))
 }

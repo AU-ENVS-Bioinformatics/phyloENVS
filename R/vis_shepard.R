@@ -22,12 +22,15 @@ vis_shepard <- function(physeq_rel){
   nonmetric_fit_stat <- round(1-physeq_nmds$stress^2, 3)
   linear_fit_stat <- round(cor(physeq_nmds$dhat, physeq_nmds$dist)^2, 3)
 
+  x_range <- range(shepard_df$dissimilarity) + c(-0.1, 0.1)
+  y_range <- range(shepard_df$distance) + c(-0.1, 0.1)
+
   ggplot(data = shepard_df,
          mapping = aes(x = dissimilarity,
                        y = distance)) +
     theme_classic() +
-    geom_point(color = "#2A788EFF",
-               alpha = 0.7,
+    geom_point(color = "#003d73",
+               alpha = 0.6,
                size = 2) +
     geom_step(mapping = aes(y = fit),
               direction = "vh",
@@ -46,10 +49,12 @@ vis_shepard <- function(physeq_rel){
                              "\n",
                              "Linear fit:",
                              linear_fit_stat),
-               x = min(shepard_df$dissimilarity)*5,
-               y = max(shepard_df$distance)*0.95,
+               x = min(shepard_df$dissimilarity),
+               y = max(shepard_df$distance),
                label.padding = unit(0.55, "lines"), # Rectangle size around label
                label.size = 0.35,
-               color = "black",
-               fill="lightgrey")
+               color = "#003d73",
+               fill="white",
+               hjust = 0,
+               vjust = 1)
 }
