@@ -55,6 +55,7 @@ vis_shepard <- function(physeq_rel){
                label.size = 0.35,
                color = "#003d73",
                fill="white",
+               fontface = "bold",
                hjust = 0,
                vjust = 1)
 }

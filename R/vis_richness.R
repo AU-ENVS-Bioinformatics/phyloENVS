@@ -22,7 +22,7 @@ vis_richness <- function(physeq, group_x, group_color){
   plot <- plot +
     geom_boxplot(data = plot$data,
                  aes(color = NULL),
-                 fill = "#F7F7F7",
+                 fill = "white",
                  alpha = 1,
                  show.legend = FALSE) +
     geom_point(size = 2,
@@ -34,8 +34,15 @@ vis_richness <- function(physeq, group_x, group_color){
                                       vjust = -1),
           axis.title.y = element_text(face = "bold",
                                       vjust = 3),
-          panel.border = element_rect(color = "black", size = 1, fill = NA))
-    #guides(color = guide_legend(override.aes = list(shape = 22)))
+          panel.background = element_rect(fill = "#F7F7F7", color = NA),
+          panel.border = element_rect(color = "black", size = 1, fill = NA),
+          legend.title = element_text(face = "bold"),
+          strip.background = element_rect(color="black",
+                                          fill="black",
+                                          size=1.5,
+                                          linetype="solid"),
+          strip.text.x = element_text(color = "white",
+                                      face = "bold"))
 
   return(plot)
 }
