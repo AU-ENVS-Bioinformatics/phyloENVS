@@ -17,5 +17,8 @@ Imports:
   dplyr,
   tidyr,
   ggplot2,
+  ggalt,
   phyloseq,
   viridis
+Depends: 
+    R (>= 3.5)
