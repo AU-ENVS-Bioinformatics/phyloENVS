@@ -61,9 +61,9 @@ vis_abundance <- function(physeq, group_x, group_split, level_glom = Phylum, lev
                                           linetype="solid"),
           strip.text.x = element_text(color = "white",
                                       face = "bold")) +
-    facet_grid(cols = vars({{group_split}}), scales = "free_x", space = "free_x")
+    facet_grid(cols = vars({{group_split}}), scales = "free_x", space = "free_x") +
     #scale_fill_manual(values = rev(c(fetch_color("main3", group_color_num-2), "red", "#4b4b4a")))
-    #scale_fill_manual(values = c("#878787", "#4b4b4a", fetch_color("main3", group_color_num-1)))
+    scale_fill_manual(values = c("#878787", "#4b4b4a", fetch_color("main3", group_color_num-1)))
 
   return(plot)
 }
