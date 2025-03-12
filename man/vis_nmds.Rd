@@ -10,7 +10,8 @@ vis_nmds(
   group_color,
   group_shape,
   encircle = FALSE,
-  fill_circle = FALSE
+  fill_circle = FALSE,
+  scale_circle = 0.1
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ vis_nmds(
 \item{encircle}{encircle the points belonging to same group (as specified by group_color). Default is FALSE.}
 
 \item{fill_circle}{fill the encircled area. Default is FALSE.}
+
+\item{scale_circle}{value to scale the encircle area. Default is 0.1.}
 }
 \value{
 NMDS plot created with ggplot.

@@ -64,4 +64,23 @@ used for visualizing and interpreting the relationships between
 sampleshigh-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., as location.
 
-<img src="man/figures/README-example2-1.png" width="100%" />
+``` r
+vis_nmds(qaanaaq_rRNA_sub,
+         convert_to_rel = TRUE,
+         group_color = Wetness,
+         group_shape = Transect,
+         encircle = TRUE,
+         fill_circle = TRUE,
+         scale_circle = 0.09)
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+```
+
+<div class="figure">
+
+<img src="man/figures/README-example2-1.png" alt="NMDS plot." width="80%" />
+<p class="caption">
+NMDS plot.
+</p>
+
+</div>

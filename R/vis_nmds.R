@@ -6,6 +6,7 @@
 #' @param group_shape the parameter in metadata to shape by.
 #' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
 #' @param fill_circle fill the encircled area. Default is FALSE.
+#' @param scale_circle value to scale the encircle area. Default is 0.1.
 #'
 #' @return NMDS plot created with ggplot.
 #' @export
@@ -16,7 +17,8 @@ vis_nmds <- function(physeq,
                      group_color,
                      group_shape,
                      encircle = FALSE,
-                     fill_circle = FALSE){
+                     fill_circle = FALSE,
+                     scale_circle = 0.1){
 
   # Normalize.
   if (convert_to_rel == TRUE){
@@ -54,22 +56,24 @@ vis_nmds <- function(physeq,
                                shape = {{group_shape}}))
 
   if (encircle == TRUE){
-    x_range <- range(nmds_df$NMDS1) + c(-0.1, 0.1)
-    y_range <- range(nmds_df$NMDS2) + c(-0.1, 0.1)
+    x_range <- range(nmds_df$NMDS1) + c(-scale_circle, scale_circle)
+    y_range <- range(nmds_df$NMDS2) + c(-scale_circle, scale_circle)
     if (fill_circle == TRUE){
       plot <- plot +
         geom_encircle(aes(group = {{group_color}},
                           fill = {{group_color}}),
                       size = 2,
                       alpha = 0.2,
-                      show.legend = FALSE) +
+                      show.legend = FALSE,
+                      expand = scale_circle) +
         expand_limits(x = x_range, y = y_range)
     } else {
       plot <- plot +
         geom_encircle(aes(group = {{group_color}}),
                       size = 2,
                       alpha = 0.5,
-                      show.legend = FALSE) +
+                      show.legend = FALSE,
+                      expand = scale_circle) +
         expand_limits(x = x_range, y = y_range)
     }
   }
