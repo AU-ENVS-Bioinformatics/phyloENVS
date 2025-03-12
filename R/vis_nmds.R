@@ -26,10 +26,14 @@ vis_nmds <- function(physeq,
     physeq_rel <- physeq
   }
 
+  # Redirect output to null to suppress it (Mac version)
+  sink("/dev/null")  # Redirects output to null (use "/dev/null" on macOS)
+  on.exit(sink())  # Ensure that it gets reset after function execution
+
   # Ordinate.
   physeq_nmds <- invisible(phyloseq::ordinate(physeq_rel,
-                                    method = "NMDS",
-                                    distance = "bray"))
+                                              method = "NMDS",
+                                              distance = "bray"))
 
   # Get values.
   nmds_df <- data.frame(sample_data(physeq_rel),
