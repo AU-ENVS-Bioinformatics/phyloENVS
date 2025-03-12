@@ -1,6 +1,6 @@
 #' Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS
 #'
-#' @param physeq_rel a phyloseq object
+#' @param physeq a phyloseq object
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
 #'
 #' @return shepard diagram created with ggplot.
