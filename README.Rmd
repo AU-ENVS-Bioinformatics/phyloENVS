@@ -39,22 +39,40 @@ devtools::install_github("johanneBiO/phyloENVS")
 
 ## Example
 
-This is a basic example which shows you can visualize the relative abundance for a microbial community of ice sampled at the Qaanaaq glacier and the Greenland ice sheet:
+This is a basic example which shows you can visualize the relative abundance for a microbial community of ice sampled at the Qaanaaq glacier and the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example, fig.cap="Relative abundance plot", out.width = "100%", fig.path = "man/figures/README-"}
+```{r example1, fig.cap="Relative abundance plot.", out.width = "80%", fig.path = "man/figures/README-"}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
 
 qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
-                                   Transect == "Non-transect") 
+                                   Transect != "Non-transect") 
 
 vis_abundance(physeq = qaanaaq_rRNA_sub,
               group_x = SampleName,
-              group_split = Location,
+              group_split = Wetness,
               level_glom = Phylum,
               level_select = NULL,
               group_select = NULL,
               lower_limit = 2,
               remove_grid = FALSE)
 ```
+
+NMDS (Non-metric Multidimensional Scaling) plot is a popular technique used for visualizing and interpreting the relationships between sampleshigh-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., as location.  
+
+```{r example2, fig.cap="NMDS plot.", out.width = "80%", fig.path = "man/figures/README-"}
+vis_nmds(qaanaaq_rRNA_sub,
+         convert_to_rel = TRUE,
+         group_color = Wetness,
+         group_shape = Transect,
+         encircle = TRUE,
+         fill_circle = FALSE)
+```
+
+
+
+
+
+
+
