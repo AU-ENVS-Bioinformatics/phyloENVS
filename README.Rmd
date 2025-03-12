@@ -61,7 +61,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 NMDS (Non-metric Multidimensional Scaling) plot is a popular technique used for visualizing and interpreting the relationships between sampleshigh-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., as location.  
 
-```{r example2, fig.cap="NMDS plot.", out.width = "80%", fig.path = "man/figures/README-"}
+```{r example2, fig.cap="NMDS plot.", out.width = "80%", fig.path = "man/figures/README-", message = FALSE, warning = FALSE}
 vis_nmds(qaanaaq_rRNA_sub,
          convert_to_rel = TRUE,
          group_color = Wetness,

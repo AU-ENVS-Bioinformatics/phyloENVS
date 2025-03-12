@@ -73,57 +73,58 @@ vis_nmds(qaanaaq_rRNA_sub,
          fill_circle = FALSE)
 #> Wisconsin double standardization
 #> Run 0 stress 0.07476995 
-#> Run 1 stress 0.07476995 
-#> ... Procrustes: rmse 1.001875e-06  max resid 1.840631e-06 
-#> ... Similar to previous best
+#> Run 1 stress 0.1441608 
 #> Run 2 stress 0.07476995 
-#> ... Procrustes: rmse 7.001035e-07  max resid 1.40393e-06 
+#> ... New best solution
+#> ... Procrustes: rmse 2.120032e-06  max resid 3.471499e-06 
 #> ... Similar to previous best
 #> Run 3 stress 0.07476995 
-#> ... Procrustes: rmse 1.515304e-06  max resid 3.027232e-06 
+#> ... Procrustes: rmse 1.785535e-06  max resid 3.841723e-06 
 #> ... Similar to previous best
 #> Run 4 stress 0.07476995 
-#> ... New best solution
-#> ... Procrustes: rmse 3.200493e-06  max resid 5.843974e-06 
+#> ... Procrustes: rmse 1.309919e-06  max resid 2.538998e-06 
 #> ... Similar to previous best
-#> Run 5 stress 0.07476995 
-#> ... Procrustes: rmse 1.2636e-06  max resid 3.207607e-06 
-#> ... Similar to previous best
+#> Run 5 stress 0.1441607 
 #> Run 6 stress 0.07476995 
-#> ... Procrustes: rmse 5.430754e-06  max resid 1.041588e-05 
+#> ... Procrustes: rmse 2.409642e-06  max resid 5.521965e-06 
 #> ... Similar to previous best
-#> Run 7 stress 0.1441608 
-#> Run 8 stress 0.1473151 
+#> Run 7 stress 0.07476995 
+#> ... Procrustes: rmse 3.110086e-06  max resid 7.956842e-06 
+#> ... Similar to previous best
+#> Run 8 stress 0.07476995 
+#> ... Procrustes: rmse 1.761549e-06  max resid 3.128008e-06 
+#> ... Similar to previous best
 #> Run 9 stress 0.07476995 
-#> ... Procrustes: rmse 4.680578e-06  max resid 9.389433e-06 
+#> ... Procrustes: rmse 3.500473e-06  max resid 6.230269e-06 
 #> ... Similar to previous best
 #> Run 10 stress 0.07476995 
-#> ... Procrustes: rmse 6.33387e-07  max resid 1.58235e-06 
+#> ... Procrustes: rmse 1.938975e-06  max resid 3.821407e-06 
 #> ... Similar to previous best
 #> Run 11 stress 0.07476995 
-#> ... Procrustes: rmse 1.836801e-06  max resid 2.767109e-06 
+#> ... Procrustes: rmse 1.804841e-06  max resid 3.969019e-06 
 #> ... Similar to previous best
 #> Run 12 stress 0.07476995 
-#> ... Procrustes: rmse 2.15781e-06  max resid 5.758192e-06 
+#> ... Procrustes: rmse 3.183724e-06  max resid 5.867013e-06 
 #> ... Similar to previous best
-#> Run 13 stress 0.213687 
-#> Run 14 stress 0.147315 
-#> Run 15 stress 0.1473151 
-#> Run 16 stress 0.07476995 
-#> ... Procrustes: rmse 2.080242e-06  max resid 4.166984e-06 
+#> Run 13 stress 0.07476995 
+#> ... Procrustes: rmse 2.430024e-06  max resid 3.640362e-06 
 #> ... Similar to previous best
+#> Run 14 stress 0.1473151 
+#> Run 15 stress 0.07476995 
+#> ... Procrustes: rmse 2.134449e-06  max resid 4.603016e-06 
+#> ... Similar to previous best
+#> Run 16 stress 0.1434945 
 #> Run 17 stress 0.07476995 
-#> ... New best solution
-#> ... Procrustes: rmse 3.138985e-07  max resid 5.193449e-07 
+#> ... Procrustes: rmse 6.697101e-07  max resid 1.455106e-06 
 #> ... Similar to previous best
-#> Run 18 stress 0.147315 
+#> Run 18 stress 0.2200962 
 #> Run 19 stress 0.07476995 
-#> ... Procrustes: rmse 1.980136e-07  max resid 3.76985e-07 
+#> ... Procrustes: rmse 1.437756e-06  max resid 2.799233e-06 
 #> ... Similar to previous best
-#> Run 20 stress 0.1473151 
-#> *** Best solution repeated 2 times
-#> Scale for colour is already present.
-#> Adding another scale for colour, which will replace the existing scale.
+#> Run 20 stress 0.07476995 
+#> ... Procrustes: rmse 3.964178e-06  max resid 7.016127e-06 
+#> ... Similar to previous best
+#> *** Best solution repeated 15 times
 ```
 
 <div class="figure">
