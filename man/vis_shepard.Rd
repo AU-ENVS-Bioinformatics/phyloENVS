@@ -7,9 +7,9 @@
 vis_shepard(physeq, convert_to_rel = TRUE)
 }
 \arguments{
-\item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
+\item{physeq}{a phyloseq object}
 
-\item{physeq_rel}{a phyloseq object}
+\item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
 }
 \value{
 shepard diagram created with ggplot.
