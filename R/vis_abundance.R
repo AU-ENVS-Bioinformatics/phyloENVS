@@ -12,7 +12,14 @@
 #' @export
 #'
 #' @examples
-vis_abundance <- function(physeq, group_x, group_split, level_glom = Phylum, level_select = NULL, group_select = NULL, lower_limit = 2){
+vis_abundance <- function(physeq,
+                          group_x,
+                          group_split,
+                          level_glom = Phylum,
+                          level_select = NULL,
+                          group_select = NULL,
+                          lower_limit = 2,
+                          remove_grid = FALSE){
 
   physeq_df <- physeq |>
     tax_glom(taxrank = as_name(enquo(level_glom)),
@@ -21,20 +28,44 @@ vis_abundance <- function(physeq, group_x, group_split, level_glom = Phylum, lev
     psmelt() |>
     mutate({{level_glom}} := replace_na(.data[[as_name(enquo(level_glom))]], "Unassigned"),  # Replace NA with "Unassigned"
            {{level_glom}} := ifelse(Abundance < lower_limit,
-                                   paste("< ", lower_limit, "%", sep = ""),
-                                  .data[[as_name(enquo(level_glom))]]),
+                                    paste("< ", lower_limit, "%", sep = ""),
+                                    .data[[as_name(enquo(level_glom))]]),
            {{level_glom}} := reorder(.data[[as_name(enquo(level_glom))]], Abundance),
            {{level_glom}} := factor({{level_glom}}),
-           {{level_glom}} := fct_relevel({{level_glom}}, "Unassigned", after = 1),
            {{group_split}} := factor({{group_split}}))
+
+  group_unique <- unique(pull(physeq_df, {{level_glom}}))
+  group_color_num <- length(group_unique)
+
+  print(group_unique)
+
+  if ("Unassigned" %in% group_unique){
+    physeq_df <- physeq_df |>
+      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Unassigned", after = 1))
+    group_unique <- unique(pull(physeq_df, {{level_glom}}))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+  } else if ("Unknown function" %in% group_unique){
+    physeq_df <- physeq_df |>
+      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Unknown function", after = 1))
+    group_unique <- unique(pull(physeq_df, {{level_glom}}))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+  } else if ("Others" %in% group_unique){
+    physeq_df <- physeq_df |>
+      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Others", after = 1))
+    group_unique <- unique(pull(physeq_df, {{level_glom}}))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+  } else {
+    group_color <- c("#878787", rev(fetch_color("main3", group_color_num-1)))
+  }
 
   if (!is.null(level_select) && !is.null(level_select)){
     physeq_df <- physeq_df |>
       filter(.data[[as_name(sym(level_select))]] %in% group_select)
   }
 
-  group_color_num <- pull(physeq_df, {{level_glom}})
-  group_color_num <- length(unique(group_color_num))
+  group_reduced_unique <- unique(pull(physeq_df, {{level_glom}}))
+  index_color <- which(levels(group_unique) %in% group_reduced_unique)
+  group_color <- group_color[index_color]
 
   plot <- ggplot(data = physeq_df,
                  mapping = aes(x = {{group_x}},
@@ -45,7 +76,8 @@ vis_abundance <- function(physeq, group_x, group_split, level_glom = Phylum, lev
     labs(y = "Relative abundance [%]",
          x = "") +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1),
+    theme(axis.ticks.x = element_blank(),
+          axis.text.x = element_text(angle = 90, hjust = 1),
           axis.title.x = element_text(face = "bold",
                                       vjust = -1),
           axis.title.y = element_text(face = "bold",
@@ -61,11 +93,12 @@ vis_abundance <- function(physeq, group_x, group_split, level_glom = Phylum, lev
                                           linetype="solid"),
           strip.text.x = element_text(color = "white",
                                       face = "bold")) +
-    facet_grid(cols = vars({{group_split}}), scales = "free_x", space = "free_x") +
-    #scale_fill_manual(values = rev(c(fetch_color("main3", group_color_num-2), "red", "#4b4b4a")))
-    scale_fill_manual(values = c("#878787", "#4b4b4a", fetch_color("main3", group_color_num-1)))
+    scale_fill_manual(values = group_color)
+
+  if (remove_grid == FALSE){
+    plot <- plot + facet_grid(cols = vars({{group_split}}), scales = "free_x", space = "free_x")
+  }
 
   return(plot)
 }
 
-#"#4b4b4a"
