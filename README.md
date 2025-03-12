@@ -66,50 +66,58 @@ cluster based on the available metadata, e.g., as location.
 
     #> Wisconsin double standardization
     #> Run 0 stress 0.07476995 
-    #> Run 1 stress 0.143494 
-    #> Run 2 stress 0.1441608 
+    #> Run 1 stress 0.07476995 
+    #> ... Procrustes: rmse 7.151125e-06  max resid 1.376814e-05 
+    #> ... Similar to previous best
+    #> Run 2 stress 0.07476995 
+    #> ... Procrustes: rmse 5.169914e-06  max resid 1.020543e-05 
+    #> ... Similar to previous best
     #> Run 3 stress 0.07476995 
     #> ... New best solution
-    #> ... Procrustes: rmse 1.629663e-06  max resid 2.303711e-06 
+    #> ... Procrustes: rmse 2.792143e-06  max resid 5.241902e-06 
     #> ... Similar to previous best
-    #> Run 4 stress 0.07476995 
-    #> ... Procrustes: rmse 3.100334e-06  max resid 4.508387e-06 
+    #> Run 4 stress 0.1434942 
+    #> Run 5 stress 0.07476995 
+    #> ... Procrustes: rmse 2.002331e-06  max resid 4.960036e-06 
     #> ... Similar to previous best
-    #> Run 5 stress 0.2200962 
-    #> Run 6 stress 0.1434946 
+    #> Run 6 stress 0.07476995 
+    #> ... Procrustes: rmse 2.415659e-06  max resid 4.924733e-06 
+    #> ... Similar to previous best
     #> Run 7 stress 0.07476995 
+    #> ... Procrustes: rmse 5.062195e-06  max resid 7.342618e-06 
+    #> ... Similar to previous best
+    #> Run 8 stress 0.1434941 
+    #> Run 9 stress 0.07476995 
     #> ... New best solution
-    #> ... Procrustes: rmse 1.735298e-06  max resid 4.378827e-06 
+    #> ... Procrustes: rmse 1.850061e-06  max resid 3.577571e-06 
     #> ... Similar to previous best
-    #> Run 8 stress 0.1434948 
-    #> Run 9 stress 0.1473152 
-    #> Run 10 stress 0.07476995 
-    #> ... Procrustes: rmse 1.361745e-06  max resid 2.475677e-06 
-    #> ... Similar to previous best
-    #> Run 11 stress 0.07476995 
-    #> ... Procrustes: rmse 3.997475e-07  max resid 7.118867e-07 
-    #> ... Similar to previous best
+    #> Run 10 stress 0.280878 
+    #> Run 11 stress 0.1441608 
     #> Run 12 stress 0.07476995 
-    #> ... Procrustes: rmse 2.88933e-06  max resid 5.545695e-06 
+    #> ... Procrustes: rmse 2.688617e-06  max resid 6.736147e-06 
     #> ... Similar to previous best
-    #> Run 13 stress 0.1400042 
+    #> Run 13 stress 0.07476995 
+    #> ... Procrustes: rmse 2.575351e-06  max resid 5.212555e-06 
+    #> ... Similar to previous best
     #> Run 14 stress 0.07476995 
-    #> ... Procrustes: rmse 3.031947e-06  max resid 7.504358e-06 
+    #> ... Procrustes: rmse 6.825046e-07  max resid 1.16635e-06 
     #> ... Similar to previous best
     #> Run 15 stress 0.07476995 
-    #> ... Procrustes: rmse 5.866751e-07  max resid 1.277362e-06 
+    #> ... Procrustes: rmse 3.639403e-06  max resid 5.612016e-06 
     #> ... Similar to previous best
     #> Run 16 stress 0.07476995 
-    #> ... Procrustes: rmse 3.082737e-06  max resid 4.332764e-06 
+    #> ... Procrustes: rmse 1.699832e-06  max resid 3.498498e-06 
     #> ... Similar to previous best
     #> Run 17 stress 0.07476995 
-    #> ... Procrustes: rmse 3.506248e-06  max resid 6.753072e-06 
+    #> ... Procrustes: rmse 1.757011e-06  max resid 3.518899e-06 
     #> ... Similar to previous best
-    #> Run 18 stress 0.1434938 
-    #> Run 19 stress 0.1441607 
+    #> Run 18 stress 0.07476995 
+    #> ... Procrustes: rmse 3.717768e-06  max resid 6.130266e-06 
+    #> ... Similar to previous best
+    #> Run 19 stress 0.07476995 
+    #> ... Procrustes: rmse 1.584284e-06  max resid 3.064061e-06 
+    #> ... Similar to previous best
     #> Run 20 stress 0.07476995 
-    #> ... Procrustes: rmse 2.11295e-06  max resid 4.315474e-06 
+    #> ... Procrustes: rmse 2.573238e-06  max resid 5.667465e-06 
     #> ... Similar to previous best
-    #> *** Best solution repeated 9 times
-    #> Scale for colour is already present.
-    #> Adding another scale for colour, which will replace the existing scale.
+    #> *** Best solution repeated 10 times
