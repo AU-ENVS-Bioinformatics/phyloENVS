@@ -1,19 +1,25 @@
 #' Plot alpha diversity with Shannon and Inverse Simpson measures
 #'
-#' @param physeq
-#' @param group_x
-#' @param group_color
+#' @param physeq a phyloseq object
+#' @param group_x the x axis sample variable to plot.
+#' @param group_color the parameter in metadata to color by.
 #'
-#' @return
+#' @return richness plots created with ggplot.
 #' @export
 #'
 #' @examples
-vis_richness <- function(physeq, group_x, group_color){
+vis_richness <- function(physeq,
+                         group_x,
+                         group_color){
 
+  # Get sample data.
   sample_df <- as.data.frame(sample_data(physeq))
+
+  # Get the color number.
   group_color_num <- pull(sample_df, {{group_color}})
   group_color_num <- length(unique(group_color_num))
 
+  # Create plot.
   plot <- plot_richness(physeq = physeq,
                         x = as_name(enquo(group_x)),
                         color = as_name(enquo(group_color)),
@@ -46,4 +52,3 @@ vis_richness <- function(physeq, group_x, group_color){
 
   return(plot)
 }
-

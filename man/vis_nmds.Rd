@@ -5,7 +5,8 @@
 \title{Plot the data i the new ordination after data reduction using NMDS}
 \usage{
 vis_nmds(
-  physeq_rel,
+  physeq,
+  convert_to_rel = TRUE,
   group_color,
   group_shape,
   encircle = FALSE,
@@ -13,11 +14,17 @@ vis_nmds(
 )
 }
 \arguments{
-\item{physeq_rel}{a phyloseq object}
+\item{physeq}{a phyloseq object.}
+
+\item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
 
 \item{group_color}{the parameter in metadata to color by.}
 
 \item{group_shape}{the parameter in metadata to shape by.}
+
+\item{encircle}{encircle the points belonging to same group (as specified by group_color). Default is FALSE.}
+
+\item{fill_circle}{fill the encircled area. Default is FALSE.}
 }
 \value{
 NMDS plot created with ggplot.

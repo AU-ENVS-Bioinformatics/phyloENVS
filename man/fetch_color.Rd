@@ -7,7 +7,7 @@
 fetch_color(color_source, num)
 }
 \arguments{
-\item{color_source}{color source/palette in the dictionary (main1, main2).}
+\item{color_source}{color source/palette in the dictionary (main1, main2, ect.).}
 
 \item{num}{number of colors to output.}
 }

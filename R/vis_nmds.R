@@ -1,29 +1,48 @@
 #' Plot the data i the new ordination after data reduction using NMDS
 #'
-#' @param physeq_rel a phyloseq object
+#' @param physeq a phyloseq object.
+#' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
 #' @param group_color the parameter in metadata to color by.
 #' @param group_shape the parameter in metadata to shape by.
+#' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
+#' @param fill_circle fill the encircled area. Default is FALSE.
 #'
 #' @return NMDS plot created with ggplot.
 #' @export
 #'
 #' @examples
-vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE, fill_circle = FALSE){
+vis_nmds <- function(physeq,
+                     convert_to_rel = TRUE,
+                     group_color,
+                     group_shape,
+                     encircle = FALSE,
+                     fill_circle = FALSE){
 
+  # Normalize.
+  if (convert_to_rel == TRUE){
+    physeq_rel <- physeq |>
+      transform_sample_counts(function(x) x/sum(x)*100)
+  } else {
+    physeq_rel <- physeq
+  }
+
+  # Ordinate.
   physeq_nmds <- invisible(phyloseq::ordinate(physeq_rel,
                                     method = "NMDS",
                                     distance = "bray"))
 
+  # Get values.
   nmds_df <- data.frame(sample_data(physeq_rel),
                         "NMDS1" = physeq_nmds$points[, 1],
                         "NMDS2" = physeq_nmds$points[, 2])
 
+  # Get the color and shape number.
   group_color_num <- pull(nmds_df, {{group_color}})
   group_color_num <- length(unique(group_color_num))
-
   group_shape_num <- pull(nmds_df, {{group_shape}})
   group_shape_num <- length(unique(group_shape_num))
 
+  # Create plot.
   plot <- ggplot(data = nmds_df,
                  mapping = aes(x = NMDS1,
                                y = NMDS2,
@@ -33,7 +52,6 @@ vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE, fil
   if (encircle == TRUE){
     x_range <- range(nmds_df$NMDS1) + c(-0.1, 0.1)
     y_range <- range(nmds_df$NMDS2) + c(-0.1, 0.1)
-
     if (fill_circle == TRUE){
       plot <- plot +
         geom_encircle(aes(group = {{group_color}},

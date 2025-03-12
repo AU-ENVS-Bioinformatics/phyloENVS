@@ -9,6 +9,9 @@ fetch_shape(num)
 \arguments{
 \item{num}{number of shapes to output.}
 }
+\value{
+a vector with the shape values.
+}
 \description{
 Fetches shapes from shape dictionary
 }

@@ -7,7 +7,14 @@
 vis_richness(physeq, group_x, group_color)
 }
 \arguments{
-\item{group_color}{}
+\item{physeq}{a phyloseq object}
+
+\item{group_x}{the x axis sample variable to plot.}
+
+\item{group_color}{the parameter in metadata to color by.}
+}
+\value{
+richness plots created with ggplot.
 }
 \description{
 Plot alpha diversity with Shannon and Inverse Simpson measures

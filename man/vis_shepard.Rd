@@ -4,9 +4,11 @@
 \alias{vis_shepard}
 \title{Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS}
 \usage{
-vis_shepard(physeq_rel)
+vis_shepard(physeq, convert_to_rel = TRUE)
 }
 \arguments{
+\item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
+
 \item{physeq_rel}{a phyloseq object}
 }
 \value{

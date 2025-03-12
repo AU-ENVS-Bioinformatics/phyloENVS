@@ -16,7 +16,24 @@ vis_abundance(
 )
 }
 \arguments{
-\item{lower_limit}{}
+\item{physeq}{a phyloseq object.}
+
+\item{group_x}{the x axis sample variable to plot.}
+
+\item{group_split}{name of the sample data column to group by.}
+
+\item{level_glom}{name of the level to agglomerate counts. Default is "Phylum".}
+
+\item{level_select}{specified level to target for specified group (e.g., domain level - useful with add_level()). Default is NULL.}
+
+\item{group_select}{specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.}
+
+\item{lower_limit}{relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together.}
+
+\item{remove_grid}{remove the grid splitting groups. Default is FALSE.}
+}
+\value{
+a abundance plot created with ggplot.
 }
 \description{
 Plot the relative abundances for merged species of the same taxonomic rank.

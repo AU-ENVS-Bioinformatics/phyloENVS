@@ -2,11 +2,12 @@
 #'
 #' @param num number of shapes to output.
 #'
-#' @return
+#' @return a vector with the shape values.
 #' @export
 #'
 #' @examples
 fetch_shape <- function(num){
+
   if (num > 10){
     stop("Error: The number of distinct shape exceeds the allowed threshold of 10.")
   }
