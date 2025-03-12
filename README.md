@@ -49,4 +49,11 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               remove_grid = FALSE)
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-example-1.png" alt="Relative abundance plot" width="100%" />
+<p class="caption">
+Relative abundance plot
+</p>
+
+</div>
