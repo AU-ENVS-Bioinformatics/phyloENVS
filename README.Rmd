@@ -11,6 +11,14 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+library(phyloseq)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggalt)
+library(rlang)
+library(forcats)
 ```
 
 # phyloENVS
@@ -18,38 +26,35 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of phyloENVS is to ...
+The goal of phyloENVS is to provide tailored tools for visualizing and analyzing microbial community data, with a focus on rRNA and mRNA datasets from environmental samples such as soil, ice, and other ecosystems. Built to enhance the functionality of the 'phyloseq' package, it offers customizable and publication-quality visualizations, including abundance plots, diversity metrics, and community composition analyses. The package is designed to streamline workflows for researchers within Environmental Microbiology at Aarhus University.
 
 ## Installation
 
-You can install the development version of phyloENVS from [GitHub](https://github.com/) with:
+You can install the phyloENVS from [GitHub](https://github.com/) with the devtools package.
 
 ``` r
-# install.packages("pak")
-pak::pak("johanneBiO/phyloENVS")
+# install.packages("devtools")
+devtools::install_github("johanneBiO/phyloENVS")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you can visualize the relative abundance for a microbial community of ice sampled at the Qaanaaq glacier and the Greenland ice sheet:
 
 ```{r example}
 library(phyloENVS)
-## basic example code
+
+data("qaanaaq_rRNA")
+
+qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
+                                   Transect == "Non-transect") 
+
+vis_abundance(physeq = qaanaaq_rRNA_sub,
+              group_x = SampleName,
+              group_split = Location,
+              level_glom = Phylum,
+              level_select = NULL,
+              group_select = NULL,
+              lower_limit = 2,
+              remove_grid = FALSE)
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

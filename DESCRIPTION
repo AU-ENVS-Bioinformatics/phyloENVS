@@ -19,7 +19,8 @@ Imports:
   ggplot2,
   ggalt,
   phyloseq,
-  viridis
+  rlang,
+  forcats
 Depends: 
     R (>= 3.5)
 LazyData: true
