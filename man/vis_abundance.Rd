@@ -11,7 +11,8 @@ vis_abundance(
   level_glom = Phylum,
   level_select = NULL,
   group_select = NULL,
-  lower_limit = 2
+  lower_limit = 2,
+  remove_grid = FALSE
 )
 }
 \arguments{

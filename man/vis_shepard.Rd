@@ -15,6 +15,3 @@ shepard diagram created with ggplot.
 \description{
 Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS
 }
-\examples{
-vis_shepard(physeq_rel)
-}

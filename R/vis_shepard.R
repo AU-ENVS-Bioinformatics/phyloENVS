@@ -6,10 +6,9 @@
 #' @export
 #'
 #' @examples
-#' vis_shepard(physeq_rel)
 vis_shepard <- function(physeq_rel){
 
-  physeq_nmds <- ordinate(physeq_rel,
+  physeq_nmds <- phyloseq::ordinate(physeq_rel,
                           method = "NMDS",
                           distance = "bray")
 

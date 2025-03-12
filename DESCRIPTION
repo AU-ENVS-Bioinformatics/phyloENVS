@@ -2,7 +2,7 @@ Package: phyloENVS
 Type: Package
 Title: Tailored Tools for Phyloseq-based Community Analysis
 Version: 0.1.0
-Author@R: person("Johanne", "B. Overgaard", email = "jbo@envs.au.dk", role = c("aut", "cre"))
+Authors@R: person("Johanne", "B. Overgaard", email = "jbo@envs.au.dk", role = c("aut", "cre"))
 Description: This package provides tailored tools for visualizing and analyzing microbial 
   community data, with a focus on rRNA and mRNA datasets from environmental 
   samples such as soil, ice, and other ecosystems. Built to enhance the 

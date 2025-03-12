@@ -8,10 +8,9 @@
 #' @export
 #'
 #' @examples
-#' vis_nmds(physeq_rel, group_color, group_shape)
 vis_nmds <- function(physeq_rel, group_color, group_shape, encircle = FALSE, fill_circle = FALSE){
 
-  physeq_nmds <- invisible(ordinate(physeq_rel,
+  physeq_nmds <- invisible(phyloseq::ordinate(physeq_rel,
                                     method = "NMDS",
                                     distance = "bray"))
 
