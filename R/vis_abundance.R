@@ -44,7 +44,6 @@ vis_abundance <- function(physeq,
   if (!is.null(level_select) && !is.null(level_select)){
     physeq_df <- physeq_df |>
       filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
-    print("hej")
   }
 
   # Get number of unique colors to use.

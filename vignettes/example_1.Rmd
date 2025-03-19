@@ -1,5 +1,5 @@
 ---
-title: "Using phyloENVS for Qaanaaq dataset"
+title: "Example 1: Using phyloENVS for Qaanaaq dataset"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using phyloENVS for Qaanaaq dataset}
@@ -122,6 +122,8 @@ tax_table(qaanaaq_rRNA_sub) |>
   table()
 ```
 
+We create the table.
+
 ```{r}
 kingdom_to_domain <- c(
   "Bacteria" = "Prokaryotes",
@@ -158,7 +160,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 By plotting alpha diversity through richness, you can observe how many distinct taxa are present in each sample, which is crucial for understanding community structure and the complexity of ecosystems.
 
-```{r}
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_richness(physeq = qaanaaq_rRNA_sub, 
              group_x = Wetness, 
              group_color = Wetness)
