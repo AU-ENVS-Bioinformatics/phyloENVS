@@ -6,6 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+![](images/2352-a-t-000000-en.png)
+
 The goal of phyloENVS is to provide tailored tools for visualizing and
 analyzing microbial community data, with a focus on rRNA and mRNA
 datasets from environmental samples such as soil, ice, and other

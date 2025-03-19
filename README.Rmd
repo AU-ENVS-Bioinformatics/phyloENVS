@@ -24,7 +24,10 @@ library(forcats)
 # phyloENVS
 
 <!-- badges: start -->
+
 <!-- badges: end -->
+
+![](images/au.png)
 
 The goal of phyloENVS is to provide tailored tools for visualizing and analyzing microbial community data, with a focus on rRNA and mRNA datasets from environmental samples such as soil, ice, and other ecosystems. Built to enhance the functionality of the phyloseq package, it offers customizable and publication-quality visualizations, including ordination, abundance and richness plots for community composition analysis. The package is designed to streamline workflows for researchers within the Environmental Microbiology section at Department of Environmental Science at Aarhus University.
 
@@ -59,7 +62,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               remove_grid = FALSE)
 ```
 
-NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness. 
+NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
 ```{r example2, fig.cap="NMDS plot.", out.width = "80%", fig.path = "man/figures/README-", message=FALSE}
 vis_nmds(qaanaaq_rRNA_sub,
@@ -70,10 +73,3 @@ vis_nmds(qaanaaq_rRNA_sub,
          fill_circle = TRUE,
          scale_circle = 0.09)
 ```
-
-
-
-
-
-
-
