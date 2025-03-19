@@ -1,12 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<figure>
-<img
-src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png"
-alt="logo" />
-<figcaption aria-hidden="true">logo</figcaption>
-</figure>
+![](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
 
 # phyloENVS
 

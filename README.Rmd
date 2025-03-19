@@ -21,7 +21,7 @@ library(rlang)
 library(forcats)
 ```
 
-![logo](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
+![](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
 
 # phyloENVS
 
