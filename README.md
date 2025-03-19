@@ -1,7 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-![](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
+<div align="right">
+
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png" width="200"/>
+
+</div>
 
 # phyloENVS
 
