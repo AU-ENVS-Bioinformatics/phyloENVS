@@ -1,4 +1,5 @@
-#' Plot the data i the new ordination after data reduction using NMDS
+#' @title Visualize NMDS
+#' @description Plot the data i the new ordination after data reduction using NMDS.
 #'
 #' @param physeq a phyloseq object.
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.

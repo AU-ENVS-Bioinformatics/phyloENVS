@@ -1,4 +1,5 @@
-#' Fetches shapes from shape dictionary
+#' @title Fetch shape
+#' Fetches shapes from shape dictionary.
 #'
 #' @param num number of shapes to output.
 #'

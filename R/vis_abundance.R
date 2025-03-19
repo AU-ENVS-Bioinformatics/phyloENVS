@@ -1,4 +1,5 @@
-#' Plot the relative abundances for merged species of the same taxonomic rank.
+#' @title Visualize abundance
+#' @description Plot the relative abundances for merged species of the same taxonomic rank.
 #'
 #' @param physeq a phyloseq object.
 #' @param group_x the x axis sample variable to plot.

@@ -1,4 +1,5 @@
-#' Add user-specified taxonomic level
+#' @title Add taxonomic level
+#' @description Add user-specified taxonomic level, e.g., domain.
 #'
 #' @param physeq a phyloseq object.
 #' @param level the level to target/bin into a new overall level.
