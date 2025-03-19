@@ -1,5 +1,5 @@
 #' @title Visualize richness plot
-#' @descriptiom Plot alpha diversity with Shannon and Inverse Simpson measures.
+#' @description Plot alpha diversity with Shannon and Inverse Simpson measures.
 #'
 #' @param physeq a phyloseq object
 #' @param group_x the x axis sample variable to plot.

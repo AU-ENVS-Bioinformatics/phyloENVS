@@ -37,6 +37,17 @@ vis_abundance <- function(physeq,
            {{group_split}} := factor({{group_split}}))
 
   # Get number of unique colors to use.
+  #group_unique <- unique(pull(physeq_df, {{level_glom}}))
+  #group_color_num <- length(group_unique)
+
+  # Subset data if specified by user.
+  if (!is.null(level_select) && !is.null(level_select)){
+    physeq_df <- physeq_df |>
+      filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
+    print("hej")
+  }
+
+  # Get number of unique colors to use.
   group_unique <- unique(pull(physeq_df, {{level_glom}}))
   group_color_num <- length(group_unique)
 
@@ -56,20 +67,22 @@ vis_abundance <- function(physeq,
       mutate({{level_glom}} := fct_relevel({{level_glom}}, "Others", after = 1))
     group_unique <- unique(pull(physeq_df, {{level_glom}}))
     group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
-  } else {
+  } else if (paste("< ", lower_limit, "%", sep = "") %in% group_unique){
     group_color <- c("#878787", rev(fetch_color("main3", group_color_num-1)))
+  } else {
+    group_color <- rev(fetch_color("main3", group_color_num-1))
   }
 
   # Subset data if specified by user.
-  if (!is.null(level_select) && !is.null(level_select)){
-    physeq_df <- physeq_df |>
-      filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
-  }
+  #if (!is.null(level_select) && !is.null(level_select)){
+    #physeq_df <- physeq_df |>
+      #filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
+  #}
 
   # Update colors.
-  group_reduced_unique <- unique(pull(physeq_df, {{level_glom}}))
-  index_color <- which(levels(group_unique) %in% group_reduced_unique)
-  group_color <- group_color[index_color]
+  #group_reduced_unique <- unique(pull(physeq_df, {{level_glom}}))
+  #index_color <- which(levels(group_unique) %in% group_reduced_unique)
+  #group_color <- group_color[index_color]
 
   # Create plot.
   plot <- ggplot(data = physeq_df,

@@ -17,5 +17,5 @@ vis_richness(physeq, group_x, group_color)
 richness plots created with ggplot.
 }
 \description{
-Visualize richness plot
+Plot alpha diversity with Shannon and Inverse Simpson measures.
 }
