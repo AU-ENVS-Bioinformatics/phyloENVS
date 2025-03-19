@@ -2,7 +2,7 @@
 % Please edit documentation in R/vis_nmds.R
 \name{vis_nmds}
 \alias{vis_nmds}
-\title{Plot the data i the new ordination after data reduction using NMDS}
+\title{Visualize NMDS}
 \usage{
 vis_nmds(
   physeq,
@@ -33,5 +33,5 @@ vis_nmds(
 NMDS plot created with ggplot.
 }
 \description{
-Plot the data i the new ordination after data reduction using NMDS
+Plot the data i the new ordination after data reduction using NMDS.
 }

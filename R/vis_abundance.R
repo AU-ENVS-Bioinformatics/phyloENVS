@@ -63,7 +63,7 @@ vis_abundance <- function(physeq,
   # Subset data if specified by user.
   if (!is.null(level_select) && !is.null(level_select)){
     physeq_df <- physeq_df |>
-      filter(.data[[as_name(sym(level_select))]] %in% group_select)
+      filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
   }
 
   # Update colors.

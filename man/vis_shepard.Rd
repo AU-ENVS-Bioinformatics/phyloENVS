@@ -2,7 +2,7 @@
 % Please edit documentation in R/vis_shepard.R
 \name{vis_shepard}
 \alias{vis_shepard}
-\title{Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS}
+\title{Visualize Shepard diagram}
 \usage{
 vis_shepard(physeq, convert_to_rel = TRUE)
 }
@@ -15,5 +15,5 @@ vis_shepard(physeq, convert_to_rel = TRUE)
 shepard diagram created with ggplot.
 }
 \description{
-Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS
+Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS.
 }

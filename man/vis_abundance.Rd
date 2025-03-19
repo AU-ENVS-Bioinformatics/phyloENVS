@@ -2,7 +2,7 @@
 % Please edit documentation in R/vis_abundance.R
 \name{vis_abundance}
 \alias{vis_abundance}
-\title{Plot the relative abundances for merged species of the same taxonomic rank.}
+\title{Visualize abundance}
 \usage{
 vis_abundance(
   physeq,

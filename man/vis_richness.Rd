@@ -2,7 +2,7 @@
 % Please edit documentation in R/vis_richness.R
 \name{vis_richness}
 \alias{vis_richness}
-\title{Plot alpha diversity with Shannon and Inverse Simpson measures}
+\title{Visualize richness plot}
 \usage{
 vis_richness(physeq, group_x, group_color)
 }
@@ -17,5 +17,5 @@ vis_richness(physeq, group_x, group_color)
 richness plots created with ggplot.
 }
 \description{
-Plot alpha diversity with Shannon and Inverse Simpson measures
+Visualize richness plot
 }

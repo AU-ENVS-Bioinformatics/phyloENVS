@@ -19,10 +19,14 @@ vis_shepard <- function(physeq,
     physeq_rel <- physeq
   }
 
+  # Redirect output to null to suppress it (Mac version)
+  sink("/dev/null")  # Redirects output to null (use "/dev/null" on macOS)
+  on.exit(sink())  # Ensure that it gets reset after function execution
+
   # Ordinate.
-  physeq_nmds <- phyloseq::ordinate(physeq_rel,
-                                    method = "NMDS",
-                                    distance = "bray")
+  physeq_nmds <- invisible(phyloseq::ordinate(physeq_rel,
+                                              method = "NMDS",
+                                              distance = "bray"))
   # Get the values.
   shepard_df <- data.frame(dissimilarity = physeq_nmds$diss,
                            distance = physeq_nmds$dist,

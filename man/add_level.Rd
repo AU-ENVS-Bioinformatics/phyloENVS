@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_level.R
 \name{add_level}
 \alias{add_level}
-\title{Add user-specified taxonomic level}
+\title{Add taxonomic level}
 \usage{
 add_level(physeq, level, level_name, look_up_table)
 }
@@ -19,5 +19,5 @@ add_level(physeq, level, level_name, look_up_table)
 an updated phyloseq object with the user-specified taxonomic level.
 }
 \description{
-Add user-specified taxonomic level
+Add user-specified taxonomic level, e.g., domain.
 }

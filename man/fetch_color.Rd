@@ -2,7 +2,7 @@
 % Please edit documentation in R/fetch_color.R
 \name{fetch_color}
 \alias{fetch_color}
-\title{Fetches colors from color dictionary}
+\title{Fetch color}
 \usage{
 fetch_color(color_source, num)
 }
@@ -15,5 +15,5 @@ fetch_color(color_source, num)
 a vector with the HEX values for the color code.
 }
 \description{
-Fetches colors from color dictionary
+Fetches colors from color dictionary.
 }

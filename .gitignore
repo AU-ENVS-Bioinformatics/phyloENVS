@@ -4,3 +4,6 @@
 .Ruserdata
 example/
 R/dict.R
+inst/doc
+/doc/
+/Meta/

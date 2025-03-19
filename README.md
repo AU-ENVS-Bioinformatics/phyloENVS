@@ -9,11 +9,12 @@
 The goal of phyloENVS is to provide tailored tools for visualizing and
 analyzing microbial community data, with a focus on rRNA and mRNA
 datasets from environmental samples such as soil, ice, and other
-ecosystems. Built to enhance the functionality of the ‘phyloseq’
-package, it offers customizable and publication-quality visualizations,
-including abundance plots, diversity metrics, and community composition
-analyses. The package is designed to streamline workflows for
-researchers within Environmental Microbiology at Aarhus University.
+ecosystems. Built to enhance the functionality of the phyloseq package,
+it offers customizable and publication-quality visualizations, including
+ordination, abundance and richness plots for community composition
+analysis. The package is designed to streamline workflows for
+researchers within the Environmental Microbiology section at Department
+of Environmental Science at Aarhus University.
 
 ## Installation
 
@@ -27,10 +28,10 @@ devtools::install_github("johanneBiO/phyloENVS")
 
 ## Example
 
-This is a basic example which shows you can visualize the relative
-abundance for a microbial community of ice sampled at the Qaanaaq
-glacier and the Greenland ice sheet. We subset the data and only look at
-transect samples from the Qaanaaq glacier.
+This is a basic example which shows how you can visualize the relative
+abundance for a microbial community. The data used comes from ice
+sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset
+the data and only look at transect samples from the Qaanaaq glacier.
 
 ``` r
 library(phyloENVS)
@@ -59,10 +60,10 @@ Relative abundance plot.
 
 </div>
 
-NMDS (Non-metric Multidimensional Scaling) plot is a popular technique
-used for visualizing and interpreting the relationships between
-sampleshigh-dimensional datasets. We can look into how different samples
-cluster based on the available metadata, e.g., as location.
+NMDS (Non-metric Multidimensional Scaling) is a popular technique used
+for visualizing and interpreting the relationships between samples in
+high-dimensional datasets. We can look into how different samples
+cluster based on the available metadata, e.g., wetness.
 
 ``` r
 vis_nmds(qaanaaq_rRNA_sub,
@@ -72,8 +73,6 @@ vis_nmds(qaanaaq_rRNA_sub,
          encircle = TRUE,
          fill_circle = TRUE,
          scale_circle = 0.09)
-#> Scale for colour is already present.
-#> Adding another scale for colour, which will replace the existing scale.
 ```
 
 <div class="figure">
