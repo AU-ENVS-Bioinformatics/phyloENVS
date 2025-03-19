@@ -3,7 +3,7 @@
 
 <div align="right">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png" width="200"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png" width="2000"/>
 
 </div>
 
