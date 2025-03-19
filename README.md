@@ -6,7 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-![](images/2352-a-t-000000-en.png)
+<figure>
+<img
+src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png"
+alt="logo" />
+<figcaption aria-hidden="true">logo</figcaption>
+</figure>
 
 The goal of phyloENVS is to provide tailored tools for visualizing and
 analyzing microbial community data, with a focus on rRNA and mRNA
