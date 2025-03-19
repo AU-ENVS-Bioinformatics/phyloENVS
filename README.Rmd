@@ -21,13 +21,13 @@ library(rlang)
 library(forcats)
 ```
 
+![logo](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
+
 # phyloENVS
 
 <!-- badges: start -->
 
 <!-- badges: end -->
-
-![logo](https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png)
 
 The goal of phyloENVS is to provide tailored tools for visualizing and analyzing microbial community data, with a focus on rRNA and mRNA datasets from environmental samples such as soil, ice, and other ecosystems. Built to enhance the functionality of the phyloseq package, it offers customizable and publication-quality visualizations, including ordination, abundance and richness plots for community composition analysis. The package is designed to streamline workflows for researchers within the Environmental Microbiology section at Department of Environmental Science at Aarhus University.
 
