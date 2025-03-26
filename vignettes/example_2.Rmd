@@ -1,8 +1,8 @@
 ---
-title: "phyloENVS"
+title: "Using phyloENVS for GENEPEASE dataset"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{phyloENVS}
+  %\VignetteIndexEntry{Example 2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,8 +12,136 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(phyloseq)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggalt)
+library(rlang)
+library(forcats)
 ```
+
+This vignette demonstrates thehow phyloENVS can be used for a larger dataset with replicates. 
+
+## Data
+
+We will be using meta-transcriptomic data from the GENEPEASE II project. 
 
 ```{r setup}
 library(phyloENVS)
+
+data("genepease_rRNA")
 ```
+
+This metadata describes the concentration and time group for each sample. For each combination of concentration and time, we got 3 replicates specified by a group ID.
+
+```{r}
+sample_data(genepease_rRNA)
+```
+
+## Merge Samples
+
+We want to merge the replicates.
+
+```{r}
+genepease_rRNA_merged <- merge_data(genepease_rRNA, "Group_ID")
+```
+
+The resulting phyloseq object will merge the sample data as well and use the specified column as the new sample names.
+
+```{r}
+sample_data(genepease_rRNA_merged)
+```
+
+## Ordination
+
+We take a look at the ordination for the merged samples.
+
+```{r, message=FALSE, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+vis_nmds(genepease_rRNA_merged,
+         convert_to_rel = TRUE,
+         group_color = "Concentration",
+         group_shape = "Concentration",
+         encircle = FALSE,
+         fill_circle = FALSE,
+         scale_circle = 0.1,
+         scale_plot = 0.5)
+```
+
+Afterwards, we look at the overall relative abundance.
+
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+vis_abundance(physeq = genepease_rRNA_merged,
+              group_x = "Timepoint",
+              group_split = "Concentration",
+              level_glom = "Phylum",
+              level_select = NULL,
+              group_select = NULL,
+              lower_limit = 2,
+              remove_grid = FALSE)
+```
+
+From the above, we can see that proteobacteria take over the community for large concentrations. Let's see what happens for the eukaryotes. The represented kingsdom can be seen below.
+
+```{r}
+tax_table(genepease_rRNA_merged) |>
+  as.data.frame() |>
+  as_tibble() |>
+  select(Kingdom) |>
+  pull() |>
+  table()
+```
+
+We create the table to define a new customize level.
+
+```{r}
+kingdom_to_domain <- c(
+  "Amorphea" = "Eukaryotes",
+  "Archaea" = "Prokaryotes",
+  "Archaeplastida" = "Eukaryotes",
+  "Bacteria" = "Prokaryotes",
+  "Excavata" = "Eukaryotes",
+  "Hacrobia" = "Eukaryotes",
+  "SAR" = "Eukaryotes"
+)
+```
+
+We add the new level.
+
+```{r}
+genepease_rRNA_merged <- add_level(physeq = genepease_rRNA_merged, 
+                                   level = "Kingdom",
+                                   level_name = "Domain",
+                                   look_up_table = kingdom_to_domain)
+```
+
+Let's look at the relative abundance for prokaryotes on phylum level.
+
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+vis_abundance(physeq = genepease_rRNA_merged,
+              group_x = "Timepoint",
+              group_split = "Concentration",
+              level_glom = "Phylum",
+              level_select = "Domain",
+              group_select = "Eukaryotes",
+              lower_limit = 0.2,
+              remove_grid = FALSE)
+```
+
+## Richness
+
+Finally, we can visualize the alpha diversity focused on differences between concentrations, but we color by timepoint to look for patterns in the richness with respect to this variable. 
+
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center", warning=FALSE}
+vis_richness(physeq = genepease_rRNA_merged, 
+             group_x = "Concentration", 
+             group_color = "Timepoint",
+             measures = "InvSimpson")
+```
+
+
+
+
+
+

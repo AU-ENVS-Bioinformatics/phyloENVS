@@ -34,7 +34,7 @@ merge_data <- function(physeq, group){
     mutate(!!group := as.character(.data[[group]])) |>
     select(!!group) |>
     left_join(metadata_dense, by = group) |>
-    column_to_rownames(var = group)
+    tibble::column_to_rownames(var = group)
 
   sample_data(physeq) <- sample_data(new_sample_data)
 

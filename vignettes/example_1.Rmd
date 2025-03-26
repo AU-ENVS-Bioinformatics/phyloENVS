@@ -1,8 +1,8 @@
 ---
-title: "Example 1: Using phyloENVS for Qaanaaq dataset"
+title: "Using phyloENVS for Qaanaaq dataset"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using phyloENVS for Qaanaaq dataset}
+  %\VignetteIndexEntry{Example 1}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -54,11 +54,12 @@ Firstly, we will perform Non-metric Multidimensional Scaling (NMDS) - a statisti
 ```{r, message=FALSE, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_nmds(qaanaaq_rRNA_sub,
          convert_to_rel = TRUE,
-         group_color = Wetness,
-         group_shape = Transect,
+         group_color = "Wetness",
+         group_shape = "Wetness",
          encircle = TRUE,
          fill_circle = TRUE,
-         scale_circle = 0.09)
+         scale_circle = 0.09,
+         scale_plot = 0.3)
 ```
 
 Be aware, if the read counts are not normalized, we always recommend to normalize to the relative abundance prior to ordiantion (convert_to_rel = TRUE). However, the user might prefer another normalization method or use relative abundances as input, e.g., when filtering out low abundance taxa based on relative abundances.
@@ -76,9 +77,9 @@ Relative abundance refers to the proportion of each taxon relative to the total 
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = SampleName,
-              group_split = Wetness,
-              level_glom = Phylum,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Phylum",
               level_select = NULL,
               group_select = NULL,
               lower_limit = 2,
@@ -89,9 +90,9 @@ For `vis_abundance()`, it is possible to plot the relative abundance for a speci
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = SampleName,
-              group_split = Wetness,
-              level_glom = Phylum,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Phylum",
               level_select = "Phylum",
               group_select = "Streptophyta",
               lower_limit = 0.5,
@@ -102,12 +103,12 @@ When looking into the relative abundance for a specific phyla, it might be usefu
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = SampleName,
-              group_split = Wetness,
-              level_glom = Order,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Order",
               level_select = "Phylum",
               group_select = "Chytridiomycota",
-              lower_limit = 0.5,
+              lower_limit = 0,
               remove_grid = FALSE)
 ```
 
@@ -126,9 +127,9 @@ We create the table.
 
 ```{r}
 kingdom_to_domain <- c(
-  "Bacteria" = "Prokaryotes",
   "Amorphea" = "Eukaryotes",
   "Archaeplastida" = "Eukaryotes",
+  "Bacteria" = "Prokaryotes",
   "Hacrobia" = "Eukaryotes",
   "SAR" = "Eukaryotes"
 )
@@ -138,8 +139,8 @@ We add the domain level.
 
 ```{r}
 qaanaaq_rRNA_sub <- add_level(physeq =qaanaaq_rRNA_sub, 
-                              level = Kingdom, 
-                              level_name = Domain, 
+                              level = "Kingdom", 
+                              level_name = "Domain", 
                               look_up_table = kingdom_to_domain)
 ```
 
@@ -147,21 +148,21 @@ Let's look at the relative abundance for prokaryotes on phylum level.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = SampleName,
-              group_split = Wetness,
-              level_glom = Phylum,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Phylum",
               level_select = "Domain",
               group_select = "Prokaryotes",
-              lower_limit = 2,
+              lower_limit = 0.5,
               remove_grid = FALSE)
 ```
 
-### Richness
+## Richness
 
 By plotting alpha diversity through richness, you can observe how many distinct taxa are present in each sample, which is crucial for understanding community structure and the complexity of ecosystems.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_richness(physeq = qaanaaq_rRNA_sub, 
-             group_x = Wetness, 
-             group_color = Wetness)
+             group_x = "Wetness", 
+             group_color = "Wetness")
 ```
