@@ -8,6 +8,7 @@
 #' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
 #' @param fill_circle fill the encircled area. Default is FALSE.
 #' @param scale_circle value to scale the encircle area. Default is 0.1.
+#' @param scale_plot value to scale the plot area. Default is 0.1.
 #'
 #' @return NMDS plot created with ggplot.
 #' @export
@@ -19,7 +20,12 @@ vis_nmds <- function(physeq,
                      group_shape,
                      encircle = FALSE,
                      fill_circle = FALSE,
-                     scale_circle = 0.1){
+                     scale_circle = 0.1,
+                     scale_plot = 0.1){
+
+  # Convert group_color and group_shape (characters) to symbols.
+  group_color_sym <- sym(group_color)
+  group_shape_sym <- sym(group_shape)
 
   # Normalize.
   if (convert_to_rel == TRUE){
@@ -44,25 +50,27 @@ vis_nmds <- function(physeq,
                         "NMDS2" = physeq_nmds$points[, 2])
 
   # Get the color and shape number.
-  group_color_num <- pull(nmds_df, {{group_color}})
-  group_color_num <- length(unique(group_color_num))
-  group_shape_num <- pull(nmds_df, {{group_shape}})
-  group_shape_num <- length(unique(group_shape_num))
+  group_color_num <- length(unique(pull(nmds_df, !!group_color_sym)))
+  group_shape_num <- length(unique(pull(nmds_df, !!group_shape_sym)))
 
-  # Create plot.
   plot <- ggplot(data = nmds_df,
                  mapping = aes(x = NMDS1,
                                y = NMDS2,
-                               color = {{group_color}},
-                               shape = {{group_shape}}))
+                               color = !!group_color_sym,
+                               shape = !!group_shape_sym))
 
   if (encircle == TRUE){
-    x_range <- range(nmds_df$NMDS1) + c(-scale_circle, scale_circle)
-    y_range <- range(nmds_df$NMDS2) + c(-scale_circle, scale_circle)
+    x_range <- c(min(nmds_df$NMDS1)*(1+scale_plot), max(nmds_df$NMDS1)*(1+scale_plot))
+    y_range <- c(min(nmds_df$NMDS2)*(1+scale_plot), max(nmds_df$NMDS2)*(1+scale_plot))
+    plot <- plot +
+      coord_cartesian(
+        xlim = x_range,
+        ylim = y_range,
+        expand = TRUE)
     if (fill_circle == TRUE){
       plot <- plot +
-        geom_encircle(aes(group = {{group_color}},
-                          fill = {{group_color}}),
+        geom_encircle(aes(group = !!group_color_sym,
+                          fill = !!group_color_sym),
                       size = 2,
                       alpha = 0.2,
                       show.legend = FALSE,
@@ -70,7 +78,7 @@ vis_nmds <- function(physeq,
         expand_limits(x = x_range, y = y_range)
     } else {
       plot <- plot +
-        geom_encircle(aes(group = {{group_color}}),
+        geom_encircle(aes(group = !!group_color_sym),
                       size = 2,
                       alpha = 0.5,
                       show.legend = FALSE,
@@ -79,7 +87,7 @@ vis_nmds <- function(physeq,
     }
   }
 
-  plot <- plot + geom_point(mapping = aes(fill = {{group_color}}),
+  plot <- plot + geom_point(mapping = aes(fill = !!group_color_sym),
                             size = 4) +
     theme_classic() +
     xlab("NMDS1") +
@@ -90,16 +98,10 @@ vis_nmds <- function(physeq,
                                       vjust = 3),
           panel.background = element_rect(fill = "#F7F7F7", color = NA),
           legend.title = element_text(face = "bold")) +
-    scale_fill_manual(values = fetch_color("main1", group_color_num)) +
-    scale_color_manual(values = fetch_color("main1", group_color_num)) +
+    scale_fill_manual(values = fetch_color(group_color_num)) +
+    scale_color_manual(values = fetch_color(group_color_num)) +
     scale_shape_manual(values = fetch_shape(group_shape_num)) +
     guides(color = guide_legend(override.aes = list(shape = 15)))
-
-  if (group_shape_num <= 5){
-    plot <- plot +
-      scale_color_manual(values = fetch_color("main2", group_color_num)) +
-      guides(color = guide_legend(override.aes = list(shape = 22)))
-  }
 
   return(plot)
 }

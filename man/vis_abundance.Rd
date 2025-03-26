@@ -12,6 +12,7 @@ vis_abundance(
   level_select = NULL,
   group_select = NULL,
   lower_limit = 2,
+  color_source = "AU2",
   remove_grid = FALSE
 )
 }

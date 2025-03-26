@@ -11,7 +11,8 @@ vis_nmds(
   group_shape,
   encircle = FALSE,
   fill_circle = FALSE,
-  scale_circle = 0.1
+  scale_circle = 0.1,
+  scale_plot = 0.1
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ vis_nmds(
 \item{fill_circle}{fill the encircled area. Default is FALSE.}
 
 \item{scale_circle}{value to scale the encircle area. Default is 0.1.}
+
+\item{scale_plot}{value to scale the plot area. Default is 0.1.}
 }
 \value{
 NMDS plot created with ggplot.

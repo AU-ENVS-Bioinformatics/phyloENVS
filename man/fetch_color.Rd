@@ -4,12 +4,12 @@
 \alias{fetch_color}
 \title{Fetch color}
 \usage{
-fetch_color(color_source, num)
+fetch_color(num, color_source = NULL)
 }
 \arguments{
-\item{color_source}{color source/palette in the dictionary (main1, main2, ect.).}
-
 \item{num}{number of colors to output.}
+
+\item{color_source}{color source/palette in the dictionary (main1, main2, ect.).}
 }
 \value{
 a vector with the HEX values for the color code.

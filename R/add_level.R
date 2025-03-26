@@ -15,13 +15,16 @@ add_level <- function(physeq,
                       level_name,
                       look_up_table){
 
+  # Convert character to symbol.
+  level_sym <- sym(level)
+
   # Add the overall new level.
-  new_tax_table  <- as.data.frame(tax_table(physeq)) |>
+  new_tax_table <- as.data.frame(tax_table(physeq)) |>
     as_tibble() |>
-    mutate({{level_name}} := recode({{level}},
-                                    !!!look_up_table,
-                                    .default = "Unassigned")) |>
-    relocate({{level_name}}, .before = {{level}}) |>
+    mutate(!!level_name := recode(!!level_sym,
+                                  !!!look_up_table,
+                                  .default = "Unassigned")) |>
+    relocate(!!level_name, .before = !!level_sym) |>
     as.matrix() |>
     tax_table()
 

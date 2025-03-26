@@ -21,55 +21,55 @@ vis_abundance <- function(physeq,
                           level_select = NULL,
                           group_select = NULL,
                           lower_limit = 2,
+                          color_source = "AU2",
                           remove_grid = FALSE){
+
+  # Convert character to symbol.
+  group_x_sym <- sym(group_x)
+  group_split_sym <- sym(group_split)
+  level_glom_sym <- sym(level_glom)
+
   # Agglomerate counts.
   physeq_df <- physeq |>
-    tax_glom(taxrank = as_name(enquo(level_glom)),
+    tax_glom(taxrank = level_glom,
              NArm = FALSE) |>
     transform_sample_counts(function(x) x/sum(x)*100) |>
     psmelt() |>
-    mutate({{level_glom}} := replace_na(.data[[as_name(enquo(level_glom))]], "Unassigned"),  # Replace NA with "Unassigned"
-           {{level_glom}} := ifelse(Abundance < lower_limit,
-                                    paste("< ", lower_limit, "%", sep = ""),
-                                    .data[[as_name(enquo(level_glom))]]),
-           {{level_glom}} := reorder(.data[[as_name(enquo(level_glom))]], Abundance),
-           {{level_glom}} := factor({{level_glom}}),
-           {{group_split}} := factor({{group_split}}))
-
-  # Get number of unique colors to use.
-  #group_unique <- unique(pull(physeq_df, {{level_glom}}))
-  #group_color_num <- length(group_unique)
+    mutate(!!level_glom := replace_na(!!level_glom_sym, "Unassigned"),  # Replace NA with "Unassigned"
+           !!level_glom := ifelse(Abundance < lower_limit,
+                                  paste("< ", lower_limit, "%", sep = ""),
+                                  !!level_glom_sym),
+           !!level_glom := reorder(!!level_glom_sym, Abundance),
+           !!level_glom := factor(!!level_glom_sym),
+           !!group_split := factor(!!group_split_sym))
 
   # Subset data if specified by user.
   if (!is.null(level_select) && !is.null(level_select)){
     physeq_df <- physeq_df |>
-      filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
+      filter(!!sym(level_select) %in% group_select)
   }
 
   # Get number of unique colors to use.
-  group_unique <- unique(pull(physeq_df, {{level_glom}}))
+  group_unique <- unique(pull(physeq_df, !!level_glom_sym))
   group_color_num <- length(group_unique)
 
   # Specify the color of the low detection and unassigned groups.
   if ("Unassigned" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Unassigned", after = 1))
-    group_unique <- unique(pull(physeq_df, {{level_glom}}))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Unassigned", after = 1))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if ("Unknown function" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Unknown function", after = 1))
-    group_unique <- unique(pull(physeq_df, {{level_glom}}))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Unknown function", after = 1))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if ("Others" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate({{level_glom}} := fct_relevel({{level_glom}}, "Others", after = 1))
-    group_unique <- unique(pull(physeq_df, {{level_glom}}))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color("main3", group_color_num-2)))
+      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Others", after = 1))
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if (paste("< ", lower_limit, "%", sep = "") %in% group_unique){
-    group_color <- c("#878787", rev(fetch_color("main3", group_color_num-1)))
+    group_color <- c("#878787", rev(fetch_color(group_color_num-1, color_source)))
   } else {
-    group_color <- rev(fetch_color("main3", group_color_num-1))
+    group_color <- rev(fetch_color(group_color_num, color_source))
   }
 
   # Subset data if specified by user.
@@ -85,9 +85,9 @@ vis_abundance <- function(physeq,
 
   # Create plot.
   plot <- ggplot(data = physeq_df,
-                 mapping = aes(x = {{group_x}},
+                 mapping = aes(x = !!group_x_sym,
                                y = Abundance,
-                               fill = {{level_glom}})) +
+                               fill = !!level_glom_sym)) +
     geom_bar(stat = "identity") +
     labs(x = "",
          y = "Relative abundance [%]") +
@@ -113,7 +113,7 @@ vis_abundance <- function(physeq,
 
   # Add the grid to distinguish between groups.
   if (remove_grid == FALSE){
-    plot <- plot + facet_grid(cols = vars({{group_split}}), scales = "free_x", space = "free_x")
+    plot <- plot + facet_grid(cols = vars(!!group_split_sym), scales = "free_x", space = "free_x")
   }
 
   return(plot)

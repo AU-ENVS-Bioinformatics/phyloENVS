@@ -4,7 +4,12 @@
 \alias{vis_richness}
 \title{Visualize richness plot}
 \usage{
-vis_richness(physeq, group_x, group_color)
+vis_richness(
+  physeq,
+  group_x,
+  group_color,
+  measures = c("Simpson", "InvSimpson")
+)
 }
 \arguments{
 \item{physeq}{a phyloseq object}
@@ -12,6 +17,8 @@ vis_richness(physeq, group_x, group_color)
 \item{group_x}{the x axis sample variable to plot.}
 
 \item{group_color}{the parameter in metadata to color by.}
+
+\item{measures}{character vector of measure names. Default is c("Simpson", "InvSimpson"). Supported: c("Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").}
 }
 \value{
 richness plots created with ggplot.
