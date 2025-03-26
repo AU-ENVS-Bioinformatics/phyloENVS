@@ -11,10 +11,13 @@
 #' @examples
 merge_data <- function(physeq, group){
 
+  # Convert character to symbol.
+  group_sym <- sym(group)
+
   # Make sure the group is character in sample data to make merge_samples work correct.
   metadata <- sample_data(physeq) |>
     data.frame() |>
-    mutate(!!group := as.character(.data[[group]]))
+    mutate(!!group := as.character(!!group_sym))
 
   sample_data(physeq) <- sample_data(metadata)
 
@@ -23,7 +26,7 @@ merge_data <- function(physeq, group){
 
   # Make a customized merged metadata table.
   metadata_dense <- metadata |>
-    group_by(.data[[group]]) |>
+    group_by(!!group_sym) |>
     summarise(across(everything(),
                      ~if(is.numeric(.)) mean(., na.rm = TRUE) else unique(na.omit(.))[1])) |>
     ungroup()
@@ -31,10 +34,11 @@ merge_data <- function(physeq, group){
   # Update the metadata for merged samples.
   new_sample_data <- sample_data(physeq) |>
     data.frame() |>
-    mutate(!!group := as.character(.data[[group]])) |>
+    mutate(!!group := as.character(!!group_sym)) |>
     select(!!group) |>
     left_join(metadata_dense, by = group) |>
-    tibble::column_to_rownames(var = group)
+    mutate(row_id = !!group_sym) |>
+    tibble::column_to_rownames(var = "row_id")
 
   sample_data(physeq) <- sample_data(new_sample_data)
 

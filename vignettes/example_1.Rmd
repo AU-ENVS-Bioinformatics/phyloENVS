@@ -28,11 +28,11 @@ As phyloENVS builds upon the phyloseq package for microbial community analysis, 
 
 ## Sampling Design and Environmental Conditions
 
-The transects were established on the Qaanaaq Glacier, with small meltwater rivers on either side. Due to variations in water influence across the glacier surface, the sampling locations along each transect were categorized into three zones:
+The transects were established on the Qaanaaq Glacier, with small melt water rivers on either side. Due to variations in water influence across the glacier surface, the sampling locations along each transect were categorized into three zones:
 
--   Wet Zone – Closest to the meltwater rivers, experiencing the highest water flow and likely enriched with transported nutrients and microorganisms.
+-   Wet Zone – Closest to the melt water rivers, experiencing the highest water flow.
 -   Semi-Wet Zone – Intermediate locations, receiving occasional water input but not as saturated as the wet zone.
--   Dry Zone – Farthest from the water sources, with minimal direct meltwater influence, representing more stable glacial ice conditions.
+-   Dry Zone – Farthest from the water source with minimal direct melt water influence, representing more stable glacial ice conditions.
 
 By comparing microbial communities across these zones, we can explore how water availability shapes microbial activity and composition on glacier surfaces.
 
@@ -62,7 +62,7 @@ vis_nmds(qaanaaq_rRNA_sub,
          scale_plot = 0.3)
 ```
 
-Be aware, if the read counts are not normalized, we always recommend to normalize to the relative abundance prior to ordiantion (convert_to_rel = TRUE). However, the user might prefer another normalization method or use relative abundances as input, e.g., when filtering out low abundance taxa based on relative abundances.
+Be aware, if the read counts are not normalized, we always recommend to normalize to the relative abundance prior to ordination (convert_to_rel = TRUE). However, the user might prefer another normalization method or use relative abundances as input, e.g., when filtering out low abundance taxa based on relative abundances.
 
 After generating the NMDS, we plot the Shepard plot to check the goodnees of fit for the ordination method. The Shepard plot compares the original dissimilarities between samples with the dissimilarities between samples in the reduced-dimensional space obtained from NMDS.
 
@@ -80,13 +80,10 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Phylum",
-              level_select = NULL,
-              group_select = NULL,
-              lower_limit = 2,
-              remove_grid = FALSE)
+              lower_limit = 2)
 ```
 
-For `vis_abundance()`, it is possible to plot the relative abundance for a specific group within a specific level, e.g., only looking at Streptophyta only.  
+For `vis_abundance()`, it is possible to plot the relative abundance for a specific group within a specific level, e.g., only looking at Streptophyta.  
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
@@ -95,8 +92,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               level_glom = "Phylum",
               level_select = "Phylum",
               group_select = "Streptophyta",
-              lower_limit = 0.5,
-              remove_grid = FALSE)
+              lower_limit = 0.5)
 ```
 
 When looking into the relative abundance for a specific phyla, it might be useful to change the level to agglomerate counts, e.g., on order level.
@@ -108,8 +104,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               level_glom = "Order",
               level_select = "Phylum",
               group_select = "Chytridiomycota",
-              lower_limit = 0,
-              remove_grid = FALSE)
+              lower_limit = 0)
 ```
 
 We can also group taxa into specified groups with `add_level()`. For example, we might want to add a new taxonomical level for the different kingdoms in order to inspect the relative abundances of eukaryotes and prokaryotes seperately. First, we should define a table based on the kingdoms represented in the data. 
@@ -144,22 +139,21 @@ qaanaaq_rRNA_sub <- add_level(physeq =qaanaaq_rRNA_sub,
                               look_up_table = kingdom_to_domain)
 ```
 
-Let's look at the relative abundance for prokaryotes on phylum level.
+Let's look at the relative abundance for prokaryotes and eukaryotes on phylum level.
 
-```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+```{r, fig.width=7, fig.height=7, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Phylum",
               level_select = "Domain",
-              group_select = "Prokaryotes",
-              lower_limit = 0.5,
-              remove_grid = FALSE)
+              group_select = c("Prokaryotes", "Eukaryotes"),
+              lower_limit = 2)
 ```
 
 ## Richness
 
-By plotting alpha diversity through richness, you can observe how many distinct taxa are present in each sample, which is crucial for understanding community structure and the complexity of ecosystems.
+By plotting alpha diversity through richness, we can observe how many distinct taxa are present in each sample, which is crucial for understanding community structure and the complexity of ecosystems.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_richness(physeq = qaanaaq_rRNA_sub, 

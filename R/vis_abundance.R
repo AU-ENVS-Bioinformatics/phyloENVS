@@ -8,6 +8,7 @@
 #' @param level_select specified level to target for specified group (e.g., domain level - useful with add_level()). Default is NULL.
 #' @param group_select specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.
 #' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together.
+#' @param color_source name of color source to use. Default is "AU2". Supported: "AU1", "AU2".
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
 #'
 #' @return a abundance plot created with ggplot.
@@ -35,7 +36,8 @@ vis_abundance <- function(physeq,
              NArm = FALSE) |>
     transform_sample_counts(function(x) x/sum(x)*100) |>
     psmelt() |>
-    mutate(!!level_glom := replace_na(!!level_glom_sym, "Unassigned"),  # Replace NA with "Unassigned"
+    mutate(!!level_glom := na_if(!!level_glom_sym, ""),
+           !!level_glom := replace_na(!!level_glom_sym, "Unassigned"),  # Replace NA with "Unassigned"
            !!level_glom := ifelse(Abundance < lower_limit,
                                   paste("< ", lower_limit, "%", sep = ""),
                                   !!level_glom_sym),
@@ -45,8 +47,10 @@ vis_abundance <- function(physeq,
 
   # Subset data if specified by user.
   if (!is.null(level_select) && !is.null(level_select)){
+    level_select_sym <- sym(level_select)
     physeq_df <- physeq_df |>
-      filter(!!sym(level_select) %in% group_select)
+      filter(!!level_select_sym %in% group_select)
+      #mutate(!!level_select := factor(!!level_select_sym))
   }
 
   # Get number of unique colors to use.
@@ -71,17 +75,6 @@ vis_abundance <- function(physeq,
   } else {
     group_color <- rev(fetch_color(group_color_num, color_source))
   }
-
-  # Subset data if specified by user.
-  #if (!is.null(level_select) && !is.null(level_select)){
-    #physeq_df <- physeq_df |>
-      #filter(.data[[as_name(enquo(level_select))]] %in% as_name(enquo(group_select)))
-  #}
-
-  # Update colors.
-  #group_reduced_unique <- unique(pull(physeq_df, {{level_glom}}))
-  #index_color <- which(levels(group_unique) %in% group_reduced_unique)
-  #group_color <- group_color[index_color]
 
   # Create plot.
   plot <- ggplot(data = physeq_df,
@@ -108,12 +101,33 @@ vis_abundance <- function(physeq,
                                           size=1.5,
                                           linetype="solid"),
           strip.text.x = element_text(color = "white",
+                                      face = "bold"),
+          strip.text.y = element_text(color = "white",
                                       face = "bold")) +
     scale_fill_manual(values = group_color)
 
   # Add the grid to distinguish between groups.
-  if (remove_grid == FALSE){
-    plot <- plot + facet_grid(cols = vars(!!group_split_sym), scales = "free_x", space = "free_x")
+  if (!is.null(level_select) && !is.null(level_select)){
+    if(level_glom == level_select){
+      plot <- plot + theme(legend.position = "none")
+    }
+    if (remove_grid == FALSE){
+      plot <- plot + facet_grid(rows = vars(!!level_select_sym),
+                                cols = vars(!!group_split_sym),
+                                scales = "free_x",
+                                space = "free_x",
+                                switch = "y")
+    } else {
+      plot <- plot + facet_wrap(vars(!!level_select_sym), scales = "free")
+      }
+
+  } else {
+    if (remove_grid == FALSE){
+      plot <- plot + facet_grid(cols = vars(!!group_split_sym),
+                                scales = "free_x",
+                                space = "free_x",
+                                switch = "y")}
+
   }
 
   return(plot)

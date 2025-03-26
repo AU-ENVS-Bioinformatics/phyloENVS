@@ -15,7 +15,12 @@ fetch_color <- function(num, color_source = NULL){
   }
 
   if (!is.null(color_source)){
-    color_vec <- color_dict[[color_source]][1:num]
+    if (color_source %in% c("AU1", "AU2")){
+      color_vec <- color_dict[[color_source]][1:num]
+    } else {
+      color_index <- round(seq(from = 1, to = 18, length.out = num))
+      color_vec <- color_dict[[color_source]][color_index]
+    }
   }
   else if (num <= 9){
     color_vec <- color_dict[["AU1"]][1:num]

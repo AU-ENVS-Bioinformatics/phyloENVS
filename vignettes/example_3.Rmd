@@ -1,0 +1,99 @@
+---
+title: "Using phyloENVS for mRNA dataset"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example 3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(phyloseq)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggalt)
+library(rlang)
+library(forcats)
+library(patchwork)
+```
+
+This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "example_1". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W). 
+
+## Annotation of mRNA reads
+
+We will consider read counts for mRNA transcripts annotated by mapping mRNA contigs to the following three databases: 
+- CAZY - Database of carbohydrate-active enzymes, which are involved in the breakdown or modification of complex carbohydrates.
+- NCYc - This database holds genes involved in nitrogen cycling (like those responsible for nitrogen fixation, nitrification, or denitrification).
+PCyc - Database for phosphorus cycling genes.
+
+```{r setup}
+library(phyloENVS)
+
+data("qaanaaq_mRNA")
+```
+
+For now, we consider differences between samples with respect to the CAZy and PCyc databases due to the limited size of NCyc. We create seperate phyloseq objects for these two selected databases.
+
+```{r}
+qaanaaq_mRNA_cazy <- subset_samples(qaanaaq_mRNA,
+                                   Transect != "Non-transect") |>
+  subset_taxa(Database == "CAZy")
+
+qaanaaq_mRNA_pcyc <- subset_samples(qaanaaq_mRNA,
+                                   Transect != "Non-transect") |>
+  subset_taxa(Database == "PCyc")
+```
+
+## Ordination
+
+We perform Non-metric Multidimensional Scaling (NMDS).
+
+```{r, message=FALSE, fig.width=12, fig.height=5, out.width="80%", fig.align="center"}
+vis_nmds(qaanaaq_mRNA_cazy,
+         convert_to_rel = TRUE,
+         group_color = "Wetness",
+         group_shape = "Direction",
+         scale_circle = 0.1,
+         scale_plot = 0.3) +
+  labs(title = "CAZy") +
+  vis_nmds(qaanaaq_mRNA_pcyc,
+         convert_to_rel = TRUE,
+         group_color = "Wetness",
+         group_shape = "Direction",
+         scale_circle = 0.1,
+         scale_plot = 0.3) + 
+  labs(title = "PCyc") + 
+  plot_layout(guides = "collect")
+```
+
+We look at the corresponding Shepard diagrams to assess the goodness of fit for the NMDS plots.
+
+```{r, message=FALSE, fig.width=12, fig.height=5, out.width="80%", fig.align="center"}
+vis_shepard(qaanaaq_mRNA_cazy, 
+            convert_to_rel = TRUE) +
+  labs(title = "CAZy") + 
+  vis_shepard(qaanaaq_mRNA_pcyc, 
+            convert_to_rel = TRUE) +
+  labs(title = "PCyc")
+```
+
+## Abundance
+
+In the ordination, the wet samples seemed to be different from the rest. Especially for the PCyc data, the direction might also explain the differences in mRNA expression. We look into the relative abundances for PCyc reads. 
+
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+vis_abundance(physeq = qaanaaq_mRNA_pcyc,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Level1",
+              lower_limit = 1)
+```
+
+
+
