@@ -48,9 +48,9 @@ qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
                                    Transect != "Non-transect") 
 
 vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = SampleName,
-              group_split = Wetness,
-              level_glom = Phylum,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Phylum",
               level_select = NULL,
               group_select = NULL,
               lower_limit = 2,
@@ -73,12 +73,12 @@ cluster based on the available metadata, e.g., wetness.
 
 ``` r
 vis_nmds(qaanaaq_rRNA_sub,
-         convert_to_rel = TRUE,
-         group_color = Wetness,
-         group_shape = Transect,
+         group_color = "Wetness",
+         group_shape = "Transect",
          encircle = TRUE,
          fill_circle = TRUE,
-         scale_circle = 0.09)
+         scale_circle = 0.09,
+         scale_plot = 0.3)
 ```
 
 <div class="figure">
@@ -87,5 +87,15 @@ vis_nmds(qaanaaq_rRNA_sub,
 <p class="caption">
 NMDS plot.
 </p>
+
+</div>
+
+## Details
+
+The available color scales can be seen below.
+
+<div align="right">
+
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
 
 </div>
