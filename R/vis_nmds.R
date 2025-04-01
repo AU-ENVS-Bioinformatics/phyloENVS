@@ -24,13 +24,13 @@ vis_nmds <- function(physeq,
                      scale_plot = 0.1){
 
   # Convert group_color and group_shape (characters) to symbols.
-  group_color_sym <- sym(group_color)
-  group_shape_sym <- sym(group_shape)
+  group_color_sym <- rlang::sym(group_color)
+  group_shape_sym <- rlang::sym(group_shape)
 
   # Normalize.
   if (convert_to_rel == TRUE){
     physeq_rel <- physeq |>
-      transform_sample_counts(function(x) x/sum(x)*100)
+      phyloseq::transform_sample_counts(function(x) x/sum(x)*100)
   } else {
     physeq_rel <- physeq
   }
@@ -45,63 +45,62 @@ vis_nmds <- function(physeq,
                                               distance = "bray"))
 
   # Get values.
-  nmds_df <- data.frame(sample_data(physeq_rel),
+  nmds_df <- data.frame(phyloseq::sample_data(physeq_rel),
                         "NMDS1" = physeq_nmds$points[, 1],
                         "NMDS2" = physeq_nmds$points[, 2])
 
   # Get the color and shape number.
-  group_color_num <- length(unique(pull(nmds_df, !!group_color_sym)))
-  group_shape_num <- length(unique(pull(nmds_df, !!group_shape_sym)))
+  group_color_num <- length(unique(dplyr::pull(nmds_df, !!group_color_sym)))
+  group_shape_num <- length(unique(dplyr::pull(nmds_df, !!group_shape_sym)))
 
-  plot <- ggplot(data = nmds_df,
-                 mapping = aes(x = NMDS1,
-                               y = NMDS2,
-                               color = !!group_color_sym,
-                               shape = !!group_shape_sym))
+  plot <- ggplot2::ggplot(data = nmds_df,
+                          mapping = ggplot2::aes(x = NMDS1,
+                                                 y = NMDS2,
+                                                 color = !!group_color_sym,
+                                                 shape = !!group_shape_sym))
 
   if (encircle == TRUE){
     x_range <- c(min(nmds_df$NMDS1)*(1+scale_plot), max(nmds_df$NMDS1)*(1+scale_plot))
     y_range <- c(min(nmds_df$NMDS2)*(1+scale_plot), max(nmds_df$NMDS2)*(1+scale_plot))
     plot <- plot +
-      coord_cartesian(
-        xlim = x_range,
-        ylim = y_range,
-        expand = TRUE)
+      ggplot2::coord_cartesian(xlim = x_range,
+                               ylim = y_range,
+                               expand = TRUE)
     if (fill_circle == TRUE){
       plot <- plot +
-        geom_encircle(aes(group = !!group_color_sym,
-                          fill = !!group_color_sym),
-                      size = 2,
-                      alpha = 0.2,
-                      show.legend = FALSE,
-                      expand = scale_circle) +
-        expand_limits(x = x_range, y = y_range)
+        ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_color_sym,
+                                                      fill = !!group_color_sym),
+                             size = 2,
+                             alpha = 0.2,
+                             show.legend = FALSE,
+                             expand = scale_circle) +
+        ggplot2::expand_limits(x = x_range, y = y_range)
     } else {
       plot <- plot +
-        geom_encircle(aes(group = !!group_color_sym),
-                      size = 2,
-                      alpha = 0.5,
-                      show.legend = FALSE,
-                      expand = scale_circle) +
-        expand_limits(x = x_range, y = y_range)
+        ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_color_sym),
+                             size = 2,
+                             alpha = 0.5,
+                             show.legend = FALSE,
+                             expand = scale_circle) +
+        ggplot2::expand_limits(x = x_range, y = y_range)
     }
   }
 
-  plot <- plot + geom_point(mapping = aes(fill = !!group_color_sym),
-                            size = 4) +
-    theme_classic() +
-    xlab("NMDS1") +
-    ylab("NMDS2") +
-    theme(axis.title.x = element_text(face = "bold",
-                                      vjust = -1),
-          axis.title.y = element_text(face = "bold",
-                                      vjust = 3),
-          panel.background = element_rect(fill = "#F7F7F7", color = NA),
-          legend.title = element_text(face = "bold")) +
-    scale_fill_manual(values = fetch_color(group_color_num)) +
-    scale_color_manual(values = fetch_color(group_color_num)) +
-    scale_shape_manual(values = fetch_shape(group_shape_num)) +
-    guides(color = guide_legend(override.aes = list(shape = 15)))
+  plot <- plot + ggplot2::geom_point(mapping = ggplot2::aes(fill = !!group_color_sym),
+                                     size = 4) +
+    ggplot2::theme_classic() +
+    ggplot2::xlab("NMDS1") +
+    ggplot2::ylab("NMDS2") +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
+                                                        vjust = -1),
+                   axis.title.y = ggplot2::element_text(face = "bold",
+                                                        vjust = 3),
+                   panel.background = ggplot2::element_rect(fill = "#F7F7F7", color = NA),
+                   legend.title = ggplot2::element_text(face = "bold")) +
+    ggplot2::scale_fill_manual(values = fetch_color(group_color_num)) +
+    ggplot2::scale_color_manual(values = fetch_color(group_color_num)) +
+    ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num)) +
+    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15)))
 
   return(plot)
 }

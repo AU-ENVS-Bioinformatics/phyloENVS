@@ -16,20 +16,21 @@ add_level <- function(physeq,
                       look_up_table){
 
   # Convert character to symbol.
-  level_sym <- sym(level)
+  level_sym <- rlang::sym(level)
+  level_name_sym <- rlang::sym(level_name)
 
   # Add the overall new level.
-  new_tax_table <- as.data.frame(tax_table(physeq)) |>
-    as_tibble() |>
-    mutate(!!level_name := recode(!!level_sym,
-                                  !!!look_up_table,
-                                  .default = "Unassigned")) |>
-    relocate(!!level_name, .before = !!level_sym) |>
+  new_tax_table <- as.data.frame(phyloseq::tax_table(physeq)) |>
+    tibble::as_tibble() |>
+    dplyr::mutate(!!level_name_sym := dplyr::recode(!!level_sym,
+                                                !!!look_up_table,
+                                                .default = "Unassigned")) |>
+    dplyr::relocate(!!level_name_sym, .before = !!level_sym) |>
     as.matrix() |>
-    tax_table()
+    phyloseq::tax_table()
 
   # Renew the tax table.
-  tax_table(physeq) <- new_tax_table
+  phyloseq::tax_table(physeq) <- new_tax_table
 
   return(physeq)
 }

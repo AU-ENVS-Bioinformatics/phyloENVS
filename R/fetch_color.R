@@ -1,8 +1,8 @@
 #' @title Fetch color
 #' @description Fetches colors from color dictionary.
 #'
-#' @param color_source color source/palette in the dictionary (main1, main2, ect.).
 #' @param num number of colors to output.
+#' @param color_source color source/palette in the dictionary (main1, main2, ect.).
 #'
 #' @return a vector with the HEX values for the color code.
 #' @export

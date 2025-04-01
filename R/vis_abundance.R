@@ -26,49 +26,48 @@ vis_abundance <- function(physeq,
                           remove_grid = FALSE){
 
   # Convert character to symbol.
-  group_x_sym <- sym(group_x)
-  group_split_sym <- sym(group_split)
-  level_glom_sym <- sym(level_glom)
+  group_x_sym <- rlang::sym(group_x)
+  group_split_sym <- rlang::sym(group_split)
+  level_glom_sym <- rlang::sym(level_glom)
 
   # Agglomerate counts.
   physeq_df <- physeq |>
-    tax_glom(taxrank = level_glom,
-             NArm = FALSE) |>
-    transform_sample_counts(function(x) x/sum(x)*100) |>
-    psmelt() |>
-    mutate(!!level_glom := na_if(!!level_glom_sym, ""),
-           !!level_glom := replace_na(!!level_glom_sym, "Unassigned"),  # Replace NA with "Unassigned"
-           !!level_glom := ifelse(Abundance < lower_limit,
-                                  paste("< ", lower_limit, "%", sep = ""),
-                                  !!level_glom_sym),
-           !!level_glom := reorder(!!level_glom_sym, Abundance),
-           !!level_glom := factor(!!level_glom_sym),
-           !!group_split := factor(!!group_split_sym))
+    phyloseq::tax_glom(taxrank = level_glom,
+                       NArm = FALSE) |>
+    phyloseq::transform_sample_counts(function(x) x/sum(x)*100) |>
+    phyloseq::psmelt() |>
+    dplyr::mutate(!!level_glom := dplyr::na_if(!!level_glom_sym, ""),
+                  !!level_glom := tidyr::replace_na(!!level_glom_sym, "Unassigned"),
+                  !!level_glom := ifelse(Abundance < lower_limit,
+                                         paste("< ", lower_limit, "%", sep = ""),
+                                         !!level_glom_sym),
+                  !!level_glom := reorder(!!level_glom_sym, Abundance),
+                  !!level_glom := factor(!!level_glom_sym),
+                  !!group_split := factor(!!group_split_sym))
 
   # Subset data if specified by user.
   if (!is.null(level_select) && !is.null(level_select)){
-    level_select_sym <- sym(level_select)
+    level_select_sym <- rlang::sym(level_select)
     physeq_df <- physeq_df |>
-      filter(!!level_select_sym %in% group_select)
-      #mutate(!!level_select := factor(!!level_select_sym))
+      dplyr::filter(!!level_select_sym %in% group_select)
   }
 
   # Get number of unique colors to use.
-  group_unique <- unique(pull(physeq_df, !!level_glom_sym))
+  group_unique <- unique(dplyr::pull(physeq_df, !!level_glom_sym))
   group_color_num <- length(group_unique)
 
   # Specify the color of the low detection and unassigned groups.
   if ("Unassigned" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Unassigned", after = 1))
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Unassigned", after = 1))
     group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if ("Unknown function" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Unknown function", after = 1))
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Unknown function", after = 1))
     group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if ("Others" %in% group_unique){
     physeq_df <- physeq_df |>
-      mutate(!!level_glom := fct_relevel(!!level_glom_sym, "Others", after = 1))
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Others", after = 1))
     group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
   } else if (paste("< ", lower_limit, "%", sep = "") %in% group_unique){
     group_color <- c("#878787", rev(fetch_color(group_color_num-1, color_source)))
@@ -77,56 +76,50 @@ vis_abundance <- function(physeq,
   }
 
   # Create plot.
-  plot <- ggplot(data = physeq_df,
-                 mapping = aes(x = !!group_x_sym,
-                               y = Abundance,
-                               fill = !!level_glom_sym)) +
-    geom_bar(stat = "identity") +
-    labs(x = "",
-         y = "Relative abundance [%]") +
-    theme_classic() +
-    theme(axis.ticks.x = element_blank(),
-          axis.text.x = element_text(angle = 90, hjust = 1),
-          axis.title.x = element_text(face = "bold",
-                                      vjust = -1),
-          axis.title.y = element_text(face = "bold",
-                                      vjust = 3),
-          panel.background = element_rect(fill = "#F7F7F7", color = NA),
-          panel.grid.major.y = element_line(color = "white", size = 1),
-          panel.grid.minor.y = element_line(color = "white", size = 0.5),
-          panel.border = element_rect(color = "black", size = 1, fill = NA),
-          legend.title = element_text(face = "bold"),
-          strip.background = element_rect(color="black",
-                                          fill="black",
-                                          size=1.5,
-                                          linetype="solid"),
-          strip.text.x = element_text(color = "white",
-                                      face = "bold"),
-          strip.text.y = element_text(color = "white",
-                                      face = "bold")) +
-    scale_fill_manual(values = group_color)
+  plot <- ggplot2::ggplot(data = physeq_df,
+                          mapping = ggplot2::aes(x = !!group_x_sym,
+                                                 y = Abundance,
+                                                 fill = !!level_glom_sym)) +
+    ggplot2::geom_bar(stat = "identity") +
+    ggplot2::labs(x = "",
+                  y = "Relative abundance [%]") +
+    ggplot2::theme_classic() +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
+                   axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+                   axis.title.x = ggplot2::element_text(face = "bold", vjust = -1),
+                   axis.title.y = ggplot2::element_text(face = "bold", vjust = 3),
+                   panel.background = ggplot2::element_rect(fill = "#F7F7F7", color = NA),
+                   panel.grid.major.y = ggplot2::element_line(color = "white", size = 1),
+                   panel.grid.minor.y = ggplot2::element_line(color = "white", size = 0.5),
+                   panel.border = ggplot2::element_rect(color = "black", size = 1, fill = NA),
+                   legend.title = ggplot2::element_text(face = "bold"),
+                   strip.background = ggplot2::element_rect(color="black", fill="black", size=1.5, linetype="solid"),
+                   strip.text.x = ggplot2::element_text(color = "white", face = "bold"),
+                   strip.text.y = ggplot2::element_text(color = "white", face = "bold")) +
+    ggplot2::scale_fill_manual(values = group_color)
 
   # Add the grid to distinguish between groups.
   if (!is.null(level_select) && !is.null(level_select)){
     if(level_glom == level_select){
-      plot <- plot + theme(legend.position = "none")
+      plot <- plot + ggplot2::theme(legend.position = "none")
     }
     if (remove_grid == FALSE){
-      plot <- plot + facet_grid(rows = vars(!!level_select_sym),
-                                cols = vars(!!group_split_sym),
-                                scales = "free_x",
-                                space = "free_x",
-                                switch = "y")
+      plot <- plot + ggplot2::facet_grid(cols = ggplot2::vars(!!group_split_sym),
+                                         rows = ggplot2::vars(!!level_select_sym),
+                                         scales = "free_x",
+                                         space = "free_x",
+                                         switch = "y")
     } else {
-      plot <- plot + facet_wrap(vars(!!level_select_sym), scales = "free")
+      plot <- plot + ggplot2::facet_wrap(ggplot2::vars(!!level_select_sym),
+                                         scales = "free")
       }
 
   } else {
     if (remove_grid == FALSE){
-      plot <- plot + facet_grid(cols = vars(!!group_split_sym),
-                                scales = "free_x",
-                                space = "free_x",
-                                switch = "y")}
+      plot <- plot + ggplot2::facet_grid(cols = ggplot2::vars(!!group_split_sym),
+                                         scales = "free_x",
+                                         space = "free_x",
+                                         switch = "y")}
 
   }
 

@@ -2,19 +2,20 @@
 % Please edit documentation in R/data_to_phyloseq.R
 \name{data_to_phyloseq}
 \alias{data_to_phyloseq}
-\title{Creates a phyloseq object directly from taxonomy table or gene count file}
+\title{Convert data to phyloseq object}
 \usage{
-data_to_phyloseq(x)
+data_to_phyloseq(totalRNA_file, meta_file, sample_names)
 }
 \arguments{
-\item{x}{a test varible}
+\item{totalRNA_file}{the data path to the read counts including SILVA taxonomy (xlsx).}
+
+\item{meta_file}{the data path to the metadata for the samples (xlsx).}
+
+\item{sample_names}{name of the column in the meta file to identify samples between the OTUs and metadata.}
 }
 \value{
 a phyloseq object
 }
 \description{
-Creates a phyloseq object directly from taxonomy table or gene count file
-}
-\examples{
-data_to_phyloseq(2)
+Creates a phyloseq object directly from read counts including taxonomy table and associated metadata file.
 }

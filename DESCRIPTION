@@ -1,6 +1,6 @@
 Package: phyloENVS
 Type: Package
-Title: Tailored Tools for Phyloseq-based Community Analysis
+Title: Tailored tools for phyloseq-based community analysis
 Version: 0.1.0
 Authors@R: person("Johanne", "B. Overgaard", email = "jbo@envs.au.dk", role = c("aut", "cre"))
 Description: This package provides tailored tools for visualizing and analyzing microbial 
@@ -19,6 +19,8 @@ Imports:
   ggplot2,
   ggalt,
   phyloseq,
+  readxl,
+  stringr,
   rlang,
   forcats
 Depends: 
