@@ -20,9 +20,14 @@ Imports:
   ggalt,
   phyloseq,
   readxl,
+  openxlsx,
   stringr,
   rlang,
-  forcats
+  forcats,
+  microbiome,
+  vegan,
+  stats,
+  broom
 Depends: 
     R (>= 3.5)
 LazyData: true

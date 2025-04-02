@@ -7,7 +7,7 @@
 #' @param level_glom name of the level to agglomerate counts. Default is "Phylum".
 #' @param level_select specified level to target for specified group (e.g., domain level - useful with add_level()). Default is NULL.
 #' @param group_select specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.
-#' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together.
+#' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.
 #' @param color_source name of color source to use. Default is "AU2". Supported: "AU1", "AU2".
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
 #'

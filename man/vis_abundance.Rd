@@ -29,7 +29,7 @@ vis_abundance(
 
 \item{group_select}{specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.}
 
-\item{lower_limit}{relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together.}
+\item{lower_limit}{relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.}
 
 \item{color_source}{name of color source to use. Default is "AU2". Supported: "AU1", "AU2".}
 

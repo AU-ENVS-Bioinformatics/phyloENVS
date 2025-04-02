@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 library(phyloseq)
 library(dplyr)
 library(tidyr)
-library(ggplot2)
-library(ggalt)
-library(rlang)
-library(forcats)
 ```
 
 This vignette demonstrates thehow phyloENVS can be used for a larger dataset with replicates. 
@@ -142,10 +138,3 @@ vis_richness(physeq = genepease_rRNA_merged,
              group_color = "Timepoint",
              measures = "InvSimpson")
 ```
-
-
-
-
-
-
-

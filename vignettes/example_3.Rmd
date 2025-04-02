@@ -17,20 +17,20 @@ library(phyloseq)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(ggalt)
-library(rlang)
-library(forcats)
 library(patchwork)
 ```
 
-This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "example_1". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W). 
+This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "Example 1". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W).
 
 ## Annotation of mRNA reads
 
-We will consider read counts for mRNA transcripts annotated by mapping mRNA contigs to the following three databases: 
-- CAZY - Database of carbohydrate-active enzymes, which are involved in the breakdown or modification of complex carbohydrates.
-- NCYc - This database holds genes involved in nitrogen cycling (like those responsible for nitrogen fixation, nitrification, or denitrification).
-PCyc - Database for phosphorus cycling genes.
+We will consider read counts for mRNA transcripts annotated by mapping mRNA contigs to the following three databases:
+
+-    CAZy - Database of carbohydrate-active enzymes, which are involved in the breakdown or modification of complex carbohydrates.
+
+-   NCYc - This database holds genes involved in nitrogen cycling (like those responsible for nitrogen fixation, nitrification, or denitrification).
+
+-   PCyc - Database for phosphorus cycling genes.
 
 ```{r setup}
 library(phyloENVS)
@@ -52,9 +52,9 @@ qaanaaq_mRNA_pcyc <- subset_samples(qaanaaq_mRNA,
 
 ## Ordination
 
-We perform Non-metric Multidimensional Scaling (NMDS).
+We perform Non-metric Multidimensional Scaling (NMDS). We use the [patchwork package](https://patchwork.data-imaginist.com/) to combine multiple plots.
 
-```{r, message=FALSE, fig.width=12, fig.height=5, out.width="80%", fig.align="center"}
+```{r, message=FALSE, fig.width=12, fig.height=5, out.width="100%", fig.align="center"}
 vis_nmds(qaanaaq_mRNA_cazy,
          convert_to_rel = TRUE,
          group_color = "Wetness",
@@ -74,7 +74,7 @@ vis_nmds(qaanaaq_mRNA_cazy,
 
 We look at the corresponding Shepard diagrams to assess the goodness of fit for the NMDS plots.
 
-```{r, message=FALSE, fig.width=12, fig.height=5, out.width="80%", fig.align="center"}
+```{r, message=FALSE, fig.width=12, fig.height=5, out.width="100%", fig.align="center"}
 vis_shepard(qaanaaq_mRNA_cazy, 
             convert_to_rel = TRUE) +
   labs(title = "CAZy") + 
@@ -85,15 +85,23 @@ vis_shepard(qaanaaq_mRNA_cazy,
 
 ## Abundance
 
-In the ordination, the wet samples seemed to be different from the rest. Especially for the PCyc data, the direction might also explain the differences in mRNA expression. We look into the relative abundances for PCyc reads. 
+In the ordination, the wet samples seemed to be different from the rest. Especially for the PCyc data, the direction might also explain the differences in mRNA expression. We look into the relative abundances for CAZy and PCyc reads.
 
-```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
-vis_abundance(physeq = qaanaaq_mRNA_pcyc,
+```{r, fig.width=12, fig.height=5, out.width="100%", fig.align="center"}
+vis_abundance(physeq = qaanaaq_mRNA_cazy,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Level1",
-              lower_limit = 1)
+              color_source = "AUblue",
+              lower_limit = 1) +
+  labs(title = "CAZy",
+       fill = "Level 1") +
+  vis_abundance(physeq = qaanaaq_mRNA_pcyc,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Level1",
+              color_source = "AUred",
+              lower_limit = 1) +
+  labs(title = "PCyc",
+       fill = "Level 1")
 ```
-
-
-
