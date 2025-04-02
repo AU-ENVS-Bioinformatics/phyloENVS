@@ -13,23 +13,24 @@ Description: This package provides tailored tools for visualizing and analyzing 
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.3.2
+Depends: 
+  R (>= 3.5)
 Imports:
   dplyr,
   tidyr,
   ggplot2,
   ggalt,
-  phyloseq,
   readxl,
   openxlsx,
   stringr,
   rlang,
   forcats,
-  microbiome,
   vegan,
   stats,
   broom
-Depends: 
-    R (>= 3.5)
+Remotes:
+  bioc::phyloseq,
+  bioc::microbiome
 LazyData: true
 Suggests: 
     knitr,

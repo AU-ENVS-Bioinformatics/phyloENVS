@@ -29,7 +29,7 @@ the devtools package.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("johanneBiO/phyloENVS")
+devtools::install_github("johanneBiO/phyloENVS", build_vignettes = TRUE)
 ```
 
 ## Example
