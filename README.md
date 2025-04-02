@@ -94,7 +94,7 @@ NMDS plot.
 
 The available color scales can be seen below.
 
-<div align="right">
+<div align="left">
 
 <img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
 
