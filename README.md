@@ -50,7 +50,7 @@ phyloseq object are listed below and visualized below.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="2000"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="1000"/>
 
 </div>
 
