@@ -20,7 +20,7 @@ it offers customizable and publication-quality visualizations, including
 ordination, abundance and richness plots for community composition
 analysis. The package is designed to streamline workflows for
 researchers within the Environmental Microbiology section at Department
-of Environmental Science at Aarhus University.
+of Environmental Science (ENVS) at Aarhus University.
 
 ## Installation
 
@@ -31,6 +31,28 @@ the devtools package.
 # install.packages("devtools")
 devtools::install_github("johanneBiO/phyloENVS", build_vignettes = TRUE)
 ```
+
+## Data Structure
+
+All functions within phyloENVS builds upon the phyloseq package for
+microbial community analysis. The phyloseq data structure in R organizes
+multi-table datasets into a single coherent object. The components of a
+phyloseq object are listed below and visualized below.
+
+- OTU Table (otu_table): Abundance data of taxa (read counts) across
+  samples.
+
+- Taxonomy Table (tax_table): Taxonomic classification (Kingdom to
+  Species) of each contig.
+
+- Sample Data (sample_data): Metadata for each sample (e.g., location,
+  timepoint, concentration, etc.).
+
+<div align="center">
+
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="2000"/>
+
+</div>
 
 ## Example
 
@@ -51,10 +73,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Phylum",
-              level_select = NULL,
-              group_select = NULL,
-              lower_limit = 2,
-              remove_grid = FALSE)
+              lower_limit = 2)
 ```
 
 <div class="figure">

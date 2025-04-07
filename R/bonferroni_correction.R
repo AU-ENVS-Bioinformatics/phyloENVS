@@ -9,8 +9,8 @@
 bonferroni_correction <- function(data) {
   num_comparisons <- nrow(data)
   data <- data |>
-    dplyr::mutate(p.adjusted = p.value * num_comparisons) |>
-    dplyr::mutate(p.adjusted = ifelse(p.adjusted > 1, 1, p.adjusted))
+    dplyr::mutate(adj.p.value = p.value * num_comparisons) |>
+    dplyr::mutate(adj.p.value = ifelse(adj.p.value > 1, 1, adj.p.value))
 
   return(data)
 }
