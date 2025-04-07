@@ -34,10 +34,11 @@ devtools::install_github("johanneBiO/phyloENVS", build_vignettes = TRUE)
 
 ## Data Structure
 
-All functions within phyloENVS builds upon the phyloseq package for
-microbial community analysis. The phyloseq data structure in R organizes
-multi-table datasets into a single coherent object. The components of a
-phyloseq object are listed below and visualized below.
+All functions within phyloENVS builds upon the [phyloseq
+package](https://joey711.github.io/phyloseq/) for microbial community
+analysis. The phyloseq data structure in R organizes multi-table
+datasets into a single coherent object. The components of a phyloseq
+object are listed below and visualized below.
 
 - OTU Table (otu_table): Abundance data of taxa (read counts) across
   samples.
@@ -50,7 +51,7 @@ phyloseq object are listed below and visualized below.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="10"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="100"/>
 
 </div>
 
