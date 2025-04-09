@@ -1,7 +1,7 @@
 #' @title Perform PERMANOVA analysis on phyloseq object
 #' @description This function performs PERMANOVA (Permutational Multivariate Analysis of Variance) on a phyloseq object using multiple design formulas, and saves the results as an Excel file.
 #'
-#' @param physeq A `phyloseq` object containing microbiome data.
+#' @param physeq A phyloseq object containing microbiome data.
 #' @param designs A character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).
 #' @param stats_path A string specifying the path where the output Excel file should be saved.
 #' @param convert_to_rel convert counts to relative abundances before analysis. Default is TRUE.
@@ -52,3 +52,4 @@ perform_permanova <- function(physeq, designs, stats_path, convert_to_rel = TRUE
 
   return(results_combined)
 }
+
