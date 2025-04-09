@@ -110,14 +110,23 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
         openxlsx::writeData(wb, design, taxon_results[[i]], startRow = row_offset + 2, startCol = col_offset, borders = "all")
         openxlsx::addStyle(wb, design, style3, rows = row_offset + 2, cols = col_offset:(col_offset + ncol(taxon_results[[i]]) -1), gridExpand = TRUE, stack = TRUE)
 
-        sig_results <- taxon_results[[i]][, colnames(taxon_results[[i]]) %in% c("p.value", "adj.p.value")] < 0.05
-        print(sig_results)
-        sig_results <- sig_results[, apply(sig_results, 2, function(x) any(x == TRUE, na.rm = TRUE))]
-        print(dim(sig_results))
+        sig_mask <- taxon_results[[i]][, colnames(taxon_results[[i]]) %in% c("p.value", "adj.p.value")] < 0.05
 
-        if (nrow(sig_results) > 0){
-          sig_rows <- which(apply(sig_results, 1, function(x) x == TRUE))
-          sig_cols <- which(colnames(taxon_results[[i]]) %in% colnames(sig_results))
+        # 2. Keep only columns with at least one TRUE (significant result)
+        sig_mask <- sig_mask[, apply(sig_mask, 2, function(x) any(x, na.rm = TRUE)), drop = FALSE]
+
+        # 3. Proceed only if we have significant values
+        if (length(sig_mask) > 0) {
+          sig_cols <- which(colnames(taxon_results[[i]]) %in% colnames(sig_mask))
+
+          # 4. Get row indices where at least one significant result exists
+          if (is.matrix(sig_mask)) {
+            sig_rows <- which(apply(sig_mask, 1, function(x) any(x, na.rm = TRUE)))
+          } else {
+            # If it's a vector (1 column subset), handle differently
+            sig_rows <- which(sig_mask == TRUE)
+          }
+
           openxlsx::addStyle(wb, design, style4, rows = sig_rows + row_offset + 2, cols = sig_cols + col_offset - 1, gridExpand = TRUE, stack = TRUE)
         }
 
