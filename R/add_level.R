@@ -35,16 +35,20 @@ add_level <- function(physeq,
   # Check inputs
   # ------------#
 
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
   if (!is.character(level)) {
-    stop("`level` must be character", call. = FALSE)
+    stop("`level` must be character")
   }
 
   if (!is.character(level_name)) {
-    stop("`level_name` must be character", call. = FALSE)
+    stop("`level_name` must be character")
   }
 
   if (!(level %in% colnames(tax_table(test)))) {
-    stop(paste(level, "level is not found in taxonomy table"), call. = FALSE)
+    stop(paste(level, "level is not found in taxonomy table"))
   }
 
   # ------------#

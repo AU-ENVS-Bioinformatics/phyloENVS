@@ -8,22 +8,85 @@
 #' @param level_select specified level to target for specified group (e.g., domain level - useful with add_level()). Default is NULL.
 #' @param group_select specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.
 #' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.
-#' @param color_source name of color source to use. Default is "AU2". Supported: "AU1", "AU2".
+#' @param color_source name of color source to use. Default is "AU2". Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'.
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
 #'
 #' @return a abundance plot created with ggplot.
 #' @export
 #'
+#' # Data phyloseq object:
+#' phylo <- data(qaanaaq_rRNA)
+#'
+#' vis_abundance(phylo,
+#'               group_x = "SampleName",
+#'               group_split = "Wetness",
+#'               level_glom = "Order",
+#'               lower_limit = 4)
+#'
 #' @examples
 vis_abundance <- function(physeq,
                           group_x,
                           group_split,
-                          level_glom = Phylum,
+                          level_glom = "Phylum",
                           level_select = NULL,
                           group_select = NULL,
                           lower_limit = 2,
                           color_source = "AU2",
                           remove_grid = FALSE){
+
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
+  if (!is.character(group_x)){
+    stop("`group_x` must be character")
+  }
+
+  if (!is.character(group_split)){
+    stop("`group_split` must be character")
+  }
+
+  if (!is.character(level_glom)){
+    stop("`level_glom` must be character")
+  }
+
+  if (!is.numeric(lower_limit)){
+    stop("`num` must be numeric")
+  }
+
+  if (!(color_source %in% c("AU1", "AU2", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink"))) {
+    stop("Invalid color source. Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'", call. = FALSE)
+  }
+
+  if (!is.logical(remove_grid)) {
+    stop("`remove_grid` must be logical")
+  }
+
+  if (!(group_x %in%  colnames(sample_data(physeq)))) {
+    stop(paste(group_x, "is not found in sample data"))
+  }
+
+  if (!(group_split %in%  colnames(sample_data(physeq)))) {
+    stop(paste(group_split, "is not found in sample data"))
+  }
+
+  if (!(level_glom %in%  colnames(tax_table(physeq)))) {
+    stop(paste(level_glom, "is not found in taxonomy table"))
+  }
+
+  if (!is.null(level_select) && !is.character(level_select)) {
+    stop("`level_select` must be character")
+  }
+
+  if (!is.null(level_select) && !(level_select %in% colnames(tax_table(physeq)))) {
+    stop(paste(level_select, "is not found in taxonomy table"))
+  }
+
+  # ------------#
 
   # Convert character to symbol.
   group_x_sym <- rlang::sym(group_x)

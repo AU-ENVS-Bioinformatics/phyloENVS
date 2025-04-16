@@ -21,11 +21,11 @@ fetch_color <- function(num, color_source = NULL){
   }
 
   if (num > 18){
-    stop("The number of distinct colors exceeds the allowed threshold of 18")
+    stop("The number of distinct colors exceeds the allowed threshold of 18", call. = FALSE)
   }
 
   if (!is.null(color_source) && !(color_source %in% c("AU1", "AU2", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink"))) {
-    stop("Invalid color source. Available color palettes are: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'")
+    stop("Invalid color source. Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'", call. = FALSE)
   }
 
   # ------------#

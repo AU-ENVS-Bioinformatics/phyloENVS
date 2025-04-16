@@ -20,7 +20,7 @@ fetch_shape <- function(num){
   }
 
   if (num > 10){
-    stop("The number of distinct shapes exceeds the allowed threshold of 10")
+    stop("The number of distinct shapes exceeds the allowed threshold of 10", call. = FALSE)
   }
 
   # ------------#

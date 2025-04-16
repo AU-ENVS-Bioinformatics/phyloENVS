@@ -8,7 +8,7 @@ vis_abundance(
   physeq,
   group_x,
   group_split,
-  level_glom = Phylum,
+  level_glom = "Phylum",
   level_select = NULL,
   group_select = NULL,
   lower_limit = 2,
@@ -31,7 +31,7 @@ vis_abundance(
 
 \item{lower_limit}{relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.}
 
-\item{color_source}{name of color source to use. Default is "AU2". Supported: "AU1", "AU2".}
+\item{color_source}{name of color source to use. Default is "AU2". Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'.}
 
 \item{remove_grid}{remove the grid splitting groups. Default is FALSE.}
 }

@@ -7,7 +7,7 @@
 perform_permanova(physeq, designs, stats_path, convert_to_rel = TRUE)
 }
 \arguments{
-\item{physeq}{A `phyloseq` object containing microbiome data.}
+\item{physeq}{A phyloseq object containing microbiome data.}
 
 \item{designs}{A character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).}
 
