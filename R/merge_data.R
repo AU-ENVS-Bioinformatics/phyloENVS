@@ -1,15 +1,38 @@
 #' @title Merge Data
-#' @description Merge samples based on a sample variable similar to merge_samples.
-#'
+#' @description Merge samples based on a sample variable similar to merge_samples. For numeric sample data features, values are averaged. Otherwise, the first class among unique classes are selected.
 #'
 #' @param physeq a phyloseq object.
 #' @param group variable name in the corresponding sample_data of the phyloseq object.
 #'
-#' @return merged phyloseq object
+#' @return merged phyloseq object.
 #' @export
 #'
 #' @examples
+#' # Data phyloseq object:
+#' phylo <- data(genepease_rRNA)
+#'
+#' merge_data(physeq = phylo,
+#'            group = "Group_ID")
+#'
 merge_data <- function(physeq, group){
+
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
+  if (!is.character(group)){
+    stop("`group` must be character")
+  }
+
+  if (!(group %in%  colnames(sample_data(physeq)))) {
+    stop(paste(group, "is not found in sample data"))
+  }
+
+  # ------------#
 
   # Convert character to symbol.
   group_sym <- rlang::sym(group)
@@ -27,14 +50,27 @@ merge_data <- function(physeq, group){
   # Make a customized merged metadata table.
   metadata_dense <- metadata |>
     dplyr::group_by(!!group_sym) |>
-    dplyr::summarise(dplyr::across(everything(),
-                                   ~if(is.numeric(.)) mean(., na.rm = TRUE) else unique(na.omit(.))[1])) |>
+    dplyr::summarise(across(
+      where(~ {
+        is.numeric(.) || is.character(.) || is.factor(.)
+      }),
+      ~ {
+        if (is.numeric(.)) {
+          mean(., na.rm = TRUE)
+        } else if (length(na.omit(unique(.))) == 1) {
+          na.omit(unique(.))[1]
+        } else {
+          NA
+        }
+      }
+    )) |>
     dplyr::ungroup()
 
   # Update the metadata for merged samples.
   new_sample_data <- phyloseq::sample_data(physeq) |>
     data.frame() |>
-    dplyr::mutate(!!group := as.character(!!group_sym)) |>
+    dplyr::select(-!!group) |>
+    tibble::rownames_to_column(var = group) |>
     dplyr::select(!!group) |>
     dplyr::left_join(metadata_dense, by = group) |>
     dplyr::mutate(row_id = !!group_sym) |>

@@ -12,8 +12,16 @@ merge_data(physeq, group)
 \item{group}{variable name in the corresponding sample_data of the phyloseq object.}
 }
 \value{
-merged phyloseq object
+merged phyloseq object.
 }
 \description{
-Merge samples based on a sample variable similar to merge_samples.
+Merge samples based on a sample variable similar to merge_samples. For numeric sample data features, values are averaged. Otherwise, the first class among unique classes are selected.
+}
+\examples{
+# Data phyloseq object:
+phylo <- data(genepease_rRNA)
+
+merge_data(physeq = phylo,
+           group = "Group_ID")
+
 }

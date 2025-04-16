@@ -36,8 +36,19 @@ vis_abundance(
 \item{remove_grid}{remove the grid splitting groups. Default is FALSE.}
 }
 \value{
-a abundance plot created with ggplot.
+an abundance plot created with ggplot.
 }
 \description{
 Plot the relative abundances for merged species of the same taxonomic rank.
+}
+\examples{
+# Data phyloseq object:
+phylo <- data(qaanaaq_rRNA)
+
+vis_abundance(phylo,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Order",
+              lower_limit = 4)
+
 }

@@ -11,9 +11,10 @@
 #' @param color_source name of color source to use. Default is "AU2". Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'.
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
 #'
-#' @return a abundance plot created with ggplot.
+#' @return an abundance plot created with ggplot.
 #' @export
 #'
+#' @examples
 #' # Data phyloseq object:
 #' phylo <- data(qaanaaq_rRNA)
 #'
@@ -23,7 +24,6 @@
 #'               level_glom = "Order",
 #'               lower_limit = 4)
 #'
-#' @examples
 vis_abundance <- function(physeq,
                           group_x,
                           group_split,
