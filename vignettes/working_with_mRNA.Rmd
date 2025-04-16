@@ -1,5 +1,5 @@
 ---
-title: "Using phyloENVS for mRNA dataset"
+title: "Working with mRNA"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Example 3}
@@ -12,12 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-library(phyloseq)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(patchwork)
 ```
 
 This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "Example 1". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W).
@@ -26,7 +20,7 @@ This vignette demonstrates how phyloENVS generalize to mRNA data. We will be usi
 
 We will consider read counts for mRNA transcripts annotated by mapping mRNA contigs to the following three databases:
 
--    CAZy - Database of carbohydrate-active enzymes, which are involved in the breakdown or modification of complex carbohydrates.
+-   CAZy - Database of carbohydrate-active enzymes, which are involved in the breakdown or modification of complex carbohydrates.
 
 -   NCYc - This database holds genes involved in nitrogen cycling (like those responsible for nitrogen fixation, nitrification, or denitrification).
 
@@ -34,6 +28,9 @@ We will consider read counts for mRNA transcripts annotated by mapping mRNA cont
 
 ```{r setup}
 library(phyloENVS)
+library(phyloseq)
+library(ggplot2)
+library(patchwork)
 
 data("qaanaaq_mRNA")
 ```

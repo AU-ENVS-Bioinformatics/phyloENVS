@@ -1,5 +1,5 @@
 ---
-title: "Using phyloENVS for GENEPEASE dataset"
+title: "Advanced Usage"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Example 2}
@@ -12,10 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-library(phyloseq)
-library(dplyr)
-library(tidyr)
 ```
 
 This vignette demonstrates thehow phyloENVS can be used for a larger dataset with replicates. 
@@ -26,6 +22,9 @@ We will be using meta-transcriptomic data from the GENEPEASE II project.
 
 ```{r setup}
 library(phyloENVS)
+library(phyloseq)
+library(dplyr)
+library(tidyr)
 
 data("genepease_rRNA")
 ```

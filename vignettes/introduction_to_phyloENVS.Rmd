@@ -1,5 +1,5 @@
 ---
-title: "Using phyloENVS for Qaanaaq dataset"
+title: "Introduction to phyloENVS"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Example 1}
@@ -12,10 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-library(phyloseq)
-library(dplyr)
-library(tidyr)
 ```
 
 This vignette demonstrates the core functions of phyloENVS using meta-transcriptomic data from ice samples collected in Qaanaaq, Greenland. The dataset includes samples from both the Qaanaaq Glacier and the Greenland Ice Sheet. In this vignette, we focus only on glacier samples collected along two transects.
@@ -38,6 +34,9 @@ Let's get started!
 
 ```{r setup}
 library(phyloENVS)
+library(phyloseq)
+library(dplyr)
+library(tidyr)
 
 data("qaanaaq_rRNA")
 
