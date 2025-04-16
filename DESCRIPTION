@@ -16,6 +16,7 @@ RoxygenNote: 7.3.2
 Depends: 
   R (>= 3.5)
 Imports:
+  phyloseq,
   dplyr,
   tidyr,
   ggplot2,
@@ -25,6 +26,7 @@ Imports:
   stringr,
   rlang,
   forcats,
+  microbiome,
   vegan,
   stats,
   broom,

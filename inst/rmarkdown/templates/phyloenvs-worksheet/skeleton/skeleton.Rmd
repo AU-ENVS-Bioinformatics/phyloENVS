@@ -1,0 +1,66 @@
+---
+title: "My phyloENVS Worksheet"
+author: "Your Name"
+date: "The Date"
+output: 
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(phyloENVS)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+## Data
+
+### Import
+
+```{r}
+
+```
+
+
+### Data Wrangling
+
+```{r}
+
+```
+
+## Ordination
+
+```{r}
+
+```
+
+### Non-metric MultiDimenstional Scaling (NMDS)
+
+```{r}
+
+```
+
+### Evaluation of the Fit
+
+```{r}
+
+```
+
+## Abundance
+
+```{r}
+
+```
+
+## Richness
+
+```{r}
+
+```
+
+## Statistics
+
+```{r}
+
+```
