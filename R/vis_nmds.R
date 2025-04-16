@@ -1,5 +1,5 @@
 #' @title Visualize NMDS
-#' @description Plot the data i the new ordination after data reduction using NMDS.
+#' @description Plot the data in new ordination after dimensionality reductionnmds using Non-metric MultiDimensional Scaling (NMDS) based on the Bray-Curtis distance measure.
 #'
 #' @param physeq a phyloseq object.
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
@@ -14,6 +14,16 @@
 #' @export
 #'
 #' @examples
+#' # Data phyloseq object:
+#' data(qaanaaq_rRNA)
+#' phylo <- qaanaaq_rRNA
+#'
+#' vis_nmds <- function(physeq = phylo,
+#'                      group_color = "Location",
+#'                      group_shape = "Transect",
+#'                      scale_circle = 0.5,
+#'                      scale_plot = 0.5)
+#'
 vis_nmds <- function(physeq,
                      convert_to_rel = TRUE,
                      group_color,
@@ -22,6 +32,52 @@ vis_nmds <- function(physeq,
                      fill_circle = FALSE,
                      scale_circle = 0.1,
                      scale_plot = 0.1){
+
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
+  if (!is.character(group_color)){
+    stop("`group_color` must be character")
+  }
+
+  if (!is.character(group_shape)){
+    stop("`group_shape` must be character")
+  }
+
+  if (!is.numeric(scale_circle)){
+    stop("`scale_circle` must be numeric")
+  }
+
+  if (!is.numeric(scale_plot)){
+    stop("`scale_plot` must be numeric")
+  }
+
+  if (!is.logical(convert_to_rel)) {
+    stop("`convert_to_rel` must be logical")
+  }
+
+  if (!is.logical(encircle)) {
+    stop("`encircle` must be logical")
+  }
+
+  if (!is.logical(fill_circle)) {
+    stop("`fill_circle` must be logical")
+  }
+
+  if (!(group_color %in%  colnames(sample_data(physeq)))) {
+    stop(paste(group_color, "is not found in sample data"))
+  }
+
+  if (!(group_shape %in%  colnames(sample_data(physeq)))) {
+    stop(paste(group_shape, "is not found in sample data"))
+  }
+
+  # ------------#
 
   # Convert group_color and group_shape (characters) to symbols.
   group_color_sym <- rlang::sym(group_color)

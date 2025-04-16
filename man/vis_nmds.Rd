@@ -36,5 +36,17 @@ vis_nmds(
 NMDS plot created with ggplot.
 }
 \description{
-Plot the data i the new ordination after data reduction using NMDS.
+Plot the data in new ordination after dimensionality reductionnmds using Non-metric MultiDimensional Scaling (NMDS) based on the Bray-Curtis distance measure.
+}
+\examples{
+# Data phyloseq object:
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
+
+vis_nmds <- function(physeq = phylo,
+                     group_color = "Location",
+                     group_shape = "Transect",
+                     scale_circle = 0.5,
+                     scale_plot = 0.5)
+
 }

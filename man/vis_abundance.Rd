@@ -43,7 +43,8 @@ Plot the relative abundances for merged species of the same taxonomic rank.
 }
 \examples{
 # Data phyloseq object:
-phylo <- data(qaanaaq_rRNA)
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
 
 vis_abundance(phylo,
               group_x = "SampleName",

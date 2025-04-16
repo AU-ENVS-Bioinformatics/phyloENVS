@@ -9,7 +9,8 @@
 #'
 #' @examples
 #' # Data phyloseq object:
-#' phylo <- data(genepease_rRNA)
+#' data(genepease_rRNA)
+#' phylo <- genepease_rRNA
 #'
 #' merge_data(physeq = phylo,
 #'            group = "Group_ID")

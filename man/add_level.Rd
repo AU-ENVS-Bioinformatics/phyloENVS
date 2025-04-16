@@ -23,7 +23,8 @@ Add user-specified taxonomic level, e.g., "Domain".
 }
 \examples{
 # Data phyloseq object:
-phylo <- data(qaanaaq_rRNA)
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
 
 # Look up table:
 kingdom_to_domain <- c("Amorphea" = "Eukaryotes",

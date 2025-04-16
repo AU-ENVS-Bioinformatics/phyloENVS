@@ -11,7 +11,8 @@
 #'
 #' @examples
 #' # Data phyloseq object:
-#' phylo <- data(qaanaaq_rRNA)
+#' data(qaanaaq_rRNA)
+#' phylo <- qaanaaq_rRNA
 #'
 #' # Look up table:
 #' kingdom_to_domain <- c("Amorphea" = "Eukaryotes",
@@ -47,7 +48,7 @@ add_level <- function(physeq,
     stop("`level_name` must be character")
   }
 
-  if (!(level %in% colnames(tax_table(test)))) {
+  if (!(level %in% colnames(tax_table(physeq)))) {
     stop(paste(level, "level is not found in taxonomy table"))
   }
 
