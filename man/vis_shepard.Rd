@@ -17,3 +17,11 @@ shepard diagram created with ggplot.
 \description{
 Plot the Shepard diagram to asses the goodness of fit for data reduction using NMDS.
 }
+\examples{
+# Data phyloseq object:
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
+
+vis_shepard(physeq = phylo)
+
+}

@@ -18,11 +18,11 @@
 #' data(qaanaaq_rRNA)
 #' phylo <- qaanaaq_rRNA
 #'
-#' vis_nmds <- function(physeq = phylo,
-#'                      group_color = "Location",
-#'                      group_shape = "Transect",
-#'                      scale_circle = 0.5,
-#'                      scale_plot = 0.5)
+#' vis_nmds(physeq = phylo,
+#'          group_color = "Location",
+#'          group_shape = "Transect",
+#'          scale_circle = 0.5,
+#'          scale_plot = 0.5)
 #'
 vis_nmds <- function(physeq,
                      convert_to_rel = TRUE,
@@ -69,11 +69,11 @@ vis_nmds <- function(physeq,
     stop("`fill_circle` must be logical")
   }
 
-  if (!(group_color %in%  colnames(sample_data(physeq)))) {
+  if (!(group_color %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste(group_color, "is not found in sample data"))
   }
 
-  if (!(group_shape %in%  colnames(sample_data(physeq)))) {
+  if (!(group_shape %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste(group_shape, "is not found in sample data"))
   }
 

@@ -18,11 +18,21 @@ vis_richness(
 
 \item{group_color}{the parameter in metadata to color by.}
 
-\item{measures}{character vector of measure names. Default is c("Simpson", "InvSimpson"). Supported: c("Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").}
+\item{measures}{character vector of diversity indices names. Default is c("Simpson", "InvSimpson"). Supported: c("Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").}
 }
 \value{
 richness plots created with ggplot.
 }
 \description{
 Plot alpha diversity with Shannon and Inverse Simpson measures.
+}
+\examples{
+# Data phyloseq object:
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
+
+vis_richness(physeq = phylo,
+             group_x = "Location",
+             group_color = "Transect")
+
 }

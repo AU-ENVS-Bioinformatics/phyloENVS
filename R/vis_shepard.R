@@ -8,8 +8,28 @@
 #' @export
 #'
 #' @examples
+#' # Data phyloseq object:
+#' data(qaanaaq_rRNA)
+#' phylo <- qaanaaq_rRNA
+#'
+#' vis_shepard(physeq = phylo)
+#'
 vis_shepard <- function(physeq,
                         convert_to_rel = TRUE){
+
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
+  if (!is.logical(convert_to_rel)) {
+    stop("`convert_to_rel` must be logical")
+  }
+
+  # ------------#
 
   # Normalize.
   if (convert_to_rel == TRUE){

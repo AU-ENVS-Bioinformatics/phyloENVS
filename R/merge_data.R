@@ -29,7 +29,7 @@ merge_data <- function(physeq, group){
     stop("`group` must be character")
   }
 
-  if (!(group %in%  colnames(sample_data(physeq)))) {
+  if (!(group %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste(group, "is not found in sample data"))
   }
 

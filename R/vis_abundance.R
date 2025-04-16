@@ -67,15 +67,15 @@ vis_abundance <- function(physeq,
     stop("`remove_grid` must be logical")
   }
 
-  if (!(group_x %in%  colnames(sample_data(physeq)))) {
+  if (!(group_x %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste(group_x, "is not found in sample data"))
   }
 
-  if (!(group_split %in%  colnames(sample_data(physeq)))) {
+  if (!(group_split %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste(group_split, "is not found in sample data"))
   }
 
-  if (!(level_glom %in%  colnames(tax_table(physeq)))) {
+  if (!(level_glom %in%  colnames(phyloseq::tax_table(physeq)))) {
     stop(paste(level_glom, "is not found in taxonomy table"))
   }
 
@@ -83,7 +83,7 @@ vis_abundance <- function(physeq,
     stop("`level_select` must be character")
   }
 
-  if (!is.null(level_select) && !(level_select %in% colnames(tax_table(physeq)))) {
+  if (!is.null(level_select) && !(level_select %in% colnames(phyloseq::tax_table(physeq)))) {
     stop(paste(level_select, "is not found in taxonomy table"))
   }
 

@@ -48,7 +48,7 @@ add_level <- function(physeq,
     stop("`level_name` must be character")
   }
 
-  if (!(level %in% colnames(tax_table(physeq)))) {
+  if (!(level %in% colnames(phyloseq::tax_table(physeq)))) {
     stop(paste(level, "level is not found in taxonomy table"))
   }
 
