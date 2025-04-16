@@ -1,18 +1,34 @@
 #' @title Fetch color
 #' @description Fetches colors from color dictionary.
 #'
-#' @param num number of colors to output.
-#' @param color_source color source/palette in the dictionary (main1, main2, ect.).
+#' @param num number of colors to output (up to 18 is allowed).
+#' @param color_source optional color source/palette in the dictionary ("AU1", "AU2", "Aublue", ect. - see README.md). If not defined "AU1" will be used for num less than or equal to 9. Otherwise the default is "AU2".
 #'
 #' @return a vector with the HEX values for the color code.
 #' @export
 #'
 #' @examples
+#' fetch_color(num = 3, color_source = "AU1")
+#'
 fetch_color <- function(num, color_source = NULL){
 
-  if (num > 18){
-    stop("Error: The number of distinct colors exceeds the allowed threshold of 18.")
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (!is.numeric(num) | as.integer(num) != num){
+    stop("`num` must be an integer")
   }
+
+  if (num > 18){
+    stop("The number of distinct colors exceeds the allowed threshold of 18")
+  }
+
+  if (!is.null(color_source) && !(color_source %in% c("AU1", "AU2", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink"))) {
+    stop("Invalid color source. Available color palettes are: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'")
+  }
+
+  # ------------#
 
   if (!is.null(color_source)){
     if (color_source %in% c("AU1", "AU2")){

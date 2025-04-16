@@ -2,18 +2,20 @@
 % Please edit documentation in R/fetch_shape.R
 \name{fetch_shape}
 \alias{fetch_shape}
-\title{Fetch shape
-Fetches shapes from shape dictionary.}
+\title{Fetch shape}
 \usage{
 fetch_shape(num)
 }
 \arguments{
-\item{num}{number of shapes to output.}
+\item{num}{number of shapes to output (up to 10 is allowed).}
 }
 \value{
 a vector with the shape values.
 }
 \description{
-Fetch shape
 Fetches shapes from shape dictionary.
+}
+\examples{
+fetch_shape(num = 3)
+
 }

@@ -7,13 +7,17 @@
 fetch_color(num, color_source = NULL)
 }
 \arguments{
-\item{num}{number of colors to output.}
+\item{num}{number of colors to output (up to 18 is allowed).}
 
-\item{color_source}{color source/palette in the dictionary (main1, main2, ect.).}
+\item{color_source}{optional color source/palette in the dictionary ("AU1", "AU2", "Aublue", ect. - see README.md). If not defined "AU1" will be used for num less than or equal to 9. Otherwise the default is "AU2".}
 }
 \value{
 a vector with the HEX values for the color code.
 }
 \description{
 Fetches colors from color dictionary.
+}
+\examples{
+fetch_color(num = 3, color_source = "AU1")
+
 }
