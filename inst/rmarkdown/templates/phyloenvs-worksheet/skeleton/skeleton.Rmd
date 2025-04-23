@@ -1,18 +1,24 @@
 ---
 title: "My phyloENVS Worksheet"
 author: "Your Name"
-date: "The Date"
+date: "Date"
 output: 
   html_document: default
 ---
 
 ```{r setup, include=FALSE}
 library(phyloENVS)
+library(phyloseq) 
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Introduction
+
+This template serves as a guide for analyzing your sequencing experiment using the phyloENVS package. We recommend you to look at the vignettes for inspiration (browseVignettes("phyloENVS")). 
+
+(Make advanced)
+
 
 ## Data
 
@@ -21,7 +27,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 
 ```
-
 
 ### Data Wrangling
 
