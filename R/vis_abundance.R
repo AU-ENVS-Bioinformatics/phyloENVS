@@ -8,7 +8,7 @@
 #' @param level_select specified level to target for specified group (e.g., domain level - useful with add_level()). Default is NULL.
 #' @param group_select specified group to target in specified level (e.g., Prokaryotes in the domain level). Default is NULL.
 #' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.
-#' @param color_source name of color source to use. Default is "AU2". Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'.
+#' @param color_source name of color source to use. Default is "AU2".
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
 #'
 #' @return an abundance plot created with ggplot.
@@ -57,10 +57,6 @@ vis_abundance <- function(physeq,
 
   if (!is.numeric(lower_limit)){
     stop("`num` must be numeric")
-  }
-
-  if (!(color_source %in% c("AU1", "AU2", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink"))) {
-    stop("Invalid color source. Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'", call. = FALSE)
   }
 
   if (!is.logical(remove_grid)) {

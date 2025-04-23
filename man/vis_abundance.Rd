@@ -31,7 +31,7 @@ vis_abundance(
 
 \item{lower_limit}{relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.}
 
-\item{color_source}{name of color source to use. Default is "AU2". Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'.}
+\item{color_source}{name of color source to use. Default is "AU2".}
 
 \item{remove_grid}{remove the grid splitting groups. Default is FALSE.}
 }
