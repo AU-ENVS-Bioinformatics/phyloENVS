@@ -5,7 +5,6 @@
 #' @return the data frame with adjusted p-values.
 #' @export
 #'
-#' @examples
 bonferroni_correction <- function(data) {
   num_comparisons <- nrow(data)
   data <- data |>

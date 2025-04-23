@@ -8,7 +8,6 @@
 #' @return a phyloseq object
 #' @export
 #'
-#' @examples
 data_to_phyloseq <- function(totalRNA_file, meta_file, sample_names){
 
   # Total RNA-Seq read counts are loaded.
