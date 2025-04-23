@@ -15,7 +15,7 @@
 #' Significant results are highlighted in the Excel output.
 #
 #' @param physeq a phyloseq object.
-#' @param stats_path a string specifying the directory to save the results.
+#' @param stats_path a string specifying the path where the output Excel file should be saved.
 #' @param level_glom name of the taxonomic level to agglomerate counts. Default is "Phylum".
 #' @param designs a vector of test designs (e.g., c("Concentration", "Temperature")).
 #' @param signi_limit the significance level. Default is 0.05 (5 \%).
@@ -31,7 +31,7 @@
 #' phylo <- qaanaaq_rRNA
 #'
 #' \dontrun{
-#' perform_univariate(physeq = my_physeq_object,
+#' perform_univariate(phylo,
 #'                    stats_path = "results/",
 #'                    designs = c("Direction", "Wetness"))
 #' }
@@ -151,10 +151,10 @@ perform_univariate <- function(physeq,
 
   headers <- c("ANOVA results", "Tukey's HSD test", "T-test (with Bonferroni correction)")
 
-  # Save results to Excel
-  output_file <- file.path(stats_path, "univariate_results.xlsx")
+  # Prepare Excel workbook.
   wb <- openxlsx::createWorkbook()
 
+  # Styles.
   style_header1 <- openxlsx::createStyle(fgFill = "#003d73",
                                          fontSize = 14,
                                          fontColour = "white",
@@ -167,7 +167,7 @@ perform_univariate <- function(physeq,
                                          fontColour = "#003d73",
                                          textDecoration = "bold")
 
-  style_header3 <- openxlsx::createStyle(fgFill = "#93a8c2",
+  style_header3 <- openxlsx::createStyle(fgFill = "#b9c6d7",
                                          fontSize = 11,
                                          fontColour = "#003d73",
                                          textDecoration = "bold",
@@ -178,7 +178,7 @@ perform_univariate <- function(physeq,
                                        fontSize = 11,
                                        textDecoration = "bold")
 
-  # Write results to workbook
+  # Write results to workbook.
   for (design in designs) {
     openxlsx::addWorksheet(wb, design)
     row_offset <- 1
@@ -211,15 +211,14 @@ perform_univariate <- function(physeq,
             }
           }
         }
-
         col_offset <- col_offset + ncol(taxon_results[[i]]) + 1
       }
-
       row_offset <- row_offset + max(unlist(lapply(taxon_results, nrow))) + 4
-
     }
   }
 
+  # Save results.
+  output_file <- file.path(stats_path, "univariate_results.xlsx")
   openxlsx::saveWorkbook(wb, output_file, overwrite = TRUE)
   message("Results saved to: ", output_file)
 

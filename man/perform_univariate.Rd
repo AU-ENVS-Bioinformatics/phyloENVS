@@ -17,7 +17,7 @@ perform_univariate(
 \arguments{
 \item{physeq}{a phyloseq object.}
 
-\item{stats_path}{a string specifying the directory to save the results.}
+\item{stats_path}{a string specifying the path where the output Excel file should be saved.}
 
 \item{level_glom}{name of the taxonomic level to agglomerate counts. Default is "Phylum".}
 
@@ -54,7 +54,7 @@ data(qaanaaq_rRNA)
 phylo <- qaanaaq_rRNA
 
 \dontrun{
-perform_univariate(physeq = my_physeq_object,
+perform_univariate(phylo,
                    stats_path = "results/",
                    designs = c("Direction", "Wetness"))
 }

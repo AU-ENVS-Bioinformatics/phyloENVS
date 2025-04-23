@@ -4,20 +4,45 @@
 \alias{perform_permanova}
 \title{Perform PERMANOVA analysis on phyloseq object}
 \usage{
-perform_permanova(physeq, designs, stats_path, convert_to_rel = TRUE)
+perform_permanova(
+  physeq,
+  stats_path,
+  designs,
+  signi_limit = 0.05,
+  convert_to_rel = TRUE,
+  dist_method = "bray",
+  n_permute = 999
+)
 }
 \arguments{
-\item{physeq}{A phyloseq object containing microbiome data.}
+\item{physeq}{a phyloseq object.}
 
-\item{designs}{A character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).}
+\item{stats_path}{a string specifying the path where the output Excel file should be saved.}
 
-\item{stats_path}{A string specifying the path where the output Excel file should be saved.}
+\item{designs}{a character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).}
+
+\item{signi_limit}{the significance level. Default is 0.05 (5 \%).}
 
 \item{convert_to_rel}{convert counts to relative abundances before analysis. Default is TRUE.}
+
+\item{dist_method}{dissimilarity index used in vegdist (see vegan package). Default is "bray".}
+
+\item{n_permute}{number of permutations. Default is 999.}
 }
 \value{
 A data frame containing PERMANOVA results for all specified designs, with an additional column `"Model"` indicating the tested formula.
 }
 \description{
 This function performs PERMANOVA (Permutational Multivariate Analysis of Variance) on a phyloseq object using multiple design formulas, and saves the results as an Excel file.
+}
+\examples{
+#' # Data phyloseq object:
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
+
+\dontrun{
+perform_permanova(phylo,
+                  stats_path = "results/",
+                  designs = c("Direction", "Wetness"))
+}
 }
