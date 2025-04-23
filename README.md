@@ -56,6 +56,26 @@ object are listed below and visualized below.
 
 </div>
 
+## Getting Started
+
+The vignettes contains a lot of information on how to use phyloENVS.
+After installation, the vignette can be accessed from the R console by
+typing:
+
+``` r
+browseVignettes("phyloENVS")
+#> No vignettes found by browseVignettes("phyloENVS")
+```
+
+It is also possible to find an RMarkdown template in RStudio: File -\>
+New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
+
+<div align="left">
+
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="1500"/>
+
+</div>
+
 ## Example
 
 This is a basic example which shows how you can visualize the relative
@@ -108,26 +128,6 @@ vis_nmds(qaanaaq_rRNA_sub,
 <p class="caption">
 NMDS plot.
 </p>
-
-</div>
-
-## Getting Started
-
-The vignettes contains a lot of information on how to use phyloENVS.
-After installation, the vignette can be accessed from the R console by
-typing:
-
-``` r
-browseVignettes("phyloENVS")
-#> No vignettes found by browseVignettes("phyloENVS")
-```
-
-It is also possible to find an RMarkdown template in RStudio: File -\>
-New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
-
-<div align="left">
-
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="2000"/>
 
 </div>
 

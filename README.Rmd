@@ -53,6 +53,20 @@ All functions within phyloENVS builds upon the [phyloseq package](https://joey71
 <img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="500"/>
 :::
 
+## Getting Started
+
+The vignettes contains a lot of information on how to use phyloENVS. After installation, the vignette can be accessed from the R console by typing:
+
+```{r}
+browseVignettes("phyloENVS")
+```
+
+It is also possible to find an RMarkdown template in RStudio: File -> New file -> R Markdown -> From Template -> phyloENVS worksheet.
+
+::: {align="left"}
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="1500"/>
+:::
+
 ## Example
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
@@ -83,20 +97,6 @@ vis_nmds(qaanaaq_rRNA_sub,
          scale_circle = 0.09,
          scale_plot = 0.3)
 ```
-
-## Getting Started
-
-The vignettes contains a lot of information on how to use phyloENVS. After installation, the vignette can be accessed from the R console by typing:
-
-```{r}
-browseVignettes("phyloENVS")
-```
-
-It is also possible to find an RMarkdown template in RStudio: File -> New file -> R Markdown -> From Template -> phyloENVS worksheet.
-
-::: {align="left"}
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="2000"/>
-:::
 
 ## Details
 
