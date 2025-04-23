@@ -25,7 +25,9 @@ library(ggplot2)
 # phyloENVS
 
 <!-- badges: start -->
+
 [![DOI]
+
 <!-- badges: end -->
 
 The goal of phyloENVS is to provide tailored tools for visualizing and analyzing microbial community data, with a focus on rRNA and mRNA datasets from environmental samples such as soil, ice, and other ecosystems. Built to enhance the functionality of the phyloseq package, it offers customizable and publication-quality visualizations, including ordination, abundance and richness plots for community composition analysis. The package is designed to streamline workflows for researchers within the Environmental Microbiology section at Department of Environmental Science (ENVS) at Aarhus University.
@@ -61,10 +63,10 @@ The vignettes contains a lot of information on how to use phyloENVS. After insta
 browseVignettes("phyloENVS")
 ```
 
-It is also possible to find an RMarkdown template in RStudio: File -> New file -> R Markdown -> From Template -> phyloENVS worksheet.
+It is also possible to find an RMarkdown template in RStudio: File -\> New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
 ::: {align="center"}
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="100"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="500"/>
 :::
 
 ## Example
@@ -106,8 +108,6 @@ The available color scales can be seen below.
 <img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
 :::
 
-## Acknowledgement 
+## Acknowledgement
 
-This package builds upon the [phyloseq package](https://joey711.github.io/phyloseq/). Furthermore, this work has been highly inspired by the [RauENVS package](https://github.com/AU-ENVS-Bioinformatics/RauENVS). 
-
-
+This package builds upon the [phyloseq package](https://joey711.github.io/phyloseq/). Furthermore, this work has been highly inspired by the [RauENVS package](https://github.com/AU-ENVS-Bioinformatics/RauENVS).

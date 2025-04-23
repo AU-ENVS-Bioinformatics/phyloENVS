@@ -11,7 +11,9 @@
 
 <!-- badges: start -->
 
-\[\![DOI\] <!-- badges: end -->
+\[\![DOI\]
+
+<!-- badges: end -->
 
 The goal of phyloENVS is to provide tailored tools for visualizing and
 analyzing microbial community data, with a focus on rRNA and mRNA
@@ -72,7 +74,7 @@ New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="100"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="500"/>
 
 </div>
 
