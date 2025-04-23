@@ -70,9 +70,9 @@ browseVignettes("phyloENVS")
 It is also possible to find an RMarkdown template in RStudio: File -\>
 New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
-<div align="left">
+<div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="1500"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="1000"/>
 
 </div>
 
