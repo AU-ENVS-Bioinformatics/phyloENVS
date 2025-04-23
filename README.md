@@ -10,7 +10,8 @@
 # phyloENVS
 
 <!-- badges: start -->
-<!-- badges: end -->
+
+\[\![DOI\] <!-- badges: end -->
 
 The goal of phyloENVS is to provide tailored tools for visualizing and
 analyzing microbial community data, with a focus on rRNA and mRNA
@@ -110,6 +111,26 @@ NMDS plot.
 
 </div>
 
+## Getting Started
+
+The vignettes contains a lot of information on how to use phyloENVS.
+After installation, the vignette can be accessed from the R console by
+typing:
+
+``` r
+browseVignettes("phyloENVS")
+#> No vignettes found by browseVignettes("phyloENVS")
+```
+
+It is also possible to find an RMarkdown template in RStudio: File -\>
+New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
+
+<div align="left">
+
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="2000"/>
+
+</div>
+
 ## Details
 
 The available color scales can be seen below.
@@ -119,3 +140,10 @@ The available color scales can be seen below.
 <img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
 
 </div>
+
+## Acknowledgement
+
+This package builds upon the [phyloseq
+package](https://joey711.github.io/phyloseq/). Furthermore, this work
+has been highly inspired by the [RauENVS
+package](https://github.com/AU-ENVS-Bioinformatics/RauENVS).
