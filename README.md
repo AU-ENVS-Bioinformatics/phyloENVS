@@ -72,7 +72,7 @@ New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="1000"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="100"/>
 
 </div>
 
