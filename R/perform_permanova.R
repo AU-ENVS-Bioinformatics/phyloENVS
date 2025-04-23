@@ -9,7 +9,7 @@
 #' @param dist_method dissimilarity index used in vegdist (see vegan package). Default is "bray".
 #' @param n_permute number of permutations. Default is 999.
 #'
-#' @return A data frame containing PERMANOVA results for all specified designs, with an additional column `"Model"` indicating the tested formula.
+#' @return results are saved to the specified directory.
 #' @export
 #'
 #' @examples

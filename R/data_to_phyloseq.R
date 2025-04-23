@@ -5,7 +5,7 @@
 #' @param meta_file the data path to the metadata for the samples (xlsx).
 #' @param sample_names name of the column in the meta file to identify samples between the OTUs and metadata.
 #'
-#' @return a phyloseq object
+#' @return a phyloseq object.
 #' @export
 #'
 data_to_phyloseq <- function(totalRNA_file, meta_file, sample_names){

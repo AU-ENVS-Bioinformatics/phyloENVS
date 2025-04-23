@@ -14,7 +14,7 @@ data_to_phyloseq(totalRNA_file, meta_file, sample_names)
 \item{sample_names}{name of the column in the meta file to identify samples between the OTUs and metadata.}
 }
 \value{
-a phyloseq object
+a phyloseq object.
 }
 \description{
 Creates a phyloseq object directly from read counts including taxonomy table and associated metadata file.

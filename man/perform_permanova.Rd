@@ -30,7 +30,7 @@ perform_permanova(
 \item{n_permute}{number of permutations. Default is 999.}
 }
 \value{
-A data frame containing PERMANOVA results for all specified designs, with an additional column `"Model"` indicating the tested formula.
+results are saved to the specified directory.
 }
 \description{
 This function performs PERMANOVA (Permutational Multivariate Analysis of Variance) on a phyloseq object using multiple design formulas, and saves the results as an Excel file.
