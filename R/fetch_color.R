@@ -24,14 +24,14 @@ fetch_color <- function(num, color_source = NULL){
     stop("The number of distinct colors exceeds the allowed threshold of 18", call. = FALSE)
   }
 
-  if (!is.null(color_source) && !(color_source %in% c("AU1", "AU2", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink"))) {
-    stop("Invalid color source. Supported: 'AU1', 'AU2', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink'", call. = FALSE)
+  if (!is.null(color_source) && !(color_source %in% c("AU1", "AU2", "AU3", "AUblue", "AUturquoise", "AUorange", "AUpurple", "AUgreen", "AUred", "AUcyan", "AUyellow", "AUpink", "AUjulien", "AUmaurice", "AUmort"))) {
+    stop("Invalid color source. Supported: 'AU1', 'AU2', 'AU3', 'AUblue', 'AUturquoise', 'AUorange', 'AUpurple', 'AUgreen', 'AUred', 'AUcyan', 'AUyellow', 'AUpink', 'AUjulien', 'AUmaurice', 'AUmort'", call. = FALSE)
   }
 
   # ------------#
 
   if (!is.null(color_source)){
-    if (color_source %in% c("AU1", "AU2")){
+    if (color_source %in% c("AU1", "AU2", "AU3")){
       color_vec <- color_dict[[color_source]][1:num]
     } else {
       color_index <- round(seq(from = 1, to = 18, length.out = num))
