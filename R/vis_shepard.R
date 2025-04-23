@@ -91,9 +91,12 @@ vis_shepard <- function(physeq,
                                                         vjust = -1),
                    axis.title.y = ggplot2::element_text(face = "bold",
                                                         vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7", color = NA),
-                   panel.grid.major = ggplot2::element_line(color = "white", size = 1),
-                   panel.grid.minor = ggplot2::element_line(color = "white", size = 0.5))
+                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
+                                                            color = NA),
+                   panel.grid.major = ggplot2::element_line(color = "white",
+                                                            size = 1),
+                   panel.grid.minor = ggplot2::element_line(color = "white",
+                                                            size = 0.5))
 
   return(plot)
 }

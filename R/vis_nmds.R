@@ -106,8 +106,10 @@ vis_nmds <- function(physeq,
                         "NMDS2" = physeq_nmds$points[, 2])
 
   # Get the color and shape number.
-  group_color_num <- length(unique(dplyr::pull(nmds_df, !!group_color_sym)))
-  group_shape_num <- length(unique(dplyr::pull(nmds_df, !!group_shape_sym)))
+  group_color_num <- length(unique(dplyr::pull(nmds_df,
+                                               !!group_color_sym)))
+  group_shape_num <- length(unique(dplyr::pull(nmds_df,
+                                               !!group_shape_sym)))
 
   plot <- ggplot2::ggplot(data = nmds_df,
                           mapping = ggplot2::aes(x = NMDS1,
@@ -138,7 +140,8 @@ vis_nmds <- function(physeq,
                              alpha = 0.5,
                              show.legend = FALSE,
                              expand = scale_circle) +
-        ggplot2::expand_limits(x = x_range, y = y_range)
+        ggplot2::expand_limits(x = x_range,
+                               y = y_range)
     }
   }
 
@@ -151,7 +154,8 @@ vis_nmds <- function(physeq,
                                                         vjust = -1),
                    axis.title.y = ggplot2::element_text(face = "bold",
                                                         vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7", color = NA),
+                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
+                                                            color = NA),
                    legend.title = ggplot2::element_text(face = "bold")) +
     ggplot2::scale_fill_manual(values = fetch_color(group_color_num)) +
     ggplot2::scale_color_manual(values = fetch_color(group_color_num)) +

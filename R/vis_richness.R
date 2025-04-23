@@ -52,7 +52,8 @@ vis_richness <- function(physeq,
   sample_df <- as.data.frame(phyloseq::sample_data(physeq))
 
   # Get the color number.
-  group_color_num <- length(unique(dplyr::pull(sample_df, !!group_color_sym)))
+  group_color_num <- length(unique(dplyr::pull(sample_df,
+                                               !!group_color_sym)))
 
   # Create plot.
   plot <- phyloseq::plot_richness(physeq = physeq,
@@ -75,8 +76,11 @@ vis_richness <- function(physeq,
                                                         vjust = -1),
                    axis.title.y = ggplot2::element_text(face = "bold",
                                                         vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7", color = NA),
-                   panel.border = ggplot2::element_rect(color = "black", size = 1, fill = NA),
+                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
+                                                            color = NA),
+                   panel.border = ggplot2::element_rect(color = "black",
+                                                        size = 1,
+                                                        fill = NA),
                    legend.title = ggplot2::element_text(face = "bold"),
                    strip.background = ggplot2::element_rect(color = "black",
                                                                      fill = "black",
