@@ -2,30 +2,60 @@
 % Please edit documentation in R/perform_univariate.R
 \name{perform_univariate}
 \alias{perform_univariate}
-\title{Perform statistical tests on phyloseq data}
+\title{Perform univariate statistical testing across microbial taxa}
 \usage{
 perform_univariate(
   physeq,
   stats_path,
   level_glom = "Phylum",
   designs,
-  lower_limit = 0.04
+  signi_limit = 0.05,
+  lower_limit = 0.05,
+  higher_limit = 1
 )
 }
 \arguments{
-\item{physeq}{a phyloseq object containing microbiome data.}
+\item{physeq}{a phyloseq object.}
 
 \item{stats_path}{a string specifying the directory to save the results.}
 
-\item{level_glom}{name of the level to agglomerate counts. Default is "Phylum".}
+\item{level_glom}{name of the taxonomic level to agglomerate counts. Default is "Phylum".}
 
-\item{lower_limit}{the minimum abundance threshold for including taxa. Default is 0.04 (4%).}
+\item{designs}{a vector of test designs (e.g., c("Concentration", "Temperature")).}
 
-\item{test_designs}{a vector of test designs (e.g., c("Concentration", "Temperature")).}
+\item{signi_limit}{the significance level. Default is 0.05 (5 \%).}
+
+\item{lower_limit}{the minimum abundance threshold for including taxa. Default is 0.05 (5 \%).}
+
+\item{higher_limit}{the maximum abundance threshold for including taxa. Default is 1 (100 \%).}
 }
 \value{
 results are saved to the specified directory.
 }
 \description{
-Perform statistical tests on phyloseq data
+Perform ANOVA, Tukey HSD, and pairwise t-tests with Bonferroni correction across microbial taxa from a phyloseq object, based on one or more experimental design factors. The results are saved in excel.
+}
+\details{
+Statistical tests
+
+The following statistical tests are applied for each taxon across the specified design variables:
+
+* ANOVA: Tests whether there is a statistically significant difference in mean abundance across all groups. Useful as a global indicator.
+
+* Tukey's HSD: A test performed after ANOVA. Identifies which specific group pairs differ significantly, with correction for multiple comparisons (family-wise error rate).
+
+* Pairwise t-tests with Bonferroni correction: An alternative pairwise approach that adjusts p-values using the Bonferroni method. More flexible than Tukey's HSD and works with unequal variances or group sizes.
+
+Significant results are highlighted in the Excel output.
+}
+\examples{
+# Data phyloseq object:
+data(qaanaaq_rRNA)
+phylo <- qaanaaq_rRNA
+
+\dontrun{
+perform_univariate(physeq = my_physeq_object,
+                   stats_path = "results/",
+                   designs = c("Direction", "Wetness"))
+}
 }

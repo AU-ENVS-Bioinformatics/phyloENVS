@@ -1,16 +1,93 @@
-#' @title Perform statistical tests on phyloseq data
+#' @title Perform univariate statistical testing across microbial taxa
+#' @description Perform ANOVA, Tukey HSD, and pairwise t-tests with Bonferroni correction across microbial taxa from a phyloseq object, based on one or more experimental design factors. The results are saved in excel.
 #'
-#' @param physeq a phyloseq object containing microbiome data.
+#' @details
+#'  Statistical tests
+#'
+#' The following statistical tests are applied for each taxon across the specified design variables:
+#'
+#' * ANOVA: Tests whether there is a statistically significant difference in mean abundance across all groups. Useful as a global indicator.
+#'
+#' * Tukey's HSD: A test performed after ANOVA. Identifies which specific group pairs differ significantly, with correction for multiple comparisons (family-wise error rate).
+#'
+#' * Pairwise t-tests with Bonferroni correction: An alternative pairwise approach that adjusts p-values using the Bonferroni method. More flexible than Tukey's HSD and works with unequal variances or group sizes.
+#'
+#' Significant results are highlighted in the Excel output.
+#
+#' @param physeq a phyloseq object.
 #' @param stats_path a string specifying the directory to save the results.
-#' @param level_glom name of the level to agglomerate counts. Default is "Phylum".
-#' @param test_designs a vector of test designs (e.g., c("Concentration", "Temperature")).
-#' @param lower_limit the minimum abundance threshold for including taxa. Default is 0.04 (4%).
+#' @param level_glom name of the taxonomic level to agglomerate counts. Default is "Phylum".
+#' @param designs a vector of test designs (e.g., c("Concentration", "Temperature")).
+#' @param signi_limit the significance level. Default is 0.05 (5 \%).
+#' @param lower_limit the minimum abundance threshold for including taxa. Default is 0.05 (5 \%).
+#' @param higher_limit the maximum abundance threshold for including taxa. Default is 1 (100 \%).
 #'
 #' @return results are saved to the specified directory.
 #' @export
 #'
 #' @examples
-perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", designs, lower_limit = 0.04) {
+#' # Data phyloseq object:
+#' data(qaanaaq_rRNA)
+#' phylo <- qaanaaq_rRNA
+#'
+#' \dontrun{
+#' perform_univariate(physeq = my_physeq_object,
+#'                    stats_path = "results/",
+#'                    designs = c("Direction", "Wetness"))
+#' }
+perform_univariate <- function(physeq,
+                               stats_path,
+                               level_glom = "Phylum",
+                               designs,
+                               signi_limit = 0.05,
+                               lower_limit = 0.05,
+                               higher_limit = 1) {
+
+  # ------------#
+  # Check inputs
+  # ------------#
+
+  if (class(physeq)[1] != "phyloseq") {
+    stop("`physeq` must be a phyloseq object")
+  }
+
+  if (!is.character(stats_path)){
+    stop("`stats_path` must be character")
+  }
+
+  if (!is.character(level_glom)){
+    stop("`level_glom` must be character")
+  }
+
+  if (!all(designs %in%  colnames(phyloseq::sample_data(physeq)))) {
+    stop(paste("Designs are not found in sample data"))
+  }
+
+  if (!is.numeric(signi_limit)){
+    stop("`num` must be numeric")
+  }
+
+  if (!is.numeric(lower_limit)){
+    stop("`num` must be numeric")
+  }
+
+  if (!is.numeric(higher_limit)){
+    stop("`num` must be numeric")
+  }
+
+  if (signi_limit > 1 | signi_limit < 0) {
+    stop("`signi_limit` must be between 0 and 1")
+  }
+
+  if (lower_limit > 1 | lower_limit < 0) {
+    stop("`lower_limit` must be between 0 and 1")
+  }
+
+  if (higher_limit > 1 | higher_limit < 0) {
+    stop("`higher_limit` must be between 0 and 1")
+  }
+
+  # ------------#
 
   # Convert to symbol.
   level_glom_sym <- rlang::sym(level_glom)
@@ -21,11 +98,12 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
     phyloseq::transform_sample_counts(function(x) x/sum(x)) |>
     phyloseq::psmelt()
 
-  # Get abundant taxa.
+  # Get the relevant taxa.
   abundant_taxa <- physeq_df |>
     dplyr::group_by(!!level_glom_sym) |>
     dplyr::summarize(MaxAbundance = max(Abundance)) |>
-    dplyr::filter(MaxAbundance > lower_limit) |>
+    dplyr::filter(MaxAbundance > lower_limit,
+                  MaxAbundance < higher_limit) |>
     dplyr::pull(!!level_glom_sym)
 
   physeq_df <- physeq_df |>
@@ -43,19 +121,29 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
     taxon_data <- physeq_df |>
       dplyr::filter(!!level_glom_sym == taxon)
 
-    # Store results for each test design
+    # Store results for each test design.
     test_results_list <- list()
 
-    # Run statistical tests
+    # Run statistical tests.
     for (design in designs) {
-      anova_tukey_results <- perform_anova_tukey(taxon_data, design)
-      pairwise_results    <- pairwise.t.test(taxon_data$Abundance, taxon_data[[design]], p.adjust.method = "none")
-      pairwise_results_df <- broom::tidy(pairwise_results)
-      pairwise_results_df <- bonferroni_correction(pairwise_results_df)
 
-      test_results_list[[design]] <- list(anova = anova_tukey_results$anova,
-                                          tukey = anova_tukey_results$tukey,
-                                          pairwise = pairwise_results_df)
+      formula <- as.formula(paste("Abundance ~", design))
+
+      anova_results <- stats::aov(formula, data = taxon_data)
+
+      tukey_results <- stats::TukeyHSD(anova_results) |>
+        broom::tidy()
+
+      anova_results <-  anova_results |>
+        broom::tidy()
+
+      pairwise_results <- pairwise.t.test(taxon_data$Abundance, taxon_data[[design]], p.adjust.method = "none") |>
+        broom::tidy() |>
+        bonferroni_correction()
+
+      test_results_list[[design]] <- list(anova = anova_results,
+                                          tukey = tukey_results,
+                                          pairwise = pairwise_results)
     }
 
     results_list[[taxon]] <- test_results_list
@@ -67,28 +155,28 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
   output_file <- file.path(stats_path, "univariate_results.xlsx")
   wb <- openxlsx::createWorkbook()
 
-  style1 <- openxlsx::createStyle(fgFill = "#003d73",
-                                  fontSize = 14,
-                                  fontColour = "white",
-                                  textDecoration = "bold",
-                                  border = "TopBottomLeftRight",
-                                  borderStyle = "thick",
-                                  borderColour = "#003d73")
+  style_header1 <- openxlsx::createStyle(fgFill = "#003d73",
+                                         fontSize = 14,
+                                         fontColour = "white",
+                                         textDecoration = "bold",
+                                         border = "TopBottomLeftRight",
+                                         borderStyle = "thick",
+                                         borderColour = "#003d73")
 
-  style2 <- openxlsx::createStyle(fontSize = 11,
-                                  fontColour = "#003d73",
-                                  textDecoration = "bold")
+  style_header2 <- openxlsx::createStyle(fontSize = 11,
+                                         fontColour = "#003d73",
+                                         textDecoration = "bold")
 
-  style3 <- openxlsx::createStyle(fgFill = "#93a8c2",
-                                  fontSize = 11,
-                                  fontColour = "#003d73",
-                                  textDecoration = "bold",
-                                  border = "TopBottomLeftRight",
-                                  borderColour = "#003d73")
+  style_header3 <- openxlsx::createStyle(fgFill = "#93a8c2",
+                                         fontSize = 11,
+                                         fontColour = "#003d73",
+                                         textDecoration = "bold",
+                                         border = "TopBottomLeftRight",
+                                         borderColour = "#003d73")
 
-  style4 <- openxlsx::createStyle(fgFill = "#ffa293",
-                                  fontSize = 11,
-                                  textDecoration = "bold")
+  style_signi <- openxlsx::createStyle(fgFill = "#ffa293",
+                                       fontSize = 11,
+                                       textDecoration = "bold")
 
   # Write results to workbook
   for (design in designs) {
@@ -102,32 +190,26 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
 
       openxlsx::writeData(wb, design, taxon, startRow = row_offset, startCol = col_offset, colNames = FALSE)
       openxlsx::mergeCells(wb, design, cols = col_offset:span, rows = row_offset)
-      openxlsx::addStyle(wb, design, style1, cols = col_offset:span, rows = row_offset, gridExpand = TRUE, stack = TRUE)
+      openxlsx::addStyle(wb, design, style_header1, cols = col_offset:span, rows = row_offset, gridExpand = TRUE, stack = TRUE)
 
       for (i in 1:length(taxon_results)){
         openxlsx::writeData(wb, design, headers[i], startRow = row_offset + 1, startCol = col_offset, colNames = FALSE)
-        openxlsx::addStyle(wb, design, style2, rows = row_offset + 1, cols = col_offset, gridExpand = TRUE, stack = TRUE)
+        openxlsx::addStyle(wb, design, style_header2, rows = row_offset + 1, cols = col_offset, gridExpand = TRUE, stack = TRUE)
         openxlsx::writeData(wb, design, taxon_results[[i]], startRow = row_offset + 2, startCol = col_offset, borders = "all")
-        openxlsx::addStyle(wb, design, style3, rows = row_offset + 2, cols = col_offset:(col_offset + ncol(taxon_results[[i]]) -1), gridExpand = TRUE, stack = TRUE)
+        openxlsx::addStyle(wb, design, style_header3, rows = row_offset + 2, cols = col_offset:(col_offset + ncol(taxon_results[[i]]) -1), gridExpand = TRUE, stack = TRUE)
 
-        sig_mask <- taxon_results[[i]][, colnames(taxon_results[[i]]) %in% c("p.value", "adj.p.value")] < 0.05
+        # Highlight significant results.
+        pval_cols <- which(colnames(taxon_results[[i]]) %in% c("p.value", "adj.p.value"))
 
-        # 2. Keep only columns with at least one TRUE (significant result)
-        sig_mask <- sig_mask[, apply(sig_mask, 2, function(x) any(x, na.rm = TRUE)), drop = FALSE]
-
-        # 3. Proceed only if we have significant values
-        if (length(sig_mask) > 0) {
-          sig_cols <- which(colnames(taxon_results[[i]]) %in% colnames(sig_mask))
-
-          # 4. Get row indices where at least one significant result exists
-          if (is.matrix(sig_mask)) {
-            sig_rows <- which(apply(sig_mask, 1, function(x) any(x, na.rm = TRUE)))
-          } else {
-            # If it's a vector (1 column subset), handle differently
-            sig_rows <- which(sig_mask == TRUE)
+        if (length(pval_cols) > 0) {
+          for (col_index in pval_cols) {
+            for (row_index in 1:nrow(taxon_results[[i]])) {
+              value <- taxon_results[[i]][row_index, col_index]
+              if (!is.na(value) && value < signi_limit) {
+                openxlsx::addStyle(wb, design, style_signi, rows = row_offset + 2 + row_index, cols = col_offset + col_index - 1, gridExpand = TRUE, stack = TRUE)
+              }
+            }
           }
-
-          openxlsx::addStyle(wb, design, style4, rows = sig_rows + row_offset + 2, cols = sig_cols + col_offset - 1, gridExpand = TRUE, stack = TRUE)
         }
 
         col_offset <- col_offset + ncol(taxon_results[[i]]) + 1
@@ -136,13 +218,10 @@ perform_univariate <- function(physeq, stats_path, level_glom = "Phylum", design
       row_offset <- row_offset + max(unlist(lapply(taxon_results, nrow))) + 4
 
     }
-
-    # Highlight significant results
-    #highlight_sig_results(wb, taxon, designs)
-
   }
 
   openxlsx::saveWorkbook(wb, output_file, overwrite = TRUE)
   message("Results saved to: ", output_file)
+
 }
 
