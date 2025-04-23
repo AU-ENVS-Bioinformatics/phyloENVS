@@ -1,8 +1,8 @@
 ---
-title: "Advanced Usage"
+title: "Advanced usage"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example 2}
+  %\VignetteIndexEntry{02 Advanced usage}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates thehow phyloENVS can be used for a larger dataset with replicates. 
+This vignette demonstrates how phyloENVS can be used for a larger dataset with replicates.
 
 ## Data
 
@@ -70,7 +70,7 @@ vis_abundance(physeq = genepease_rRNA_merged,
               lower_limit = 2)
 ```
 
-From the above, we can see that proteobacteria take over the community for large concentrations. Let's see what happens for those as well as the eukaryotes. The represented kingdoms can be seen below.
+From the above, we can see that proteobacteria take over the community for large concentrations. Let's see what happens for the bacteria and the eukaryotes separately. The represented kingdoms can be seen below.
 
 ```{r}
 tax_table(genepease_rRNA_merged) |>
@@ -95,7 +95,7 @@ kingdom_to_domain <- c(
 )
 ```
 
-We add the new level.
+We add the new level using `add_level()`.
 
 ```{r}
 genepease_rRNA_merged <- add_level(physeq = genepease_rRNA_merged, 
@@ -115,6 +115,7 @@ vis_abundance(physeq = genepease_rRNA_merged,
               group_select = "Eukaryotes",
               lower_limit = 0.2)
 ```
+
 In the same manner, we inspect the relative abundance of the prokaryotes, but we will agglomerate on order level to get a better understanding of the taxa taking over for higher concentrations. 
 
 ```{r, fig.width=10, fig.height=5, out.width="80%", fig.align="center"}
@@ -127,7 +128,7 @@ vis_abundance(physeq = genepease_rRNA_merged,
               lower_limit = 3) 
 ```
 
-## Richness
+## Richness With Specified Measure
 
 Finally, we can visualize the alpha diversity focused on differences between concentrations, but we color by timepoint to look for patterns in the richness with respect to this variable. In the example below, we will use inverse Simpson to measure the diversity. 
 
@@ -136,4 +137,14 @@ vis_richness(physeq = genepease_rRNA_merged,
              group_x = "Concentration", 
              group_color = "Timepoint",
              measures = "InvSimpson")
+```
+
+## Univariate Statistical Tests Across Taxa
+
+In the vignette "Introduction to phyloENVS", we show how differences in community structure between groups can be tested with PERMANOVA. It is also possible to make univariate tests for the abundance per taxon. The framework is build into the function `perform_univariate()`. We recommend visiting its documentation. 
+
+```{r, eval=FALSE}
+perform_univariate(genepease_rRNA,
+                   stats_path = "results/",
+                   designs = c("Direction", "Wetness"))
 ```

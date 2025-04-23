@@ -2,7 +2,7 @@
 title: "Working with mRNA"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example 3}
+  %\VignetteIndexEntry{03 Working with mRNA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,9 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "Example 1". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W).
+This vignette demonstrates how phyloENVS generalize to mRNA data. We will be using mRNA read counts from ice samples collected in Qaanaaq, Greenland, similar to the vignette "Introduction to phyloENVS". We focus on glacier samples collected along two transects. The sampling locations along each transect were categorized into three zones based on wetness. Furthermore, we distinguish between samples facing east (E) and west (W).
 
-## Annotation of mRNA reads
+## Annotation of mRNA reads using Diamond
 
 We will consider read counts for mRNA transcripts annotated by mapping mRNA contigs to the following three databases:
 
@@ -47,7 +47,7 @@ qaanaaq_mRNA_pcyc <- subset_samples(qaanaaq_mRNA,
   subset_taxa(Database == "PCyc")
 ```
 
-## Ordination
+### Ordination
 
 We perform Non-metric Multidimensional Scaling (NMDS). We use the [patchwork package](https://patchwork.data-imaginist.com/) to combine multiple plots.
 
@@ -80,7 +80,7 @@ vis_shepard(qaanaaq_mRNA_cazy,
   labs(title = "PCyc")
 ```
 
-## Abundance
+### Abundance
 
 In the ordination, the wet samples seemed to be different from the rest. Especially for the PCyc data, the direction might also explain the differences in mRNA expression. We look into the relative abundances for CAZy and PCyc reads.
 
@@ -89,7 +89,7 @@ vis_abundance(physeq = qaanaaq_mRNA_cazy,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Level1",
-              color_source = "AUblue",
+              color_source = "AUjulien",
               lower_limit = 1) +
   labs(title = "CAZy",
        fill = "Level 1") +
@@ -97,8 +97,69 @@ vis_abundance(physeq = qaanaaq_mRNA_cazy,
               group_x = "SampleName",
               group_split = "Wetness",
               level_glom = "Level1",
-              color_source = "AUred",
+              color_source = "AUmort",
               lower_limit = 1) +
   labs(title = "PCyc",
        fill = "Level 1")
+```
+
+## Annotation of mRNA reads using AnnoTree
+
+The [ENVS pipeline](https://github.com/AU-ENVS-Bioinformatics/TotalRNA-Snakemake) will also annotate mRNA contigs using [AnnoTree](http://annotree.uwaterloo.ca/annotree/), which includes KEGG, Pfam and Tigrfam annotations for over 30,000 bacterial and 1600 archaeal genomes. Let's load this data.
+
+```{r}
+data("qaanaaq_annotree")
+
+qaanaaq_annotree <- subset_samples(qaanaaq_annotree,
+                                   Transect != "Non-transect")
+```
+### Abundance
+
+As before, we visualize the abundance based on the first overall level.
+
+```{r}
+vis_abundance(physeq = qaanaaq_annotree,
+              group_x = "SampleName",
+              group_split = "Wetness",
+              level_glom = "Brite_Level1",
+              color_source = "AU1",
+              lower_limit = 1) +
+  labs(fill = "Level 1")
+```
+
+The first level shows some very general groupings of the contigs. Let's visualize each one using different color scales to match AU1 above.
+
+```{r}
+qaanaaq_annotree |>
+  subset_taxa(Brite_Level1 == "Genetic information processing") |>
+  vis_abundance(group_x = "SampleName",
+                group_split = "Wetness",
+                level_glom = "Brite_Level2",
+                color_source = "AUblue",
+                lower_limit = 5) +
+  theme(legend.title=element_blank()) + 
+  labs(title = "Genetic information processing") 
+```
+```{r}
+qaanaaq_annotree |>
+  subset_taxa(Brite_Level1 == "Metabolism") |>
+  vis_abundance(group_x = "SampleName",
+                group_split = "Wetness",
+                level_glom = "Brite_Level2",
+                color_source = "AUturquoise",
+                lower_limit = 5) +
+  theme(legend.title=element_blank()) + 
+  labs(title = "Metabolism")
+```
+
+```{r}
+qaanaaq_annotree |>
+    subset_taxa(Brite_Level1 == "Signaling and cellular processes") |>
+    vis_abundance(group_x = "SampleName",
+                  group_split = "Wetness",
+                  level_glom = "Brite_Level2",
+                  color_source = "AUorange",
+                  lower_limit = 5) +
+    theme(legend.title=element_blank()) + 
+    labs(title = "Signaling and cellular processes")
 ```

@@ -2,7 +2,7 @@
 title: "Introduction to phyloENVS"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example 1}
+  %\VignetteIndexEntry{01 Introduction to phyloENVS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,6 +19,8 @@ This vignette demonstrates the core functions of phyloENVS using meta-transcript
 As phyloENVS builds upon the phyloseq package for microbial community analysis, we assume that users are familiar with basic phyloseq commands. If you are new to phyloseq, we recommend reviewing [its documentation](https://joey711.github.io/phyloseq/) before proceeding. Below is the data structure for this specific examples.
 
 ![](images/qaanaaq_data_structure.png)
+
+Be aware, you can create a phyloseq object with phyloENVS using `data_to_phyloseq()` for TotalRNA meta-transcriptomic data obtained by the [ENVS pipeline](https://github.com/AU-ENVS-Bioinformatics/TotalRNA-Snakemake). See documentation with `?data_to_phyloseq()`.
 
 ## Sampling Design and Environmental Conditions
 
@@ -46,7 +48,7 @@ qaanaaq_rRNA_sub <- phyloseq::subset_samples(qaanaaq_rRNA,
 
 ## Ordination
 
-Firstly, we will perform Non-metric Multidimensional Scaling (NMDS) - a statistical method used for visualizing high-dimensional data by reducing it to fewer dimensions (here 2). This ordination will preserve the rank order of Bray-Curtis dissimilarities between samples. By coloring the points by wetness, we can visually investigate whether this environmental factor influence the composition of a community. We will shape the points by transect (1 or 2) to also look for patterns related to each transect.
+Firstly, we will perform Non-metric Multidimensional Scaling (NMDS) - a statistical method used for visualizing high-dimensional data by reducing it to fewer dimensions. This ordination will preserve the rank order of Bray-Curtis dissimilarities between samples. By coloring the points by wetness, we can visually investigate whether this environmental factor influence the composition of a community. We will shape the points by transect (1 or 2) to also look for patterns related to each transect.
 
 ```{r, message=FALSE, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_nmds(qaanaaq_rRNA_sub,
@@ -59,7 +61,7 @@ vis_nmds(qaanaaq_rRNA_sub,
          scale_plot = 0.3)
 ```
 
-Be aware, if the read counts are not normalized, we always recommend to normalize to the relative abundance prior to ordination (convert_to_rel = TRUE). However, the user might prefer another normalization method or use relative abundances as input, e.g., when filtering out low abundance taxa based on relative abundances.
+Be aware, if the read counts are not normalized, we always recommend to normalize to the relative abundance prior to ordination (`convert_to_rel = TRUE`). However, the user might prefer another normalization method or use relative abundances as input, e.g., when filtering out low abundance taxa based on relative abundances.
 
 After generating the NMDS, we plot the Shepard plot to check the goodnees of fit for the ordination method. The Shepard plot compares the original dissimilarities between samples with the dissimilarities between samples in the reduced-dimensional space obtained from NMDS.
 
@@ -70,7 +72,7 @@ vis_shepard(qaanaaq_rRNA_sub,
 
 ## Abundance
 
-Relative abundance refers to the proportion of each taxon relative to the total number of sequences or observations in a sample, allowing for easy comparison across samples with varying sequencing depths. Again, we will focus on the relative abundances of microbial taxa from our dataset in wet, semi-wet, and dry zones.
+Relative abundance refers to the proportion of each taxon relative to the total number of reads in a sample, allowing for easy comparison across samples with varying sequencing depths. Again, we will focus on the relative abundances of microbial taxa from our dataset in wet, semi-wet, and dry zones.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = qaanaaq_rRNA_sub,
@@ -104,50 +106,6 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               lower_limit = 0)
 ```
 
-We can also group taxa into specified groups with `add_level()`. For example, we might want to add a new taxonomical level for the different kingdoms in order to inspect the relative abundances of eukaryotes and prokaryotes seperately. First, we should define a table based on the kingdoms represented in the data.
-
-```{r}
-tax_table(qaanaaq_rRNA_sub) |>
-  as.data.frame() |>
-  as_tibble() |>
-  select(Kingdom) |>
-  pull() |>
-  table()
-```
-
-We create the table.
-
-```{r}
-kingdom_to_domain <- c(
-  "Amorphea" = "Eukaryotes",
-  "Archaeplastida" = "Eukaryotes",
-  "Bacteria" = "Prokaryotes",
-  "Hacrobia" = "Eukaryotes",
-  "SAR" = "Eukaryotes"
-)
-```
-
-We add the domain level.
-
-```{r}
-qaanaaq_rRNA_sub <- add_level(physeq = qaanaaq_rRNA_sub, 
-                              level = "Kingdom", 
-                              level_name = "Domain", 
-                              look_up_table = kingdom_to_domain)
-```
-
-Let's look at the relative abundance for prokaryotes and eukaryotes on phylum level.
-
-```{r, fig.width=7, fig.height=7, out.width="80%", fig.align="center"}
-vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = "SampleName",
-              group_split = "Wetness",
-              level_glom = "Phylum",
-              level_select = "Domain",
-              group_select = c("Prokaryotes", "Eukaryotes"),
-              lower_limit = 2)
-```
-
 ## Richness
 
 By plotting alpha diversity through richness, we can observe how many distinct taxa are present in each sample, which is crucial for understanding community structure and the complexity of ecosystems.
@@ -156,4 +114,14 @@ By plotting alpha diversity through richness, we can observe how many distinct t
 vis_richness(physeq = qaanaaq_rRNA_sub, 
              group_x = "Wetness", 
              group_color = "Wetness")
+```
+
+## Statistics
+
+PERMANOVA stands for Permutational Multivariate Analysis of Variance. It's a non-parametric statistical test used to assess whether the centroids (average positions) of the community composition in multivariate space differ significantly based on one or more factors. This test can be performed for multiple designs and saved in a combined result file in Excel using `perform_permanova()`.
+
+```{r, eval=FALSE}
+perform_permanova(qaanaaq_rRNA_sub,
+                  stats_path = "results/",
+                  designs = c("Direction", "Wetness"))
 ```
