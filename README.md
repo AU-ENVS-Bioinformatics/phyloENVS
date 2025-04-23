@@ -66,7 +66,6 @@ typing:
 
 ``` r
 browseVignettes("phyloENVS")
-#> No vignettes found by browseVignettes("phyloENVS")
 ```
 
 It is also possible to find an RMarkdown template in RStudio: File -\>

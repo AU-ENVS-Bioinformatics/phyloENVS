@@ -59,7 +59,7 @@ All functions within phyloENVS builds upon the [phyloseq package](https://joey71
 
 The vignettes contains a lot of information on how to use phyloENVS. After installation, the vignette can be accessed from the R console by typing:
 
-```{r}
+```{r, eval=FALSE}
 browseVignettes("phyloENVS")
 ```
 
