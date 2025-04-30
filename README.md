@@ -3,7 +3,7 @@
 
 <div align="right">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/au.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/au.png" width="2000"/>
 
 </div>
 
@@ -32,7 +32,7 @@ the devtools package.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("johanneBiO/phyloENVS", build_vignettes = TRUE)
+devtools::install_github("AU-ENVS-Bioinformatics/phyloENVS", build_vignettes = TRUE)
 ```
 
 ## Data Structure
@@ -73,7 +73,7 @@ New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/template.png" width="500"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/template.png" width="500"/>
 
 </div>
 
@@ -138,7 +138,7 @@ The available color scales can be seen below.
 
 <div align="left">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
 
 </div>
 
