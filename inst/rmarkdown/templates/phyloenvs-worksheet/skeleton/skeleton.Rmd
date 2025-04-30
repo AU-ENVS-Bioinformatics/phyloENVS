@@ -92,7 +92,7 @@ Ordination is good way to visualize your data and get a fast impression of impor
 Here, you can ordinate using the NMDS method with the bray distance. 
 
 ```{r}
-vis_nmds(physeq, ...)   # ?vis_nmds for documentation
+vis_nmds(physeq, ...)       # ?vis_nmds for documentation
 ```
 
 ### Evaluation of the Fit
@@ -100,23 +100,35 @@ vis_nmds(physeq, ...)   # ?vis_nmds for documentation
 We find the goodness of fit previous NMDS.
 
 ```{r}
-vis_nmds(physeq, ...)
+vis_shepard(physeq, ...)    # ?vis_shepard for documentation
 ```
 
 ## Abundance
 
-```{r}
+To see what taxa drives the differences between groups, we can visualize the abundance in a stacked barplot. There are many possibilities for creating more advanced barplots (see the vignette "02 Advanced usage").
 
+```{r}
+vis_abundance(physeq, ...)  # ?vis_abundance for documentation
 ```
 
 ## Richness
 
-```{r}
+Visualize the richness here.
 
+```{r}
+vis_richness(physeq, ...)   # ?vis_richness for documentation
 ```
 
 ## Statistics
 
-```{r}
+The package offers to statistical setups: PERMANOVA and univariate statistical testing across microbial taxa. The output from running these are Excel files so be sure to input the right path for your test results.
 
+```{r}
+perform_permanova(physeq,
+                  stats_path = "results/",
+                  designs = c("Factor1", "Factor2"))
+
+perform_univariate(physeq,
+                   stats_path = "results/",
+                   designs = c("Factor1", "Factor2"))
 ```
