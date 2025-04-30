@@ -11,7 +11,7 @@
 
 <!-- badges: start -->
 
-\[\![DOI\]
+[![DOI](https://zenodo.org/badge/923477160.svg)](https://doi.org/10.5281/zenodo.15308888)
 
 <!-- badges: end -->
 
@@ -147,4 +147,5 @@ The available color scales can be seen below.
 This package builds upon the [phyloseq
 package](https://joey711.github.io/phyloseq/). Furthermore, this work
 has been highly inspired by the [RauENVS
-package](https://github.com/AU-ENVS-Bioinformatics/RauENVS).
+package](https://github.com/AU-ENVS-Bioinformatics/RauENVS) and shared
+code from Thanassis Zervas.
