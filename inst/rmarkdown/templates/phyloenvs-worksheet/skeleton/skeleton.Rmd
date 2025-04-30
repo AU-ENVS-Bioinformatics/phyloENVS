@@ -7,49 +7,100 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-library(phyloENVS)
-library(phyloseq) 
-
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Introduction
 
-This template serves as a guide for analyzing your sequencing experiment using the phyloENVS package. We recommend you to look at the vignettes for inspiration (browseVignettes("phyloENVS")). 
+This template serves as a guide for analyzing your sequencing experiment using the phyloENVS package. We recommend you to look at the vignettes for inspiration (- type `browseVignettes("phyloENVS")` in the console). Furthermore, we encourage the user to look into the data and perform sanity checks along the way. 
 
-(Make advanced)
+Describe the purpose of the analysis here.
 
+## Set up
+
+Load the needed libraries for your analysis. It might be useful to load the `phyloseq` package itself for data wrangling of the phyloseq object. Consider if you need to modify the plots generated with `phyloENVS`. In this case, load `ggplot2`. 
+
+```{r}
+library(phyloENVS)
+
+# Recommended: 
+#library(phyloseq)
+#library(ggplot2)
+#library(patchwork)  - composer of plots
+#library(readr)      - for reading in data csv files
+#library(dplyr)      
+#library(tidyr)
+```
 
 ## Data
 
-### Import
+Describe your data here.
+
+### Data Import
+
+Load your data here. If the data is generated from the [ENVS TotalRNA pipeline](https://github.com/AU-ENVS-Bioinformatics/TotalRNA-Snakemake), use `data_to_phyloseq`.
 
 ```{r}
+physeq <- data_to_phyloseq(totalRNA_file = "name_of_totalRNA_file.csv", 
+                           meta_file = "name_of_sample_data_file.csv", 
+                           sample_names = "column_X")
+```
 
+If not, create the phyloseq object manually:
+
+```{r}
+# Sample Meta Data
+meta <- read_csv("name_of_sample_data_file.csv") |>
+  column_to_rownames(var = "rowname") |>
+  sample_data()
+
+# OTU Table
+otu <- read_csv("name_of_otu_table_file.csv") |>
+  otu_table(taxa_are_rows = TRUE)
+
+# Taxonomy Table
+taxa <- read_csv("name_of_taxonomy_table_file.csv") |>
+  as.matrix() |>
+  tax_table()
+
+# Phyloseq Object
+physeq <- phyloseq(otu, taxa, meta)
 ```
 
 ### Data Wrangling
 
-```{r}
+Process you data here. Consider if certain samples needs to be removed based on the metadata using `subset_samples`. You can also subset species by taxonomic expression with `subset_taxa`. You can transform the data, e.g., into relative abundances. This could be useful, if you consider to subset based on abundance. Be aware, transformation is often recommended and converting counts to relative abundances as below is already build into many of the phyloENVS functions.
 
+```{r}
+# Subsetting
+physeq <- physeq |>
+  subset_samples(...)   # ?subset_samples for documentation
+physeq <- physeq |>
+  subset_taxa(...)      # ?subset_taxa for documentation
+
+# Transformation
+physeq <- physeq |>
+  transform_sample_counts(function(x) x/sum(x))
 ```
 
 ## Ordination
 
-```{r}
-
-```
+Ordination is good way to visualize your data and get a fast impression of important factors driving the differences in the community. 
 
 ### Non-metric MultiDimenstional Scaling (NMDS)
 
-```{r}
+Here, you can ordinate using the NMDS method with the bray distance. 
 
+```{r}
+vis_nmds(physeq, ...)   # ?vis_nmds for documentation
 ```
 
 ### Evaluation of the Fit
 
-```{r}
+We find the goodness of fit previous NMDS.
 
+```{r}
+vis_nmds(physeq, ...)
 ```
 
 ## Abundance
