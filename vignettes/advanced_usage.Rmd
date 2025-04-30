@@ -20,7 +20,7 @@ This vignette demonstrates how phyloENVS can be used for a larger dataset with r
 
 We will be using meta-transcriptomic data from the GENEPEASE II project. 
 
-```{r setup}
+```{r setup, message=FALSE}
 library(phyloENVS)
 library(phyloseq)
 library(dplyr)
