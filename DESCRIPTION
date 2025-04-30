@@ -19,6 +19,7 @@ Imports:
   phyloseq,
   dplyr,
   tidyr,
+  tibble,
   ggplot2,
   ggalt,
   readxl,
