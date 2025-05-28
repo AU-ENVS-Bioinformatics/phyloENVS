@@ -179,7 +179,7 @@ vis_abundance <- function(physeq,
     if (remove_grid == FALSE){
       plot <- plot + ggplot2::facet_grid(cols = ggplot2::vars(!!group_split_sym),
                                          rows = ggplot2::vars(!!level_select_sym),
-                                         scales = "free_x",
+                                         scales = "free",
                                          space = "free_x",
                                          switch = "y")
     } else {
@@ -190,7 +190,7 @@ vis_abundance <- function(physeq,
   } else {
     if (remove_grid == FALSE){
       plot <- plot + ggplot2::facet_grid(cols = ggplot2::vars(!!group_split_sym),
-                                         scales = "free_x",
+                                         scales = "free",
                                          space = "free_x",
                                          switch = "y")}
 
