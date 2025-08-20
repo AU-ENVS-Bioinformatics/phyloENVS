@@ -28,7 +28,7 @@ perform_permanova <- function(physeq,
                               signi_limit = 0.05,
                               convert_to_rel = TRUE,
                               dist_method = "bray",
-                              n_permute = 999) {
+                              n_permute = 999){
 
   # ------------#
   # Check inputs
@@ -151,6 +151,5 @@ perform_permanova <- function(physeq,
   message("Distance: ", dist_method)
   message("Permutations: ", n_permute)
   message("Results saved to: ", output_file)
-
 }
 

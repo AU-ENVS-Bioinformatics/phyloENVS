@@ -31,7 +31,8 @@ Imports:
   vegan,
   stats,
   broom,
-  patchwork
+  patchwork,
+  vegan
 Remotes:
   bioc::phyloseq,
   bioc::microbiome

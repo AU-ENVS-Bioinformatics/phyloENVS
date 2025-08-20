@@ -91,19 +91,30 @@ vis_nmds <- function(physeq,
     physeq_rel <- physeq
   }
 
-  # Redirect output to null to suppress it (Mac version)
-  sink("/dev/null")  # Redirects output to null (use "/dev/null" on macOS)
-  on.exit(sink())  # Ensure that it gets reset after function execution
+  otu_mat <- as(phyloseq::otu_table(physeq_rel), "matrix")
 
-  # Ordinate.
-  physeq_nmds <- invisible(phyloseq::ordinate(physeq_rel,
-                                              method = "NMDS",
-                                              distance = "bray"))
+  # Samples as rows
+  if(phyloseq::taxa_are_rows(physeq_rel)) {
+    otu_mat <- t(otu_mat)
+  }
+
+  # Compute Bray-Curtis distance
+  otu_dist <- vegan::vegdist(otu_mat, method = "bray")
+
+  # Run NMDS
+  nmds <- vegan::metaMDS(otu_dist,
+                         k = 2,
+                         trymax = 20,
+                         autotransform = FALSE,
+                         trace = FALSE)
+
+  # Extract NMDS scores
+  nmds_scores <- as.data.frame(vegan::scores(nmds))
 
   # Get values.
   nmds_df <- data.frame(phyloseq::sample_data(physeq_rel),
-                        "NMDS1" = physeq_nmds$points[, 1],
-                        "NMDS2" = physeq_nmds$points[, 2])
+                        "NMDS1" = nmds_scores$NMDS1,
+                        "NMDS2" = nmds_scores$NMDS2)
 
   # Get the color and shape number.
   group_color_num <- length(unique(dplyr::pull(nmds_df,

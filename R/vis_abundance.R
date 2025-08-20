@@ -106,10 +106,23 @@ vis_abundance <- function(physeq,
                   !!group_split := factor(!!group_split_sym))
 
   # Subset data if specified by user.
-  if (!is.null(level_select) && !is.null(level_select)){
+  if (!is.null(level_select) && !is.null(group_select)){
     level_select_sym <- rlang::sym(level_select)
     physeq_df <- physeq_df |>
       dplyr::filter(!!level_select_sym %in% group_select)
+  }
+
+  if (!is.null(level_select) && !is.null(group_select)){
+    order <- physeq_df |>
+      dplyr::select(!!level_select_sym, !!level_glom_sym) |>
+      distinct() |>
+      arrange(!!level_select_sym, !!level_glom_sym) |>
+      pull(!!level_glom_sym) |>
+      unique()
+
+    physeq_df <- physeq_df |>
+      dplyr::mutate(!!level_glom := factor(!!level_glom_sym,
+                                           levels = order))
   }
 
   # Get number of unique colors to use.
