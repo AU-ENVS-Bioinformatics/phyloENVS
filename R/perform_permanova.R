@@ -151,5 +151,7 @@ perform_permanova <- function(physeq,
   message("Distance: ", dist_method)
   message("Permutations: ", n_permute)
   message("Results saved to: ", output_file)
+
+  return(results_combined)
 }
 
