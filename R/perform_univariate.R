@@ -16,6 +16,7 @@
 #
 #' @param physeq a phyloseq object.
 #' @param stats_path a string specifying the path where the output Excel file should be saved.
+#' @param file_name a string specifying the name of the output excel file. If not specified, the file is named univariate_results.xlsx.
 #' @param level_glom name of the taxonomic level to agglomerate counts. Default is "Phylum".
 #' @param designs a vector of test designs (e.g., c("Concentration", "Temperature")).
 #' @param signi_limit the significance level. Default is 0.05 (5 \%).
@@ -37,6 +38,7 @@
 #' }
 perform_univariate <- function(physeq,
                                stats_path,
+                               file_name = "univariate_results.xlsx",
                                level_glom = "Phylum",
                                designs,
                                signi_limit = 0.05,
@@ -53,6 +55,10 @@ perform_univariate <- function(physeq,
 
   if (!is.character(stats_path)){
     stop("`stats_path` must be character")
+  }
+
+  if (!is.character(file_name)){
+    stop("`file_name` must be character")
   }
 
   if (!is.character(level_glom)){
@@ -89,16 +95,16 @@ perform_univariate <- function(physeq,
 
   # ------------#
 
-  # Convert to symbol.
+  # Convert to symbol
   level_glom_sym <- rlang::sym(level_glom)
 
-  # Preprocess phyloseq data.
+  # Preprocess phyloseq data
   physeq_df <- physeq |>
     phyloseq::tax_glom(taxrank = level_glom) |>
     phyloseq::transform_sample_counts(function(x) x/sum(x)) |>
     phyloseq::psmelt()
 
-  # Get the relevant taxa.
+  # Get the relevant taxa
   abundant_taxa <- physeq_df |>
     dplyr::group_by(!!level_glom_sym) |>
     dplyr::summarize(MaxAbundance = max(Abundance)) |>
@@ -114,17 +120,17 @@ perform_univariate <- function(physeq,
     dir.create(stats_path, recursive = TRUE)
   }
 
-  # List to store results for each taxon.
+  # List to store results for each taxon
   results_list <- list()
 
   for (taxon in abundant_taxa) {
     taxon_data <- physeq_df |>
       dplyr::filter(!!level_glom_sym == taxon)
 
-    # Store results for each test design.
+    # Store results for each test design
     test_results_list <- list()
 
-    # Run statistical tests.
+    # Run statistical tests
     for (design in designs) {
 
       formula <- as.formula(paste("Abundance ~", design))
@@ -178,7 +184,7 @@ perform_univariate <- function(physeq,
                                        fontSize = 11,
                                        textDecoration = "bold")
 
-  # Write results to workbook.
+  # Write results to workbook
   for (design in designs) {
     openxlsx::addWorksheet(wb, design)
     row_offset <- 1
@@ -198,7 +204,7 @@ perform_univariate <- function(physeq,
         openxlsx::writeData(wb, design, taxon_results[[i]], startRow = row_offset + 2, startCol = col_offset, borders = "all")
         openxlsx::addStyle(wb, design, style_header3, rows = row_offset + 2, cols = col_offset:(col_offset + ncol(taxon_results[[i]]) -1), gridExpand = TRUE, stack = TRUE)
 
-        # Highlight significant results.
+        # Highlight significant results
         pval_cols <- which(colnames(taxon_results[[i]]) %in% c("p.value", "adj.p.value"))
 
         if (length(pval_cols) > 0) {
@@ -217,10 +223,9 @@ perform_univariate <- function(physeq,
     }
   }
 
-  # Save results.
-  output_file <- file.path(stats_path, "univariate_results.xlsx")
+  # Save results
+  output_file <- file.path(stats_path, fine_name)
   openxlsx::saveWorkbook(wb, output_file, overwrite = TRUE)
   message("Results saved to: ", output_file)
 
 }
-

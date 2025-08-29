@@ -70,8 +70,7 @@ perform_permanova <- function(physeq,
 
   # ------------#
 
-
-  # Normalize.
+  # Normalize
   if (convert_to_rel == TRUE){
     physeq_rel <- physeq |>
       phyloseq::transform_sample_counts(function(x) x/sum(x))
@@ -79,14 +78,14 @@ perform_permanova <- function(physeq,
     physeq_rel <- physeq
   }
 
-  # Extract OTU abundances and metadata.
+  # Extract OTU abundances and metadata
   otu  <- microbiome::abundances(physeq_rel)
   meta <- microbiome::meta(physeq_rel)
 
-  # Create an empty list to store results.
+  # Create an empty list to store results
   results_list <- list()
 
-  # Run PERMANOVA for each design.
+  # Run PERMANOVA for each design
   for (design in designs) {
     formula <- as.formula(paste("t(otu) ~", design))
     results <- vegan::adonis2(formula,
@@ -98,7 +97,7 @@ perform_permanova <- function(physeq,
     results_list[[design]] <- results
   }
 
-  # Combine all results into one data frame.
+  # Combine all results into one data frame
   results_combined <- do.call(rbind, results_list)
 
   # Create the output directory if not exists
@@ -106,7 +105,7 @@ perform_permanova <- function(physeq,
     dir.create(stats_path, recursive = TRUE)
   }
 
-  # Prepare Excel workbook.
+  # Prepare Excel workbook
   wb <- openxlsx::createWorkbook()
   sheet <- "PERMANOVA"
   openxlsx::addWorksheet(wb, sheet)
@@ -127,7 +126,7 @@ perform_permanova <- function(physeq,
                                        fontSize = 11,
                                        textDecoration = "bold")
 
-  # Write grouped results by design.
+  # Write grouped results by design
   row_offset <- 1
 
   for (design in names(results_list)) {
@@ -151,7 +150,7 @@ perform_permanova <- function(physeq,
     row_offset <- row_offset + nrow(design_results) + 1
   }
 
-  # Save results.
+  # Save results
   output_file <- file.path(stats_path, filename)
   openxlsx::saveWorkbook(wb, file = output_file, overwrite = TRUE)
   message("Distance: ", dist_method)

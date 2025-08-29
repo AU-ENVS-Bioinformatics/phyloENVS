@@ -7,7 +7,7 @@
 perform_permanova_pairwise(
   physeq,
   stats_path,
-  file_name,
+  file_name = "permanova_pairwise_results.xlsx",
   designs,
   signi_limit = 0.05,
   convert_to_rel = TRUE,
@@ -20,7 +20,7 @@ perform_permanova_pairwise(
 
 \item{stats_path}{a string specifying the path where the output Excel file should be saved.}
 
-\item{file_name}{a string specifying the name of the output excel file. If not specified, the file is named permanova_results.xlsx.}
+\item{file_name}{a string specifying the name of the output excel file. If not specified, the file is named permanova_pairwise_results.xlsx.}
 
 \item{designs}{a character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).}
 

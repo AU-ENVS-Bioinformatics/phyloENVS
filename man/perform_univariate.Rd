@@ -7,6 +7,7 @@
 perform_univariate(
   physeq,
   stats_path,
+  file_name = "univariate_results.xlsx",
   level_glom = "Phylum",
   designs,
   signi_limit = 0.05,
@@ -18,6 +19,8 @@ perform_univariate(
 \item{physeq}{a phyloseq object.}
 
 \item{stats_path}{a string specifying the path where the output Excel file should be saved.}
+
+\item{file_name}{a string specifying the name of the output excel file. If not specified, the file is named univariate_results.xlsx.}
 
 \item{level_glom}{name of the taxonomic level to agglomerate counts. Default is "Phylum".}
 
