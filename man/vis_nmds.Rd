@@ -9,10 +9,13 @@ vis_nmds(
   convert_to_rel = TRUE,
   group_color,
   group_shape,
+  group_circle = group_color,
   encircle = FALSE,
   fill_circle = FALSE,
+  smooth_circle = 0.5,
   scale_circle = 0.1,
-  scale_plot = 0.1
+  scale_plot = 0.1,
+  set_alpha = 0.8
 )
 }
 \arguments{
@@ -24,13 +27,19 @@ vis_nmds(
 
 \item{group_shape}{the parameter in metadata to shape by.}
 
+\item{group_circle}{the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.}
+
 \item{encircle}{encircle the points belonging to same group (as specified by group_color). Default is FALSE.}
 
 \item{fill_circle}{fill the encircled area. Default is FALSE.}
 
+\item{smooth_circle}{value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.5.}
+
 \item{scale_circle}{value to scale the encircle area. Default is 0.1.}
 
 \item{scale_plot}{value to scale the plot area. Default is 0.1.}
+
+\item{set_alpha}{value to control the degree of transparency of the data points. Default is 0.8.}
 }
 \value{
 NMDS plot created with ggplot.
@@ -46,7 +55,8 @@ phylo <- qaanaaq_rRNA
 vis_nmds(physeq = phylo,
          group_color = "Location",
          group_shape = "Transect",
-         scale_circle = 0.5,
-         scale_plot = 0.5)
+         encircle = TRUE,
+         scale_circle = 0.2,
+         scale_plot = 0.4)
 
 }

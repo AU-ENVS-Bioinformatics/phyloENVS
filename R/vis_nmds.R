@@ -5,10 +5,13 @@
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
 #' @param group_color the parameter in metadata to color by.
 #' @param group_shape the parameter in metadata to shape by.
+#' @param group_circle the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.
 #' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
 #' @param fill_circle fill the encircled area. Default is FALSE.
+#' @param smooth_circle value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.5.
 #' @param scale_circle value to scale the encircle area. Default is 0.1.
 #' @param scale_plot value to scale the plot area. Default is 0.1.
+#' @param set_alpha value to control the degree of transparency of the data points. Default is 0.8.
 #'
 #' @return NMDS plot created with ggplot.
 #' @export
@@ -21,17 +24,21 @@
 #' vis_nmds(physeq = phylo,
 #'          group_color = "Location",
 #'          group_shape = "Transect",
-#'          scale_circle = 0.5,
-#'          scale_plot = 0.5)
+#'          encircle = TRUE,
+#'          scale_circle = 0.2,
+#'          scale_plot = 0.4)
 #'
 vis_nmds <- function(physeq,
                      convert_to_rel = TRUE,
                      group_color,
                      group_shape,
+                     group_circle = group_color,
                      encircle = FALSE,
                      fill_circle = FALSE,
+                     smooth_circle = 0.5,
                      scale_circle = 0.1,
-                     scale_plot = 0.1){
+                     scale_plot = 0.1,
+                     set_alpha = 0.8){
 
   # ------------#
   # Check inputs
@@ -47,6 +54,14 @@ vis_nmds <- function(physeq,
 
   if (!is.character(group_shape)){
     stop("`group_shape` must be character")
+  }
+
+  if (!is.character(group_circle)){
+    stop("`group_circle` must be character")
+  }
+
+  if (!is.numeric(smooth_circle)){
+    stop("`smooth_circle` must be numeric")
   }
 
   if (!is.numeric(scale_circle)){
@@ -79,11 +94,12 @@ vis_nmds <- function(physeq,
 
   # ------------#
 
-  # Convert group_color and group_shape (characters) to symbols.
-  group_color_sym <- rlang::sym(group_color)
-  group_shape_sym <- rlang::sym(group_shape)
+  # Convert group_color and group_shape (characters) to symbols
+  group_color_sym  <- rlang::sym(group_color)
+  group_shape_sym  <- rlang::sym(group_shape)
+  group_circle_sym <- rlang::sym(group_circle)
 
-  # Normalize.
+  # Normalize
   if (convert_to_rel == TRUE){
     physeq_rel <- physeq |>
       phyloseq::transform_sample_counts(function(x) x/sum(x)*100)
@@ -111,53 +127,100 @@ vis_nmds <- function(physeq,
   # Extract NMDS scores
   nmds_scores <- as.data.frame(vegan::scores(nmds))
 
-  # Get values.
+  # Get values
   nmds_df <- data.frame(phyloseq::sample_data(physeq_rel),
                         "NMDS1" = nmds_scores$NMDS1,
                         "NMDS2" = nmds_scores$NMDS2)
 
-  # Get the color and shape number.
-  group_color_num <- length(unique(dplyr::pull(nmds_df,
-                                               !!group_color_sym)))
-  group_shape_num <- length(unique(dplyr::pull(nmds_df,
-                                               !!group_shape_sym)))
+  group_color_col <- dplyr::pull(nmds_df,
+                                 !!group_color_sym)
 
+  group_shape_col <- dplyr::pull(nmds_df,
+                                 !!group_shape_sym)
+
+  # Get the color and shape number
+  if(is.factor(group_color_col)){
+    group_color_num <- length(levels(group_color_col))
+  } else {
+    group_color_num <- length(unique(group_color_col))
+  }
+
+  if(is.factor(group_shape_col)){
+    group_shape_num <- length(levels(group_shape_col))
+  } else {
+    group_shape_num <- length(unique(group_shape_col))
+  }
+
+  # Make the plot
   plot <- ggplot2::ggplot(data = nmds_df,
                           mapping = ggplot2::aes(x = NMDS1,
                                                  y = NMDS2,
                                                  color = !!group_color_sym,
                                                  shape = !!group_shape_sym))
 
-  if (encircle == TRUE){
-    x_range <- c(min(nmds_df$NMDS1)*(1+scale_plot), max(nmds_df$NMDS1)*(1+scale_plot))
-    y_range <- c(min(nmds_df$NMDS2)*(1+scale_plot), max(nmds_df$NMDS2)*(1+scale_plot))
+  # Add circles
+  if (encircle == TRUE) {
+    x_range <- c(min(nmds_df$NMDS1) * (1 + scale_plot),
+                 max(nmds_df$NMDS1) * (1 + scale_plot))
+    y_range <- c(min(nmds_df$NMDS2) * (1 + scale_plot),
+                 max(nmds_df$NMDS2) * (1 + scale_plot))
+
     plot <- plot +
       ggplot2::coord_cartesian(xlim = x_range,
                                ylim = y_range,
                                expand = TRUE)
-    if (fill_circle == TRUE){
-      plot <- plot +
-        ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_color_sym,
-                                                      fill = !!group_color_sym),
-                             size = 2,
-                             alpha = 0.2,
-                             show.legend = FALSE,
-                             expand = scale_circle) +
-        ggplot2::expand_limits(x = x_range, y = y_range)
+
+    if (fill_circle == TRUE) {
+      if (group_circle == group_color) {
+        plot <- plot +
+          ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_circle_sym,
+                                                      fill  = !!group_circle_sym,
+                                                      color = !!group_circle_sym),
+                               size = 2,
+                               alpha = 0.2,
+                               expand = scale_circle,
+                               s_shape = smooth_circle,
+                               show.legend = FALSE)
+      } else {
+        plot <- plot +
+          ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_circle_sym),
+                               color = "black",
+                               fill  = "black",
+                               size = 2,
+                               alpha = 0.2,
+                               expand = scale_circle,
+                               s_shape = smooth_circle,
+                               show.legend = FALSE)
+        }
     } else {
-      plot <- plot +
-        ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_color_sym),
-                             size = 2,
-                             alpha = 0.5,
-                             show.legend = FALSE,
-                             expand = scale_circle) +
-        ggplot2::expand_limits(x = x_range,
-                               y = y_range)
+      if (group_circle == group_color) {
+        plot <- plot +
+          ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_circle_sym,
+                                                      color = !!group_circle_sym),
+                               size = 2,
+                               alpha = 0.5,
+                               expand = scale_circle,
+                               s_shape = smooth_circle,
+                               show.legend = FALSE)
+      } else {
+        plot <- plot +
+          ggalt::geom_encircle(mapping = ggplot2::aes(group = !!group_circle_sym),
+                               color = "black",
+                               size = 2,
+                               alpha = 0.5,
+                               expand = scale_circle,
+                               s_shape = smooth_circle,
+                               show.legend = FALSE)
+      }
     }
+
+    plot <- plot + ggplot2::expand_limits(x = x_range, y = y_range)
   }
 
+
   plot <- plot + ggplot2::geom_point(mapping = ggplot2::aes(fill = !!group_color_sym),
-                                     size = 4) +
+                                     size = 4,
+                                     alpha = set_alpha) +
     ggplot2::theme_classic() +
     ggplot2::xlab("NMDS1") +
     ggplot2::ylab("NMDS2") +
@@ -168,9 +231,12 @@ vis_nmds <- function(physeq,
                    panel.background = ggplot2::element_rect(fill = "#F7F7F7",
                                                             color = NA),
                    legend.title = ggplot2::element_text(face = "bold")) +
-    ggplot2::scale_fill_manual(values = fetch_color(group_color_num)) +
-    ggplot2::scale_color_manual(values = fetch_color(group_color_num)) +
-    ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num)) +
+    ggplot2::scale_fill_manual(values = fetch_color(group_color_num),
+                               drop = FALSE) +
+    ggplot2::scale_color_manual(values = fetch_color(group_color_num),
+                                drop = FALSE) +
+    ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num),
+                                drop = FALSE) +
     ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15)))
 
   return(plot)
