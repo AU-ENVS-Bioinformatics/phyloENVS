@@ -7,6 +7,7 @@
 perform_permanova(
   physeq,
   stats_path,
+  filename = "permanova_results.xlsx",
   designs,
   signi_limit = 0.05,
   convert_to_rel = TRUE,
@@ -18,6 +19,8 @@ perform_permanova(
 \item{physeq}{a phyloseq object.}
 
 \item{stats_path}{a string specifying the path where the output Excel file should be saved.}
+
+\item{filename}{a string specifying the name of the output excel file. If not specified, the file is named permanova_results.xlsx.}
 
 \item{designs}{a character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).}
 
