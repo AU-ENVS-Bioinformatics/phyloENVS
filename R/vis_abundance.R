@@ -129,21 +129,25 @@ vis_abundance <- function(physeq,
   group_unique <- unique(dplyr::pull(physeq_df, !!level_glom_sym))
   group_color_num <- length(group_unique)
 
-  # Specify the color of the low detection and unassigned groups.
-  if ("Unassigned" %in% group_unique){
-    physeq_df <- physeq_df |>
-      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Unassigned", after = 1))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
-  } else if ("Unknown function" %in% group_unique){
-    physeq_df <- physeq_df |>
-      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Unknown function", after = 1))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
-  } else if ("Others" %in% group_unique){
-    physeq_df <- physeq_df |>
-      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, "Others", after = 1))
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num-2, color_source)))
-  } else if (paste("< ", lower_limit, "%", sep = "") %in% group_unique){
-    group_color <- c("#878787", rev(fetch_color(group_color_num-1, color_source)))
+  # Define limit label only if > 0
+  limit_label <- if (lower_limit > 0) paste0("< ", lower_limit, "%") else NULL
+
+  # Identify which "special group" is present
+  special_group <- intersect(c("Unassigned", "Unknown function", "Others"), group_unique)
+
+  # Build the vector of levels to move to front
+  levels_to_move <- c(limit_label, special_group)
+  levels_to_move <- levels_to_move[!is.null(levels_to_move)] # drop NULLs
+
+  # Relevel factor
+  physeq_df <- physeq_df |>
+    dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, levels_to_move, after = 0))
+
+  # Assign colors
+  if (!is.null(limit_label)) {
+    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num - 2, color_source)))
+  } else if (length(special_group > 0)) {
+    group_color <- c("#4b4b4a", rev(fetch_color(group_color_num - 1, color_source)))
   } else {
     group_color <- rev(fetch_color(group_color_num, color_source))
   }
