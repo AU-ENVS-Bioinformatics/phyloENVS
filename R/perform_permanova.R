@@ -44,6 +44,10 @@ perform_permanova <- function(physeq,
     stop("`stats_path` must be character")
   }
 
+  if (!is.character(file_name)){
+    stop("`file_name` must be character")
+  }
+
   if (!all(designs %in%  colnames(phyloseq::sample_data(physeq)))) {
     stop(paste("Designs are not found in sample data"))
   }
