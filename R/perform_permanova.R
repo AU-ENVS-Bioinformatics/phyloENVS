@@ -3,7 +3,7 @@
 #'
 #' @param physeq a phyloseq object.
 #' @param stats_path a string specifying the path where the output Excel file should be saved.
-#' @param filename a string specifying the name of the output excel file. If not specified, the file is named permanova_results.xlsx.
+#' @param file_name a string specifying the name of the output excel file. If not specified, the file is named permanova_results.xlsx.
 #' @param designs a character vector specifying the model formulas (e.g., c("Concentration", "Temperature", "Concentration + Temperature")).
 #' @param signi_limit the significance level. Default is 0.05 (5 \%).
 #' @param convert_to_rel convert counts to relative abundances before analysis. Default is TRUE.
@@ -25,7 +25,7 @@
 #' }
 perform_permanova <- function(physeq,
                               stats_path,
-                              filename = "permanova_results.xlsx",
+                              file_name = "permanova_results.xlsx",
                               designs,
                               signi_limit = 0.05,
                               convert_to_rel = TRUE,
