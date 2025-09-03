@@ -34,7 +34,7 @@ Imports:
   vegan
 Remotes:
   bioc::phyloseq,
-  bioc::microbiome
+  bioc::microbiome,
   github:: hrbrmstr/ggalt
 LazyData: true
 Suggests: 
