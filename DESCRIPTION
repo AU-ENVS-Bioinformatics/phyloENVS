@@ -35,7 +35,7 @@ Imports:
 Remotes:
   bioc::phyloseq,
   bioc::microbiome,
-  github:: hrbrmstr/ggalt
+  github::hrbrmstr/ggalt
 LazyData: true
 Suggests: 
     knitr,
