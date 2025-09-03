@@ -33,7 +33,8 @@ vis_abundance <- function(physeq,
                           group_select = NULL,
                           lower_limit = 2,
                           color_source = "AU2",
-                          remove_grid = FALSE){
+                          remove_grid = FALSE,
+                          normalize_by_group = FALSE){
 
   # ------------#
   # Check inputs
@@ -85,12 +86,19 @@ vis_abundance <- function(physeq,
 
   # ------------#
 
-  # Convert character to symbol.
+  # Convert character to symbol
   group_x_sym <- rlang::sym(group_x)
   group_split_sym <- rlang::sym(group_split)
   level_glom_sym <- rlang::sym(level_glom)
 
-  # Agglomerate counts.
+  # Make sample identifier
+  meta_df <- sample_data(physeq) |>
+    as.data.frame()
+
+  meta_df$Identifier <- rownames(meta_df)
+  sample_data(physeq) <- sample_data(meta_df)
+
+  # Agglomerate counts
   physeq_df <- physeq |>
     phyloseq::tax_glom(taxrank = level_glom,
                        NArm = FALSE) |>
@@ -98,26 +106,35 @@ vis_abundance <- function(physeq,
     phyloseq::psmelt() |>
     dplyr::mutate(!!level_glom := dplyr::na_if(!!level_glom_sym, ""),
                   !!level_glom := tidyr::replace_na(!!level_glom_sym, "Unassigned"),
-                  !!level_glom := ifelse(Abundance < lower_limit,
-                                         paste("< ", lower_limit, "%", sep = ""),
-                                         !!level_glom_sym),
-                  !!level_glom := reorder(!!level_glom_sym, Abundance),
-                  !!level_glom := factor(!!level_glom_sym),
                   !!group_split := factor(!!group_split_sym))
 
-  # Subset data if specified by user.
+  # Subset data if specified by user
   if (!is.null(level_select) && !is.null(group_select)){
     level_select_sym <- rlang::sym(level_select)
     physeq_df <- physeq_df |>
       dplyr::filter(!!level_select_sym %in% group_select)
+
+    if (normalize_by_group){
+      physeq_df <- physeq_df |>
+        dplyr::group_by(!!level_select_sym, Identifier) |>
+        dplyr::mutate(Abundance = Abundance / sum(Abundance) * 100) |>
+        dplyr::ungroup()
+      }
   }
+
+  physeq_df <- physeq_df |>
+    mutate(!!level_glom := ifelse(Abundance < lower_limit,
+                                  paste("< ", lower_limit, "%", sep = ""),
+                                  !!level_glom_sym),
+           !!level_glom := reorder(!!level_glom_sym, Abundance),
+           !!level_glom := factor(!!level_glom_sym))
 
   if (!is.null(level_select) && !is.null(group_select)){
     order <- physeq_df |>
       dplyr::select(!!level_select_sym, !!level_glom_sym) |>
       distinct() |>
-      arrange(!!level_select_sym, !!level_glom_sym) |>
-      pull(!!level_glom_sym) |>
+      dplyr::arrange(!!level_select_sym, !!level_glom_sym) |>
+      dplyr::pull(!!level_glom_sym) |>
       unique()
 
     physeq_df <- physeq_df |>
@@ -125,7 +142,7 @@ vis_abundance <- function(physeq,
                                            levels = order))
   }
 
-  # Get number of unique colors to use.
+  # Get number of unique colors to use
   group_unique <- unique(dplyr::pull(physeq_df, !!level_glom_sym))
   group_color_num <- length(group_unique)
 
@@ -145,14 +162,18 @@ vis_abundance <- function(physeq,
 
   # Assign colors
   if (!is.null(limit_label)) {
-    group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num - 2, color_source)))
+    if (length(special_group > 0)) {
+      group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num - 2, color_source)))
+    } else {
+      group_color <- c("#878787", rev(fetch_color(group_color_num - 1, color_source)))
+    }
   } else if (length(special_group > 0)) {
     group_color <- c("#4b4b4a", rev(fetch_color(group_color_num - 1, color_source)))
   } else {
     group_color <- rev(fetch_color(group_color_num, color_source))
   }
 
-  # Create plot.
+  # Create plot
   plot <- ggplot2::ggplot(data = physeq_df,
                           mapping = ggplot2::aes(x = !!group_x_sym,
                                                  y = Abundance,
@@ -188,7 +209,7 @@ vis_abundance <- function(physeq,
                                                         face = "bold")) +
     ggplot2::scale_fill_manual(values = group_color)
 
-  # Add the grid to distinguish between groups.
+  # Add the grid to distinguish between groups
   if (!is.null(level_select) && !is.null(level_select)){
     if(level_glom == level_select){
       plot <- plot + ggplot2::theme(legend.position = "none")
