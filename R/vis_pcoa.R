@@ -1,5 +1,5 @@
-#' @title Visualize NMDS
-#' @description Plot the data in new ordination after dimensionality reduction using Non-metric MultiDimensional Scaling (NMDS) based on the Bray-Curtis distance measure.
+#' @title Visualize PCoA
+#' @description Plot the data in new ordination after dimensionality reduction using Principal Coordinates Analysis (PCoA), also known as Metric Multidimensional Scaling (MDS), based on the Bray-Curtis distance measure.
 #'
 #' @param physeq a phyloseq object.
 #' @param group_color the parameter in metadata to color by.
@@ -13,7 +13,7 @@
 #' @param scale_plot value to scale the plot area. Default is 0.1.
 #' @param set_alpha value to control the degree of transparency of the data points. Default is 0.8.
 #'
-#' @return NMDS plot created with ggplot.
+#' @return PCoA plot created with ggplot.
 #' @export
 #'
 #' @examples
@@ -21,14 +21,14 @@
 #' data(qaanaaq_rRNA)
 #' phylo <- qaanaaq_rRNA
 #'
-#' vis_nmds(physeq = phylo,
+#' vis_pcoa(physeq = phylo,
 #'          group_color = "Location",
 #'          group_shape = "Transect",
 #'          encircle = TRUE,
 #'          scale_circle = 0.2,
 #'          scale_plot = 0.4)
 #'
-vis_nmds <- function(physeq,
+vis_pcoa <- function(physeq,
                      group_color,
                      group_shape = group_color,
                      group_circle = group_color,
@@ -117,26 +117,23 @@ vis_nmds <- function(physeq,
   # Compute Bray-Curtis distance
   otu_dist <- vegan::vegdist(otu_mat, method = "bray")
 
-  # Run NMDS
-  nmds <- vegan::metaMDS(otu_dist,
-                         k = 2,
-                         trymax = 20,
-                         autotransform = FALSE,
-                         trace = FALSE)
+  # Run MDS
+  pcoa <- vegan::wcmdscale(otu_dist,
+                           k = 2)
 
-  # Extract NMDS scores
-  nmds_scores <- vegan::scores(nmds) |>
+  # Extract MDS scores
+  pcoa_scores <- vegan::scores(pcoa) |>
     as.data.frame()
 
   # Get values
-  nmds_df <- data.frame(phyloseq::sample_data(physeq_rel),
-                        "NMDS1" = nmds_scores$NMDS1,
-                        "NMDS2" = nmds_scores$NMDS2)
+  pcoa_df <- data.frame(phyloseq::sample_data(physeq_rel),
+                        "MDS1" = pcoa_scores$Dim1,
+                        "MDS2" = pcoa_scores$Dim2)
 
-  group_color_col <- dplyr::pull(nmds_df,
+  group_color_col <- dplyr::pull(pcoa_df,
                                  !!group_color_sym)
 
-  group_shape_col <- dplyr::pull(nmds_df,
+  group_shape_col <- dplyr::pull(pcoa_df,
                                  !!group_shape_sym)
 
   # Get the color and shape number
@@ -153,9 +150,9 @@ vis_nmds <- function(physeq,
   }
 
   # Make the plot
-  plot <- ggplot2::ggplot(data = nmds_df,
-                          mapping = ggplot2::aes(x = NMDS1,
-                                                 y = NMDS2,
+  plot <- ggplot2::ggplot(data = pcoa_df,
+                          mapping = ggplot2::aes(x = MDS1,
+                                                 y = MDS2,
                                                  color = !!group_color_sym,
                                                  shape = !!group_shape_sym))
 
@@ -163,10 +160,10 @@ vis_nmds <- function(physeq,
   if (encircle == TRUE) {
 
     # Expand the plot
-    x_range <- c(min(nmds_df$NMDS1) * (1 + scale_plot),
-                 max(nmds_df$NMDS1) * (1 + scale_plot))
-    y_range <- c(min(nmds_df$NMDS2) * (1 + scale_plot),
-                 max(nmds_df$NMDS2) * (1 + scale_plot))
+    x_range <- c(min(pcoa_df$MDS1) * (1 + scale_plot),
+                 max(pcoa_df$MDS1) * (1 + scale_plot))
+    y_range <- c(min(pcoa_df$MDS2) * (1 + scale_plot),
+                 max(pcoa_df$MDS2) * (1 + scale_plot))
 
     plot <- plot +
       ggplot2::coord_cartesian(xlim = x_range,
@@ -174,8 +171,8 @@ vis_nmds <- function(physeq,
                                expand = TRUE)
 
     # Compute the convex hull for each group
-    convex_hull <- nmds_df |>
-      dplyr::rename(x = NMDS1, y = NMDS2) |>
+    convex_hull <- pcoa_df |>
+      dplyr::rename(x = MDS1, y = MDS2) |>
       dplyr::group_by(!!group_circle_sym) |>
       tidyr::nest() |>
       dplyr::mutate(hull = purrr::map(data, ~ with(.x, grDevices::chull(x, y))),
@@ -210,7 +207,7 @@ vis_nmds <- function(physeq,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
-        }
+      }
     } else {
       if (group_circle == group_color) {
         plot <- plot +
@@ -249,8 +246,8 @@ vis_nmds <- function(physeq,
                                      size = 4,
                                      alpha = set_alpha) +
     ggplot2::theme_classic() +
-    ggplot2::xlab("NMDS1") +
-    ggplot2::ylab("NMDS2") +
+    ggplot2::xlab("MDS1") +
+    ggplot2::ylab("MDS2") +
     ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
                                                         vjust = -1),
                    axis.title.y = ggplot2::element_text(face = "bold",

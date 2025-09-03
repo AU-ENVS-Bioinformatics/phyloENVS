@@ -10,6 +10,7 @@
 #' @param lower_limit relative abundance threshold in percentages for visualizing the abundance. Abundances less than the threshold is pooled together. Default is 2.
 #' @param color_source name of color source to use. Default is "AU2".
 #' @param remove_grid remove the grid splitting groups. Default is FALSE.
+#' @param normalize_by_group renormalize to relative abundances to bring subgroups up to 100 percent when plotting selected groups with group_select. Default is FALSE.
 #'
 #' @return an abundance plot created with ggplot.
 #' @export
@@ -92,11 +93,11 @@ vis_abundance <- function(physeq,
   level_glom_sym <- rlang::sym(level_glom)
 
   # Make sample identifier
-  meta_df <- sample_data(physeq) |>
+  meta_df <- phyloseq::sample_data(physeq) |>
     as.data.frame()
 
   meta_df$Identifier <- rownames(meta_df)
-  sample_data(physeq) <- sample_data(meta_df)
+  phyloseq::sample_data(physeq) <- phyloseq::sample_data(meta_df)
 
   # Agglomerate counts
   physeq_df <- physeq |>
@@ -123,11 +124,11 @@ vis_abundance <- function(physeq,
   }
 
   physeq_df <- physeq_df |>
-    mutate(!!level_glom := ifelse(Abundance < lower_limit,
-                                  paste("< ", lower_limit, "%", sep = ""),
-                                  !!level_glom_sym),
-           !!level_glom := reorder(!!level_glom_sym, Abundance),
-           !!level_glom := factor(!!level_glom_sym))
+    dplyr::mutate(!!level_glom := ifelse(Abundance < lower_limit,
+                                         paste("< ", lower_limit, "%", sep = ""),
+                                         !!level_glom_sym),
+                  !!level_glom := reorder(!!level_glom_sym, Abundance),
+                  !!level_glom := factor(!!level_glom_sym))
 
   if (!is.null(level_select) && !is.null(group_select)){
     order <- physeq_df |>

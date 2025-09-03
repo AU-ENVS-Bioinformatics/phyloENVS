@@ -19,8 +19,10 @@ Imports:
   phyloseq,
   dplyr,
   tidyr,
+  purrr,
   tibble,
   ggplot2,
+  ggforce,
   readxl,
   openxlsx,
   stringr,
@@ -34,8 +36,7 @@ Imports:
   vegan
 Remotes:
   bioc::phyloseq,
-  bioc::microbiome,
-  github::hrbrmstr/ggalt
+  bioc::microbiome
 LazyData: true
 Suggests: 
     knitr,

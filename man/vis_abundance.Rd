@@ -13,7 +13,8 @@ vis_abundance(
   group_select = NULL,
   lower_limit = 2,
   color_source = "AU2",
-  remove_grid = FALSE
+  remove_grid = FALSE,
+  normalize_by_group = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ vis_abundance(
 \item{color_source}{name of color source to use. Default is "AU2".}
 
 \item{remove_grid}{remove the grid splitting groups. Default is FALSE.}
+
+\item{normalize_by_group}{renormalize to relative abundances to bring subgroups up to 100 percent when plotting selected groups with group_select. Default is FALSE.}
 }
 \value{
 an abundance plot created with ggplot.

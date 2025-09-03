@@ -8,7 +8,7 @@ vis_richness(
   physeq,
   group_x,
   group_color,
-  measures = c("Simpson", "InvSimpson")
+  measures = c("Shannon", "InvSimpson")
 )
 }
 \arguments{
