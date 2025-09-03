@@ -21,7 +21,7 @@
 vis_richness <- function(physeq,
                          group_x,
                          group_color,
-                         measures = c("Simpson", "InvSimpson")){
+                         measures = c("Shannon", "InvSimpson")){
 
   # ------------#
   # Check inputs
@@ -52,8 +52,14 @@ vis_richness <- function(physeq,
   sample_df <- as.data.frame(phyloseq::sample_data(physeq))
 
   # Get the color number.
-  group_color_num <- length(unique(dplyr::pull(sample_df,
-                                               !!group_color_sym)))
+  group_color_col <- dplyr::pull(sample_df,
+                                 !!group_color_sym)
+
+  if(is.factor(group_color_col)){
+    group_color_num <- length(levels(group_color_col))
+  } else {
+    group_color_num <- length(unique(group_color_col))
+  }
 
   # Create plot.
   plot <- phyloseq::plot_richness(physeq = physeq,
@@ -70,8 +76,10 @@ vis_richness <- function(physeq,
     ggplot2::geom_point(size = 2,
                         alpha = 0.8) +
     ggplot2::theme_classic() +
-    ggplot2::scale_fill_manual(values = fetch_color(group_color_num)) +
-    ggplot2::scale_color_manual(values = fetch_color(group_color_num)) +
+    ggplot2::scale_fill_manual(values = fetch_color(group_color_num),
+                               drop = FALSE) +
+    ggplot2::scale_color_manual(values = fetch_color(group_color_num),
+                                drop = FALSE) +
     ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
                                                         vjust = -1),
                    axis.title.y = ggplot2::element_text(face = "bold",
