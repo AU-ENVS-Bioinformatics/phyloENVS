@@ -21,7 +21,7 @@ Imports:
   tidyr,
   tibble,
   ggplot2,
-  ggalt (== 0.4.0),
+  ggalt,
   readxl,
   openxlsx,
   stringr,
@@ -36,6 +36,7 @@ Imports:
 Remotes:
   bioc::phyloseq,
   bioc::microbiome
+  github:: hrbrmstr/ggalt
 LazyData: true
 Suggests: 
     knitr,
