@@ -21,7 +21,6 @@ Imports:
   tidyr,
   tibble,
   ggplot2,
-  ggalt,
   readxl,
   openxlsx,
   stringr,
