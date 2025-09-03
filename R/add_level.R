@@ -59,11 +59,13 @@ add_level <- function(physeq,
   level_name_sym <- rlang::sym(level_name)
 
   # Add the overall new level.
-  new_tax_table <- as.data.frame(phyloseq::tax_table(physeq)) |>
-    tibble::as_tibble() |>
+  new_tax_table <- phyloseq::tax_table(physeq) |>
+    as.data.frame() |>
     dplyr::mutate(!!level_name_sym := dplyr::recode(!!level_sym,
-                                                !!!look_up_table, .default = "Unassigned")) |>
-    dplyr::relocate(!!level_name_sym, .before = !!level_sym) |>
+                                                    !!!look_up_table,
+                                                    .default = "Unassigned")) |>
+    dplyr::relocate(!!level_name_sym,
+                    .before = !!level_sym) |>
     as.matrix() |>
     phyloseq::tax_table()
 
