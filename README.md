@@ -3,7 +3,7 @@
 
 <div align="right">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/au.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/man/figures/images/au.png" width="2000"/>
 
 </div>
 
@@ -54,7 +54,7 @@ object are listed below and visualized below.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/images/phyloseq_data_structure.png" width="500"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/man/figures/phyloseq_data_structure.png" width="500"/>
 
 </div>
 
@@ -73,7 +73,7 @@ New file -\> R Markdown -\> From Template -\> phyloENVS worksheet.
 
 <div align="center">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/template.png" width="500"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/template.png" width="500"/>
 
 </div>
 
@@ -103,6 +103,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 <img src="man/figures/README-example1-1.png" alt="Relative abundance plot." width="80%" />
 <p class="caption">
+
 Relative abundance plot.
 </p>
 
@@ -127,6 +128,7 @@ vis_nmds(qaanaaq_rRNA_sub,
 
 <img src="man/figures/README-example2-1.png" alt="NMDS plot." width="80%" />
 <p class="caption">
+
 NMDS plot.
 </p>
 
@@ -138,7 +140,7 @@ The available color scales can be seen below.
 
 <div align="left">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/images/color_scales.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/color_scales.png" width="2000"/>
 
 </div>
 
