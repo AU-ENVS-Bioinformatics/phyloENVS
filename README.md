@@ -54,7 +54,7 @@ object are listed below and visualized below.
 
 <div align="center">
 
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/man/figures/phyloseq_data_structure.png" width="500"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/man/figures/phyloseq_data_structure.png" width="450"/>
 
 </div>
 
@@ -113,6 +113,17 @@ NMDS (Non-metric Multidimensional Scaling) is a popular technique used
 for visualizing and interpreting the relationships between samples in
 high-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., wetness.
+
+``` r
+vis_nmds(qaanaaq_rRNA_sub,
+         group_color = "Wetness",
+         group_shape = "Transect",
+         encircle = TRUE,
+         fill_circle = TRUE,
+         smooth_circle = 0.05,
+         scale_circle = 0.05,
+         scale_plot = 0.3)
+```
 
 <div class="figure" style="text-align: center">
 

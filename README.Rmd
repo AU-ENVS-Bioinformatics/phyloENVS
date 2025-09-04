@@ -52,7 +52,7 @@ All functions within phyloENVS builds upon the [phyloseq package](https://joey71
 -   Sample Data (sample_data): Metadata for each sample (e.g., location, timepoint, concentration, etc.).
 
 ::: {align="center"}
-<img src="https://github.com/johanneBiO/phyloENVS/blob/main/man/figures/phyloseq_data_structure.png" width="500"/>
+<img src="https://github.com/johanneBiO/phyloENVS/blob/main/man/figures/phyloseq_data_structure.png" width="450"/>
 :::
 
 ## Getting Started
@@ -90,7 +90,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
-```{r example2, fig.align="center", fig.cap="NMDS plot.", out.width = "70%", fig.path = "man/figures/README-", message=FALSE, echo=FALSE}
+```{r example2, fig.align="center", fig.cap="NMDS plot.", out.width = "70%", fig.path = "man/figures/README-"}
 vis_nmds(qaanaaq_rRNA_sub,
          group_color = "Wetness",
          group_shape = "Transect",
