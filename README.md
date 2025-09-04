@@ -99,7 +99,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               lower_limit = 2)
 ```
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 
 <img src="man/figures/README-example1-1.png" alt="Relative abundance plot." width="80%" />
 <p class="caption">
@@ -120,11 +120,12 @@ vis_nmds(qaanaaq_rRNA_sub,
          group_shape = "Transect",
          encircle = TRUE,
          fill_circle = TRUE,
-         scale_circle = 0.09,
+         smooth_circle = 0.05,
+         scale_circle = 0.05,
          scale_plot = 0.3)
 ```
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 
 <img src="man/figures/README-example2-1.png" alt="NMDS plot." width="80%" />
 <p class="caption">
