@@ -11,7 +11,7 @@
 
 <!-- badges: start -->
 
-[![DOI](https://zenodo.org/badge/923477160.svg)](https://doi.org/10.5281/zenodo.15308888)
+[![DOI](https://zenodo.org/badge/923477160.svg)](https://doi.org/10.5281/zenodo.17053160)
 
 <!-- badges: end -->
 
