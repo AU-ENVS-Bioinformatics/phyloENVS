@@ -17,6 +17,8 @@ Depends:
   R (>= 3.5)
 Imports:
   phyloseq,
+  microbiome,
+  vegan,
   dplyr,
   tidyr,
   purrr,
@@ -28,16 +30,15 @@ Imports:
   stringr,
   rlang,
   forcats,
-  microbiome,
-  vegan,
   stats,
-  broom,
-  patchwork,
-  vegan
+  broom
 Remotes:
   bioc::phyloseq,
   bioc::microbiome
+Suggests:
+  patchwork
 LazyData: true
+LazyDataCompression: xz
 Suggests: 
     knitr,
     rmarkdown
