@@ -73,7 +73,7 @@ It is also possible to find an RMarkdown template in RStudio: File -\> New file 
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example1, fig.align="center", fig.cap="Relative abundance plot.", out.width = "70%", fig.path = "man/figures/README-", fig.align="center"}
+```{r example1, fig.align="center", fig.cap="Relative abundance plot.", out.width = "70%", fig.path = "man/figures/README-"}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
