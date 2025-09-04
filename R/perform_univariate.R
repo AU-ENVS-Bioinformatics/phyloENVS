@@ -224,7 +224,7 @@ perform_univariate <- function(physeq,
   }
 
   # Save results
-  output_file <- file.path(stats_path, fine_name)
+  output_file <- file.path(stats_path, file_name)
   openxlsx::saveWorkbook(wb, output_file, overwrite = TRUE)
   message("Results saved to: ", output_file)
 
