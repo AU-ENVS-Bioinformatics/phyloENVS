@@ -9,6 +9,7 @@
 #' @param convert_to_rel convert counts to relative abundances before analysis. Default is TRUE.
 #' @param dist_method dissimilarity index used in vegdist (see vegan package). Default is "bray".
 #' @param n_permute number of permutations. Default is 999.
+#' @param print_test_details print the details of each PERMANOVA - overall and pairwise. Default is FALSE.
 #'
 #' @return results are saved to the specified directory.
 #' @export
@@ -30,7 +31,8 @@ perform_permanova_pairwise <- function(physeq,
                                        signi_limit = 0.05,
                                        convert_to_rel = TRUE,
                                        dist_method = "bray",
-                                       n_permute = 999){
+                                       n_permute = 999,
+                                       print_test_details = FALSE){
 
   # ------------#
   # Check inputs
@@ -68,6 +70,10 @@ perform_permanova_pairwise <- function(physeq,
     stop("`n_permute` must be numeric")
   }
 
+  if (!is.logical(print_test_details)) {
+    stop("`print_test_details` must be logical")
+  }
+
   # ------------#
 
   # Normalize
@@ -98,6 +104,11 @@ perform_permanova_pairwise <- function(physeq,
       dplyr::mutate(Model = design,
                     Comparison = "Overall")
 
+    if(print_test_details){
+      test_details_overall <- attributes(overall_results)$control
+      message("Overall", "    Design: ", design, "    Permutations: ", test_details_overall$nperm)
+    }
+
     # Pairwise PERMANOVA
     groups <- unique(meta[[design]])
     pairwise_list <- list()
@@ -120,6 +131,12 @@ perform_permanova_pairwise <- function(physeq,
                           Comparison = paste(groups[i], "vs", groups[j]))
 
           pairwise_list[[paste(groups[i], groups[j], sep = "_")]] <- pairwise_results
+
+          if(print_test_details){
+            test_details_pairwise <- attributes(pairwise_results)$control
+            message(groups[i], " vs ", groups[j], "    Design: ", design, "    Permutations: ", test_details_pairwise$nperm)
+          }
+
         }
       }
     }
@@ -201,7 +218,6 @@ perform_permanova_pairwise <- function(physeq,
   output_file <- file.path(stats_path, file_name)
   openxlsx::saveWorkbook(wb, file = output_file, overwrite = TRUE)
   message("Distance: ", dist_method)
-  message("Permutations: ", n_permute)
   message("Results saved to: ", output_file)
 
   return(results_combined)

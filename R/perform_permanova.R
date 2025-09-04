@@ -9,6 +9,7 @@
 #' @param convert_to_rel convert counts to relative abundances before analysis. Default is TRUE.
 #' @param dist_method dissimilarity index used in vegdist (see vegan package). Default is "bray".
 #' @param n_permute number of permutations. Default is 999.
+#' @param print_test_details print the details of each PERMANOVA - overall and pairwise. Default is FALSE.
 #'
 #' @return results are saved to the specified directory.
 #' @export
@@ -30,7 +31,8 @@ perform_permanova <- function(physeq,
                               signi_limit = 0.05,
                               convert_to_rel = TRUE,
                               dist_method = "bray",
-                              n_permute = 999){
+                              n_permute = 999,
+                              print_test_details = FALSE){
 
   # ------------#
   # Check inputs
@@ -68,6 +70,10 @@ perform_permanova <- function(physeq,
     stop("`n_permute` must be numeric")
   }
 
+  if (!is.logical(print_test_details)) {
+    stop("`print_test_details` must be logical")
+  }
+
   # ------------#
 
   # Normalize
@@ -94,7 +100,13 @@ perform_permanova <- function(physeq,
                               method = dist_method) |>
       as.data.frame() |>
       dplyr::mutate(Model = design)
+
     results_list[[design]] <- results
+
+    if(print_test_details){
+      test_details <- attributes(results)$control
+      message("Design: ", design, "    Permutations: ", test_details$nperm)
+    }
   }
 
   # Combine all results into one data frame
@@ -151,10 +163,9 @@ perform_permanova <- function(physeq,
   }
 
   # Save results
-  output_file <- file.path(stats_path, filename)
+  output_file <- file.path(stats_path, file_name)
   openxlsx::saveWorkbook(wb, file = output_file, overwrite = TRUE)
   message("Distance: ", dist_method)
-  message("Permutations: ", n_permute)
   message("Results saved to: ", output_file)
 
   return(results_combined)

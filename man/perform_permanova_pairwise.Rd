@@ -12,7 +12,8 @@ perform_permanova_pairwise(
   signi_limit = 0.05,
   convert_to_rel = TRUE,
   dist_method = "bray",
-  n_permute = 999
+  n_permute = 999,
+  print_test_details = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ perform_permanova_pairwise(
 \item{dist_method}{dissimilarity index used in vegdist (see vegan package). Default is "bray".}
 
 \item{n_permute}{number of permutations. Default is 999.}
+
+\item{print_test_details}{print the details of each PERMANOVA - overall and pairwise. Default is FALSE.}
 }
 \value{
 results are saved to the specified directory.
