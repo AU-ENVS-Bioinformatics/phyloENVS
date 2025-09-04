@@ -35,11 +35,10 @@ Imports:
 Remotes:
   bioc::phyloseq,
   bioc::microbiome
-Suggests:
-  patchwork
 LazyData: true
 LazyDataCompression: xz
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    patchwork
 VignetteBuilder: knitr
