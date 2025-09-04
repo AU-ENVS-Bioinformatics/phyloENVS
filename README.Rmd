@@ -73,7 +73,7 @@ It is also possible to find an RMarkdown template in RStudio: File -\> New file 
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example1, fig.cap="Relative abundance plot.", out.width = "80%", fig.path = "man/figures/README-", fig.align="center"}
+```{r example1, fig.align="center", fig.cap="Relative abundance plot.", out.width = "70%", fig.path = "man/figures/README-", fig.align="center"}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
@@ -90,7 +90,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
-```{r example2, fig.cap="NMDS plot.", out.width = "80%", fig.path = "man/figures/README-", message=FALSE, echo=FALSE}
+```{r example2, fig.align="center", fig.cap="NMDS plot.", out.width = "70%", fig.path = "man/figures/README-", message=FALSE, echo=FALSE}
 vis_nmds(qaanaaq_rRNA_sub,
          group_color = "Wetness",
          group_shape = "Transect",
@@ -103,7 +103,7 @@ vis_nmds(qaanaaq_rRNA_sub,
 
 ## Details
 
-The available color scales can be seen below.
+The available color scales can be seen below. The colors are based on the AU design guide.
 
 ::: {align="center"}
 <img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/color_scales.png" width="2000"/>
@@ -111,4 +111,4 @@ The available color scales can be seen below.
 
 ## Acknowledgement
 
-This package builds upon the [phyloseq package](https://joey711.github.io/phyloseq/). Furthermore, this work has been highly inspired by the [RauENVS package](https://github.com/AU-ENVS-Bioinformatics/RauENVS) and shared code from Thanassis Zervas.
+This package builds upon the [phyloseq](https://joey711.github.io/phyloseq/) and [vegan](https://github.com/vegandevs/vegan) packages. Furthermore, this work has been highly inspired by the [RauENVS package](https://github.com/AU-ENVS-Bioinformatics/RauENVS) and shared code from Thanassis Zervas.

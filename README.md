@@ -101,7 +101,7 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-example1-1.png" alt="Relative abundance plot." width="80%" />
+<img src="man/figures/README-example1-1.png" alt="Relative abundance plot." width="70%" />
 <p class="caption">
 
 Relative abundance plot.
@@ -114,9 +114,9 @@ for visualizing and interpreting the relationships between samples in
 high-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., wetness.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 
-<img src="man/figures/README-example2-1.png" alt="NMDS plot." width="80%" />
+<img src="man/figures/README-example2-1.png" alt="NMDS plot." width="70%" />
 <p class="caption">
 
 NMDS plot.
@@ -126,7 +126,8 @@ NMDS plot.
 
 ## Details
 
-The available color scales can be seen below.
+The available color scales can be seen below. The colors are based on
+the AU design guide.
 
 <div align="center">
 
@@ -136,8 +137,9 @@ The available color scales can be seen below.
 
 ## Acknowledgement
 
-This package builds upon the [phyloseq
-package](https://joey711.github.io/phyloseq/). Furthermore, this work
-has been highly inspired by the [RauENVS
+This package builds upon the
+[phyloseq](https://joey711.github.io/phyloseq/) and
+[vegan](https://github.com/vegandevs/vegan) packages. Furthermore, this
+work has been highly inspired by the [RauENVS
 package](https://github.com/AU-ENVS-Bioinformatics/RauENVS) and shared
 code from Thanassis Zervas.
