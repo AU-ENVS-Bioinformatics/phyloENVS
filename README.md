@@ -114,18 +114,7 @@ for visualizing and interpreting the relationships between samples in
 high-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., wetness.
 
-``` r
-vis_nmds(qaanaaq_rRNA_sub,
-         group_color = "Wetness",
-         group_shape = "Transect",
-         encircle = TRUE,
-         fill_circle = TRUE,
-         smooth_circle = 0.05,
-         scale_circle = 0.05,
-         scale_plot = 0.3)
-```
-
-<div class="figure" style="text-align: center">
+<div class="figure">
 
 <img src="man/figures/README-example2-1.png" alt="NMDS plot." width="80%" />
 <p class="caption">
@@ -139,7 +128,7 @@ NMDS plot.
 
 The available color scales can be seen below.
 
-<div align="left">
+<div align="center">
 
 <img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/color_scales.png" width="2000"/>
 
