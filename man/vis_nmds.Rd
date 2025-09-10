@@ -12,10 +12,10 @@ vis_nmds(
   convert_to_rel = TRUE,
   encircle = FALSE,
   fill_circle = FALSE,
-  smooth_circle = 0.01,
-  scale_circle = 0.1,
-  scale_plot = 0.1,
-  set_alpha = 0.8
+  smooth_circle = 0,
+  scale_circle = 0,
+  scale_plot = 0,
+  set_alpha = 0.5
 )
 }
 \arguments{
