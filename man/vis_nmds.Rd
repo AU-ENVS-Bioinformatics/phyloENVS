@@ -15,7 +15,8 @@ vis_nmds(
   smooth_circle = 0,
   scale_circle = 0,
   scale_plot = 0,
-  set_alpha = 0.5
+  set_alpha = 0.5,
+  size_circle = 0.5
 )
 }
 \arguments{

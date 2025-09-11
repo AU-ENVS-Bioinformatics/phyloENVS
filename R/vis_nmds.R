@@ -38,7 +38,8 @@ vis_nmds <- function(physeq,
                      smooth_circle = 0,
                      scale_circle = 0,
                      scale_plot = 0,
-                     set_alpha = 0.5){
+                     set_alpha = 0.5,
+                     size_circle = 0.5){
 
   # ------------#
   # Check inputs
@@ -70,6 +71,14 @@ vis_nmds <- function(physeq,
 
   if (!is.numeric(scale_plot)){
     stop("`scale_plot` must be numeric")
+  }
+
+  if (!is.numeric(set_alpha)){
+    stop("`set_alpha` must be numeric")
+  }
+
+  if (!is.numeric(size_circle)){
+    stop("`size_circle` must be numeric")
   }
 
   if (!is.logical(convert_to_rel)) {
@@ -162,17 +171,6 @@ vis_nmds <- function(physeq,
   # Add circles
   if (encircle == TRUE) {
 
-    # Expand the plot
-    x_range <- c(min(nmds_df$NMDS1) * (1 + scale_plot),
-                 max(nmds_df$NMDS1) * (1 + scale_plot))
-    y_range <- c(min(nmds_df$NMDS2) * (1 + scale_plot),
-                 max(nmds_df$NMDS2) * (1 + scale_plot))
-
-    plot <- plot +
-      ggplot2::coord_cartesian(xlim = x_range,
-                               ylim = y_range,
-                               expand = TRUE)
-
     # Compute the convex hull for each group
     convex_hull <- nmds_df |>
       dplyr::rename(x = NMDS1, y = NMDS2) |>
@@ -192,7 +190,7 @@ vis_nmds <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      fill  = !!group_circle_sym,
                                                      color = !!group_circle_sym),
-                              size = 0.5,
+                              size = size_circle,
                               alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -205,7 +203,7 @@ vis_nmds <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill  = "black",
-                              size = 0.5,
+                              size = size_circle,
                               alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -220,7 +218,7 @@ vis_nmds <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      color = !!group_circle_sym),
                               fill = NA,
-                              size = 0.5,
+                              size = size_circle,
                               alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -233,15 +231,13 @@ vis_nmds <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill = NA,
-                              size = 0.5,
+                              size = size_circle,
                               alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
       }
     }
-
-    plot <- plot + ggplot2::expand_limits(x = x_range, y = y_range)
   }
 
 
@@ -265,6 +261,17 @@ vis_nmds <- function(physeq,
     ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num),
                                 drop = FALSE) +
     ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15)))
+
+  # Expand the plot
+  x_range <- c(min(nmds_df$NMDS1) * (1 + scale_plot),
+               max(nmds_df$NMDS1) * (1 + scale_plot))
+  y_range <- c(min(nmds_df$NMDS2) * (1 + scale_plot),
+               max(nmds_df$NMDS2) * (1 + scale_plot))
+
+  plot <- plot +
+    ggplot2::coord_cartesian(xlim = x_range,
+                             ylim = y_range,
+                             expand = TRUE)
 
   return(plot)
 }
