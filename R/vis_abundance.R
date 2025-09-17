@@ -158,8 +158,10 @@ vis_abundance <- function(physeq,
   levels_to_move <- levels_to_move[!is.null(levels_to_move)] # drop NULLs
 
   # Relevel factor
-  physeq_df <- physeq_df |>
-    dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, levels_to_move, after = 0))
+  #if (!is.na(levels_to_move)){
+    physeq_df <- physeq_df |>
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, levels_to_move, after = 0))
+  #}
 
   # Assign colors
   if (!is.null(limit_label)) {
@@ -182,32 +184,28 @@ vis_abundance <- function(physeq,
     ggplot2::geom_bar(stat = "identity") +
     ggplot2::labs(x = "",
                   y = "Relative abundance [%]") +
-    ggplot2::theme_classic() +
+    theme_ENVS_with_gridlines() +
     ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_text(angle = 90,
-                                                       hjust = 1),
-                   axis.title.x = ggplot2::element_text(face = "bold",
-                                                        vjust = -1),
-                   axis.title.y = ggplot2::element_text(face = "bold",
-                                                        vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
-                                                            color = NA),
-                   panel.grid.major.y = ggplot2::element_line(color = "white",
-                                                              size = 1),
-                   panel.grid.minor.y = ggplot2::element_line(color = "white",
-                                                              size = 0.5),
-                   panel.border = ggplot2::element_rect(color = "black",
-                                                        size = 1,
-                                                        fill = NA),
-                   legend.title = ggplot2::element_text(face = "bold"),
-                   strip.background = ggplot2::element_rect(color="black",
-                                                            fill="black",
-                                                            size=1.5,
-                                                            linetype="solid"),
-                   strip.text.x = ggplot2::element_text(color = "white",
-                                                        face = "bold"),
-                   strip.text.y = ggplot2::element_text(color = "white",
-                                                        face = "bold")) +
+                                                       hjust = 1)) +
+                 #  panel.background = ggplot2::element_rect(fill = "#F7F7F7",
+                 #                                           color = NA),
+                 #  panel.grid.major.y = ggplot2::element_line(color = "white",
+                 #                                             size = 1),
+                 #  panel.grid.minor.y = ggplot2::element_line(color = "white",
+                 #                                             size = 0.5),
+                 #  panel.border = ggplot2::element_rect(color = "black",
+                   #                                     size = 1,
+                 #                                       fill = NA),
+                  # legend.title = ggplot2::element_text(face = "bold"),
+                  # strip.background = ggplot2::element_rect(color="black",
+                   #                                         fill="black",
+                  #                                          size=1.5,
+                    #                                        linetype="solid"),
+                  # strip.text.x = ggplot2::element_text(color = "white",
+                  #                                      face = "bold"),
+                  # strip.text.y = ggplot2::element_text(color = "white",
+                      #                                  face = "bold")) +
     ggplot2::scale_fill_manual(values = group_color)
 
   # Add the grid to distinguish between groups

@@ -74,7 +74,7 @@ vis_shepard <- function(physeq,
   plot <- ggplot2::ggplot(data = shepard_df,
                           mapping = ggplot2::aes(x = dissimilarity,
                                                  y = distance)) +
-    ggplot2::geom_point(color = "#003d73",
+    ggplot2::geom_point(color = "#ee7f00",
                         alpha = 0.6,
                         size = 2) +
     ggplot2::geom_step(mapping = ggplot2::aes(y = fit),
@@ -89,24 +89,14 @@ vis_shepard <- function(physeq,
                         y = max(shepard_df$distance),
                         label.padding = ggplot2::unit(0.55, "lines"),
                         label.size = 0.35,
-                        color = "#003d73",
+                        color = "black",
                         fill="white",
                         fontface = "bold",
                         hjust = 0,
                         vjust = 1) +
     ggplot2::labs(x = "Observed Dissimilarity",
                   y = "Ordination Distance") +
-    ggplot2::theme_classic() +
-    ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
-                                                        vjust = -1),
-                   axis.title.y = ggplot2::element_text(face = "bold",
-                                                        vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
-                                                            color = NA),
-                   panel.grid.major = ggplot2::element_line(color = "white",
-                                                            size = 1),
-                   panel.grid.minor = ggplot2::element_line(color = "white",
-                                                            size = 0.5))
+    theme_ENVS_with_gridlines(both = TRUE)
 
   return(plot)
 }

@@ -75,26 +75,11 @@ vis_richness <- function(physeq,
                           show.legend = FALSE) +
     ggplot2::geom_point(size = 2,
                         alpha = 0.8) +
-    ggplot2::theme_classic() +
     ggplot2::scale_fill_manual(values = fetch_color(group_color_num),
                                drop = FALSE) +
     ggplot2::scale_color_manual(values = fetch_color(group_color_num),
                                 drop = FALSE) +
-    ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
-                                                        vjust = -1),
-                   axis.title.y = ggplot2::element_text(face = "bold",
-                                                        vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
-                                                            color = NA),
-                   panel.border = ggplot2::element_rect(color = "black",
-                                                        size = 1,
-                                                        fill = NA),
-                   legend.title = ggplot2::element_text(face = "bold"),
-                   strip.background = ggplot2::element_rect(color = "black",
-                                                                     fill = "black",
-                                                                     size = 1.5,
-                                                                     linetype = "solid"),
-                   strip.text.x = ggplot2::element_text(color = "white",
-                                                        face = "bold"))
+    theme_ENVS_with_gridlines()
+
   return(plot)
 }

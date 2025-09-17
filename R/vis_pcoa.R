@@ -189,7 +189,7 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      fill  = !!group_circle_sym,
                                                      color = !!group_circle_sym),
-                              size = 1,
+                              size = 0.5,
                               alpha = 0.2,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -202,7 +202,7 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill  = "black",
-                              size = 1,
+                              size = 0.5,
                               alpha = 0.2,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -217,7 +217,7 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      color = !!group_circle_sym),
                               fill = NA,
-                              size = 1,
+                              size = 0.5,
                               alpha = 0.5,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -230,7 +230,7 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill = NA,
-                              size = 1,
+                              size = 0.5,
                               alpha = 0.5,
                               expand = scale_circle,
                               radius = smooth_circle,
@@ -245,23 +245,16 @@ vis_pcoa <- function(physeq,
   plot <- plot + ggplot2::geom_point(mapping = ggplot2::aes(fill = !!group_color_sym),
                                      size = 4,
                                      alpha = set_alpha) +
-    ggplot2::theme_classic() +
     ggplot2::xlab("MDS1") +
     ggplot2::ylab("MDS2") +
-    ggplot2::theme(axis.title.x = ggplot2::element_text(face = "bold",
-                                                        vjust = -1),
-                   axis.title.y = ggplot2::element_text(face = "bold",
-                                                        vjust = 3),
-                   panel.background = ggplot2::element_rect(fill = "#F7F7F7",
-                                                            color = NA),
-                   legend.title = ggplot2::element_text(face = "bold")) +
     ggplot2::scale_fill_manual(values = fetch_color(group_color_num),
                                drop = FALSE) +
     ggplot2::scale_color_manual(values = fetch_color(group_color_num),
                                 drop = FALSE) +
     ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num),
                                 drop = FALSE) +
-    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15)))
+    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 21))) +
+    theme_ENVS()
 
   return(plot)
 }
