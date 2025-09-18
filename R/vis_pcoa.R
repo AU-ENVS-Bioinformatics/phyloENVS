@@ -271,7 +271,8 @@ vis_pcoa <- function(physeq,
 
     arrows <- vegan::scores(fit,
                             display = "vectors") |>
-      data.frame()
+      data.frame() |>
+      dplyr::rename(Dim1 = MDS1, Dim2 = MDS2)
     arrows$factor <- rownames(arrows)
 
     if (!is.null(env_labels)){
