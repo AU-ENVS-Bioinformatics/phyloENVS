@@ -5,13 +5,18 @@
 #' @param group_color the parameter in metadata to color by.
 #' @param group_shape the parameter in metadata to shape by.
 #' @param group_circle the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.
+#' @param env_factors vector with enviromental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.
+#' @param env_labels vector with labels for the enviromental factors in env_factors. If not applied, the env_factors will be used.
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
 #' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
 #' @param fill_circle fill the encircled area. Default is FALSE.
-#' @param smooth_circle value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.01.
-#' @param scale_circle value to scale the encircle area. Default is 0.1.
-#' @param scale_plot value to scale the plot area. Default is 0.1.
+#' @param smooth_circle value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.
+#' @param scale_circle value to scale the encircle area. Default is 0.
+#' @param circle_edge_size size of the circle edge. Default is 0.5.
+#' @param scale_plot value to scale the plot area. Default is 0.
 #' @param set_alpha value to control the degree of transparency of the data points. Default is 0.8.
+#' @param arrow_text_offset parameter controlling the distance from text to arrow. Default is 0.01.
+#' @param arrow_text_size size of the enviromental factors text. Default is 2.
 #'
 #' @return PCoA plot created with ggplot.
 #' @export
@@ -32,13 +37,18 @@ vis_pcoa <- function(physeq,
                      group_color,
                      group_shape = group_color,
                      group_circle = group_color,
+                     env_factors = NULL,
+                     env_labels = NULL,
                      convert_to_rel = TRUE,
                      encircle = FALSE,
                      fill_circle = FALSE,
-                     smooth_circle = 0.01,
-                     scale_circle = 0.1,
-                     scale_plot = 0.1,
-                     set_alpha = 0.8){
+                     smooth_circle = 0,
+                     scale_circle = 0,
+                     circle_edge_size = 0.5,
+                     scale_plot = 0,
+                     set_alpha = 0.8,
+                     arrow_text_offset = 0.01,
+                     arrow_text_size = 2){
 
   # ------------#
   # Check inputs
@@ -54,6 +64,10 @@ vis_pcoa <- function(physeq,
 
   if (!is.character(group_shape)){
     stop("`group_shape` must be character")
+  }
+
+  if (!is.null(env_factors) && !is.character(env_factors)){
+    stop("`env_factors` must be character")
   }
 
   if (!is.character(group_circle)){
@@ -159,17 +173,6 @@ vis_pcoa <- function(physeq,
   # Add circles
   if (encircle == TRUE) {
 
-    # Expand the plot
-    x_range <- c(min(pcoa_df$MDS1) * (1 + scale_plot),
-                 max(pcoa_df$MDS1) * (1 + scale_plot))
-    y_range <- c(min(pcoa_df$MDS2) * (1 + scale_plot),
-                 max(pcoa_df$MDS2) * (1 + scale_plot))
-
-    plot <- plot +
-      ggplot2::coord_cartesian(xlim = x_range,
-                               ylim = y_range,
-                               expand = TRUE)
-
     # Compute the convex hull for each group
     convex_hull <- pcoa_df |>
       dplyr::rename(x = MDS1, y = MDS2) |>
@@ -189,8 +192,8 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      fill  = !!group_circle_sym,
                                                      color = !!group_circle_sym),
-                              size = 0.5,
-                              alpha = 0.2,
+                              size = circle_edge_size,
+                              alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
@@ -202,8 +205,8 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill  = "black",
-                              size = 0.5,
-                              alpha = 0.2,
+                              size = circle_edge_size,
+                              alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
@@ -217,8 +220,8 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym,
                                                      color = !!group_circle_sym),
                               fill = NA,
-                              size = 0.5,
-                              alpha = 0.5,
+                              size = circle_edge_size,
+                              alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
@@ -230,21 +233,20 @@ vis_pcoa <- function(physeq,
                                                      group = !!group_circle_sym),
                               color = "black",
                               fill = NA,
-                              size = 0.5,
-                              alpha = 0.5,
+                              size = circle_edge_size,
+                              alpha = 0.1,
                               expand = scale_circle,
                               radius = smooth_circle,
                               show.legend = FALSE)
       }
     }
-
-    plot <- plot + ggplot2::expand_limits(x = x_range, y = y_range)
   }
 
-
-  plot <- plot + ggplot2::geom_point(mapping = ggplot2::aes(fill = !!group_color_sym),
-                                     size = 4,
-                                     alpha = set_alpha) +
+  # Add the points
+  plot <- plot +
+    ggplot2::geom_point(mapping = ggplot2::aes(fill = !!group_color_sym),
+                        size = 4,
+                        alpha = set_alpha) +
     ggplot2::xlab("MDS1") +
     ggplot2::ylab("MDS2") +
     ggplot2::scale_fill_manual(values = fetch_color(group_color_num),
@@ -253,8 +255,101 @@ vis_pcoa <- function(physeq,
                                 drop = FALSE) +
     ggplot2::scale_shape_manual(values = fetch_shape(group_shape_num),
                                 drop = FALSE) +
-    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 21))) +
+    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15))) +
     theme_ENVS()
+
+  # Fits environmental factors onto the NMDS
+  if (!is.null(env_factors)){
+
+    factors <- phyloseq::sample_data(physeq) |>
+      data.frame() |>
+      dplyr::select(all_of(env_factors))
+
+    fit <- vegan::envfit(pcoa,
+                         factors,
+                         perm = 999)
+
+    arrows <- vegan::scores(fit,
+                            display = "vectors") |>
+      data.frame()
+    arrows$factor <- rownames(arrows)
+
+    if (!is.null(env_labels)){
+      arrows$factor_label <- env_labels
+    } else {
+      arrows$factor_label <- env_factors
+    }
+
+    # Add p-values
+    arrows$pval <- fit$vectors$pvals
+
+    # Set parameters for plotting arrow labels
+    arrows <- arrows |>
+      mutate(xmid = MDS1 / 2,
+             ymid = MDS2 / 2,
+             angle = atan2(MDS2, MDS1) * 180 / pi,
+             xtext = xmid - arrow_text_offset * sin(atan2(MDS2, MDS1)),
+             ytext = ymid + arrow_text_offset * cos(atan2(MDS2, MDS1)),
+             angle = ifelse(angle < -90 | angle > 90, angle + 180, angle),
+             hjust = 0.5)
+
+    # Sort out significant results
+    arrows_sig <- subset(arrows, pval < 0.05)
+
+    # Add the arrows to the plot
+    plot <- plot +
+      ggplot2::geom_segment(data = arrows,
+                            mapping = ggplot2::aes(x = 0,
+                                                   y = 0,
+                                                   xend = MDS1,
+                                                   yend = MDS2),
+                            arrow = arrow(length = unit(0.25, "cm")),
+                            color = "#B9BBB6",
+                            inherit.aes = FALSE) +
+      ggplot2::geom_text(data = arrows,
+                         mapping = ggplot2::aes(x = xtext,
+                                                y = ytext,
+                                                label = factor_label,
+                                                angle = angle,
+                                                hjust = hjust),
+                         color = "#B9BBB6",
+                         size = arrow_text_size,
+                         inherit.aes = FALSE) +
+      ggplot2::geom_segment(data = arrows_sig,
+                            mapping = ggplot2::aes(x = 0,
+                                                   y = 0,
+                                                   xend = MDS1,
+                                                   yend = MDS2),
+                            arrow = arrow(length = unit(0.25, "cm")),
+                            color = "black",
+                            inherit.aes = FALSE) +
+      ggplot2::geom_text(data = arrows_sig,
+                         mapping = ggplot2::aes(x = xtext,
+                                                y = ytext,
+                                                label = factor_label,
+                                                angle = angle,
+                                                hjust = hjust),
+                         color = "black",
+                         size = arrow_text_size,
+                         inherit.aes = FALSE)
+  }
+
+  if (!is.null(env_factors)){
+    x_range <- c(min(pcoa_df$MDS1, arrows_sig$MDS1) * (1 + scale_plot),
+                 max(pcoa_df$MDS1, arrows_sig$MDS1) * (1 + scale_plot))
+    y_range <- c(min(pcoa_df$MDS2, arrows_sig$MDS2) * (1 + scale_plot),
+                 max(pcoa_df$MDS2, arrows_sig$MDS2) * (1 + scale_plot))
+  } else {
+    x_range <- c(min(pcoa_df$MDS1) * (1 + scale_plot),
+                 max(pcoa_df$MDS1) * (1 + scale_plot))
+    y_range <- c(min(pcoa_df$MDS2) * (1 + scale_plot),
+                 max(pcoa_df$MDS2) * (1 + scale_plot))
+  }
+
+  plot <- plot +
+    ggplot2::coord_cartesian(xlim = x_range,
+                             ylim = y_range,
+                             expand = TRUE)
 
   return(plot)
 }
