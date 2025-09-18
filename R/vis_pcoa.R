@@ -336,10 +336,10 @@ vis_pcoa <- function(physeq,
   }
 
   if (!is.null(env_factors)){
-    x_range <- c(min(pcoa_df$MDS1, arrows_sig$MDS1) * (1 + scale_plot),
-                 max(pcoa_df$MDS1, arrows_sig$MDS1) * (1 + scale_plot))
-    y_range <- c(min(pcoa_df$MDS2, arrows_sig$MDS2) * (1 + scale_plot),
-                 max(pcoa_df$MDS2, arrows_sig$MDS2) * (1 + scale_plot))
+    x_range <- c(min(pcoa_df$MDS1, arrows$MDS1) * (1 + scale_plot),
+                 max(pcoa_df$MDS1, arrows$MDS1) * (1 + scale_plot))
+    y_range <- c(min(pcoa_df$MDS2, arrows$MDS2) * (1 + scale_plot),
+                 max(pcoa_df$MDS2, arrows$MDS2) * (1 + scale_plot))
   } else {
     x_range <- c(min(pcoa_df$MDS1) * (1 + scale_plot),
                  max(pcoa_df$MDS1) * (1 + scale_plot))

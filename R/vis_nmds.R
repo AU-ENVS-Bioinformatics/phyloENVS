@@ -338,10 +338,10 @@ vis_nmds <- function(physeq,
   }
 
   if (!is.null(env_factors)){
-    x_range <- c(min(nmds_df$NMDS1, arrows_sig$NMDS1) * (1 + scale_plot),
-                 max(nmds_df$NMDS1, arrows_sig$NMDS1) * (1 + scale_plot))
-    y_range <- c(min(nmds_df$NMDS2, arrows_sig$NMDS2) * (1 + scale_plot),
-                 max(nmds_df$NMDS2, arrows_sig$NMDS2) * (1 + scale_plot))
+    x_range <- c(min(nmds_df$NMDS1, arrows$NMDS1) * (1 + scale_plot),
+                 max(nmds_df$NMDS1, arrows$NMDS1) * (1 + scale_plot))
+    y_range <- c(min(nmds_df$NMDS2, arrows$NMDS2) * (1 + scale_plot),
+                 max(nmds_df$NMDS2, arrows$NMDS2) * (1 + scale_plot))
   } else {
     x_range <- c(min(nmds_df$NMDS1) * (1 + scale_plot),
                  max(nmds_df$NMDS1) * (1 + scale_plot))
