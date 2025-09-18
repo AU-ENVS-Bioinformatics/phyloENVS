@@ -22,8 +22,10 @@ data_to_phyloseq <- function(totalRNA_file, meta_file, sample_names){
     tidyr::separate_wider_delim(cols = taxonomy,
                                 delim = ";",
                                 names = silva_ranks) |>
-    dplyr::mutate(across(Kingdom:Specie, ~ stringr::str_remove(.,
-                                                              pattern = "\\w{1}\\_{2}")),
+    dplyr::mutate(Kingdom = stringr::str_remove(Kingdom,
+                                                "\\(superkingdom\\)"),
+                  across(Kingdom:Specie, ~ stringr::str_remove(.,
+                                                               pattern = "\\w{1}\\_{2}")),
                   across(Kingdom:Specie, ~ stringr::str_trim(.)),
                   across(Kingdom:Specie, ~ dplyr::na_if(., ""))) |>
     dplyr::rename("Contig ID" = ContigID) |>
