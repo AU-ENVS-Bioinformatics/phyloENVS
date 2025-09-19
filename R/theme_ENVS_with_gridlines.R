@@ -20,14 +20,14 @@ theme_ENVS_with_gridlines <- function(both = FALSE) {
   if (both) {
     theme_ENVS() +
       ggplot2::theme(panel.grid.major = ggplot2::element_line(color = "#E3E3E3",
-                                                     size = 0.3),
+                                                              linewidth = 0.3),
                      panel.grid.minor = ggplot2::element_line(color = "#E3E3E3",
-                                                              size = 0.2))
+                                                              linewidth = 0.2))
   } else {
     theme_ENVS() +
       ggplot2::theme(panel.grid.major.y = ggplot2::element_line(color = "#E3E3E3",
-                                                                size = 0.3),
+                                                                linewidth = 0.3),
                      panel.grid.minor.y = ggplot2::element_line(color = "#E3E3E3",
-                                                                size = 0.2))
+                                                                linewidth = 0.2))
   }
 }
