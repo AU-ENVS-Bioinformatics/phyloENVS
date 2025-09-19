@@ -73,7 +73,7 @@ It is also possible to find an RMarkdown template in RStudio: File -\> New file 
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example1, fig.align="center", fig.cap="Relative abundance plot.", out.width = "70%", fig.path = "man/figures/README-"}
+```{r example1, echo=FALSE}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
@@ -98,7 +98,7 @@ ggsave("man/figures/qaanaaq_abundance.png")
 
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
-```{r example2, fig.align="center", fig.cap="NMDS plot.", out.width = "70%", fig.path = "man/figures/README-"}
+```{r example2, echo=FALSE}
 vis_nmds(qaanaaq_rRNA_sub,
          group_color = "Wetness",
          group_shape = "Transect",

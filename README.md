@@ -84,44 +84,7 @@ abundance for a microbial community. The data used comes from ice
 sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset
 the data and only look at transect samples from the Qaanaaq glacier.
 
-``` r
-library(phyloENVS)
-
-data("qaanaaq_rRNA")
-
-qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
-                                   Transect != "Non-transect") 
-
-vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = "SampleName",
-              group_split = "Wetness",
-              level_glom = "Phylum",
-              lower_limit = 2)
-#> Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the phyloENVS package.
-#>   Please report the issue to the authors.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the phyloENVS package.
-#>   Please report the issue to the authors.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-```
-
-<div class="figure" style="text-align: center">
-
-<img src="man/figures/README-example1-1.png" alt="Relative abundance plot." width="70%" />
-<p class="caption">
-
-Relative abundance plot.
-</p>
-
-</div>
+<img src="man/figures/README-example1-1.png" width="100%" />
 
 <div align="center">
 
@@ -134,33 +97,15 @@ for visualizing and interpreting the relationships between samples in
 high-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., wetness.
 
-``` r
-vis_nmds(qaanaaq_rRNA_sub,
-         group_color = "Wetness",
-         group_shape = "Transect",
-         encircle = TRUE,
-         fill_circle = TRUE,
-         smooth_circle = 0.05,
-         scale_circle = 0.05,
-         scale_plot = 0.3)
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the phyloENVS package.
-#>   Please report the issue to the authors.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-```
+    #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    #> ℹ Please use `linewidth` instead.
+    #> ℹ The deprecated feature was likely used in the phyloENVS package.
+    #>   Please report the issue to the authors.
+    #> This warning is displayed once every 8 hours.
+    #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    #> generated.
 
-<div class="figure" style="text-align: center">
-
-<img src="man/figures/README-example2-1.png" alt="NMDS plot." width="70%" />
-<p class="caption">
-
-NMDS plot.
-</p>
-
-</div>
+<img src="man/figures/README-example2-1.png" width="100%" />
 
 <div align="center">
 
