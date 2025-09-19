@@ -73,7 +73,7 @@ It is also possible to find an RMarkdown template in RStudio: File -\> New file 
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example1, echo=FALSE}
+```{r example1}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
@@ -81,36 +81,38 @@ data("qaanaaq_rRNA")
 qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
                                    Transect != "Non-transect") 
 
-vis_abundance(physeq = qaanaaq_rRNA_sub,
-              group_x = "SampleName",
-              group_split = "Wetness",
-              level_glom = "Phylum",
-              lower_limit = 2)
+abun_plot <- vis_abundance(physeq = qaanaaq_rRNA_sub,
+                           group_x = "SampleName",
+                           group_split = "Wetness",
+                           level_glom = "Phylum",
+                           lower_limit = 2)
 ```
 
 ```{r, include = FALSE}
-ggsave("man/figures/qaanaaq_abundance.png")
+ggsave("man/figures/qaanaaq_abundance.png",
+       abun_plot)
 ```
 
 ::: {align="center"}
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1500"/>
 :::
 
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
 ```{r example2, echo=FALSE}
-vis_nmds(qaanaaq_rRNA_sub,
-         group_color = "Wetness",
-         group_shape = "Transect",
-         encircle = TRUE,
-         fill_circle = TRUE,
-         smooth_circle = 0.05,
-         scale_circle = 0.05,
-         scale_plot = 0.3)
+nmds_plot <- vis_nmds(qaanaaq_rRNA_sub,
+                      group_color = "Wetness",
+                      group_shape = "Transect",
+                      encircle = TRUE,
+                      fill_circle = TRUE,
+                      smooth_circle = 0.05,
+                      scale_circle = 0.05,
+                      scale_plot = 0.3)
 ```
 
 ```{r, include = FALSE}
-ggsave("man/figures/qaanaaq_nmds.png")
+ggsave("man/figures/qaanaaq_nmds.png",
+       nmds_plot)
 ```
 
 ::: {align="center"}
