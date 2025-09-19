@@ -97,6 +97,20 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               group_split = "Wetness",
               level_glom = "Phylum",
               lower_limit = 2)
+#> Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+#> ℹ Please use the `linewidth` argument instead.
+#> ℹ The deprecated feature was likely used in the phyloENVS package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+#> ℹ Please use the `linewidth` argument instead.
+#> ℹ The deprecated feature was likely used in the phyloENVS package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 <div class="figure" style="text-align: center">
@@ -106,6 +120,12 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 Relative abundance plot.
 </p>
+
+</div>
+
+<div align="center">
+
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="2000"/>
 
 </div>
 
@@ -123,6 +143,13 @@ vis_nmds(qaanaaq_rRNA_sub,
          smooth_circle = 0.05,
          scale_circle = 0.05,
          scale_plot = 0.3)
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the phyloENVS package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 <div class="figure" style="text-align: center">
@@ -132,6 +159,12 @@ vis_nmds(qaanaaq_rRNA_sub,
 
 NMDS plot.
 </p>
+
+</div>
+
+<div align="center">
+
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="2000"/>
 
 </div>
 

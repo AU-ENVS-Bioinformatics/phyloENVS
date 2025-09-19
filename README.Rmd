@@ -88,6 +88,14 @@ vis_abundance(physeq = qaanaaq_rRNA_sub,
               lower_limit = 2)
 ```
 
+```{r, include = FALSE}
+ggsave("man/figures/qaanaaq_abundance.png")
+```
+
+::: {align="center"}
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="2000"/>
+:::
+
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
 
 ```{r example2, fig.align="center", fig.cap="NMDS plot.", out.width = "70%", fig.path = "man/figures/README-"}
@@ -100,6 +108,14 @@ vis_nmds(qaanaaq_rRNA_sub,
          scale_circle = 0.05,
          scale_plot = 0.3)
 ```
+
+```{r, include = FALSE}
+ggsave("man/figures/qaanaaq_nmds.png")
+```
+
+::: {align="center"}
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="2000"/>
+:::
 
 ## Details
 
