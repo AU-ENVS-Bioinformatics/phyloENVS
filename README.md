@@ -84,6 +84,21 @@ abundance for a microbial community. The data used comes from ice
 sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset
 the data and only look at transect samples from the Qaanaaq glacier.
 
+``` r
+library(phyloENVS)
+
+data("qaanaaq_rRNA")
+
+qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
+                                   Transect != "Non-transect") 
+
+abun_plot <- vis_abundance(physeq = qaanaaq_rRNA_sub,
+                           group_x = "SampleName",
+                           group_split = "Wetness",
+                           level_glom = "Phylum",
+                           lower_limit = 2)
+```
+
 <div align="center">
 
 <img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1000"/>
@@ -95,13 +110,16 @@ for visualizing and interpreting the relationships between samples in
 high-dimensional datasets. We can look into how different samples
 cluster based on the available metadata, e.g., wetness.
 
-    #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-    #> ℹ Please use `linewidth` instead.
-    #> ℹ The deprecated feature was likely used in the phyloENVS package.
-    #>   Please report the issue to the authors.
-    #> This warning is displayed once every 8 hours.
-    #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    #> generated.
+``` r
+nmds_plot <- vis_nmds(qaanaaq_rRNA_sub,
+                      group_color = "Wetness",
+                      group_shape = "Transect",
+                      encircle = TRUE,
+                      fill_circle = TRUE,
+                      smooth_circle = 0.05,
+                      scale_circle = 0.05,
+                      scale_plot = 0.3)
+```
 
 <div align="center">
 
