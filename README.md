@@ -84,24 +84,9 @@ abundance for a microbial community. The data used comes from ice
 sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset
 the data and only look at transect samples from the Qaanaaq glacier.
 
-``` r
-library(phyloENVS)
-
-data("qaanaaq_rRNA")
-
-qaanaaq_rRNA_sub <- subset_samples(qaanaaq_rRNA,
-                                   Transect != "Non-transect") 
-
-abun_plot <- vis_abundance(physeq = qaanaaq_rRNA_sub,
-                           group_x = "SampleName",
-                           group_split = "Wetness",
-                           level_glom = "Phylum",
-                           lower_limit = 2)
-```
-
 <div align="center">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1500"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1000"/>
 
 </div>
 
@@ -120,7 +105,7 @@ cluster based on the available metadata, e.g., wetness.
 
 <div align="center">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="1000"/>
 
 </div>
 

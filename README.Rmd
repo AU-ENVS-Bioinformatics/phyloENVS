@@ -73,7 +73,7 @@ It is also possible to find an RMarkdown template in RStudio: File -\> New file 
 
 This is a basic example which shows how you can visualize the relative abundance for a microbial community. The data used comes from ice sampled at the Qaanaaq glacier and at the Greenland ice sheet. We subset the data and only look at transect samples from the Qaanaaq glacier.
 
-```{r example1}
+```{r, echo=FALSE}
 library(phyloENVS)
 
 data("qaanaaq_rRNA")
@@ -94,7 +94,7 @@ ggsave("man/figures/qaanaaq_abundance.png",
 ```
 
 ::: {align="center"}
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1500"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1000"/>
 :::
 
 NMDS (Non-metric Multidimensional Scaling) is a popular technique used for visualizing and interpreting the relationships between samples in high-dimensional datasets. We can look into how different samples cluster based on the available metadata, e.g., wetness.
@@ -116,7 +116,7 @@ ggsave("man/figures/qaanaaq_nmds.png",
 ```
 
 ::: {align="center"}
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="2000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="1000"/>
 :::
 
 ## Details
