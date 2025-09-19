@@ -9,13 +9,19 @@ vis_pcoa(
   group_color,
   group_shape = group_color,
   group_circle = group_color,
+  env_factors = NULL,
+  env_labels = NULL,
+  env_add_all = TRUE,
   convert_to_rel = TRUE,
   encircle = FALSE,
   fill_circle = FALSE,
-  smooth_circle = 0.01,
-  scale_circle = 0.1,
-  scale_plot = 0.1,
-  set_alpha = 0.8
+  smooth_circle = 0,
+  scale_circle = 0,
+  circle_edge_size = 0.5,
+  scale_plot = 0,
+  set_alpha = 0.8,
+  arrow_text_placement = 0.5,
+  arrow_text_size = 2
 )
 }
 \arguments{
@@ -27,19 +33,29 @@ vis_pcoa(
 
 \item{group_circle}{the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.}
 
+\item{env_factors}{vector with enviromental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.}
+
+\item{env_labels}{vector with labels for the enviromental factors in env_factors. If not applied, the env_factors will be used.}
+
 \item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
 
 \item{encircle}{encircle the points belonging to same group (as specified by group_color). Default is FALSE.}
 
 \item{fill_circle}{fill the encircled area. Default is FALSE.}
 
-\item{smooth_circle}{value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.01.}
+\item{smooth_circle}{value describing the degree of smoothing of the polygon. Larger values result in sharper encirclement. Default is 0.}
 
-\item{scale_circle}{value to scale the encircle area. Default is 0.1.}
+\item{scale_circle}{value to scale the encircle area. Default is 0.}
 
-\item{scale_plot}{value to scale the plot area. Default is 0.1.}
+\item{circle_edge_size}{size of the circle edge. Default is 0.5.}
+
+\item{scale_plot}{value to scale the plot area. Default is 0.}
 
 \item{set_alpha}{value to control the degree of transparency of the data points. Default is 0.8.}
+
+\item{arrow_text_placement}{parameter controlling the placement of the arrow text relative to the tip of the arrow. Default is 0.5.}
+
+\item{arrow_text_size}{size of the enviromental factors text. Default is 2.}
 }
 \value{
 PCoA plot created with ggplot.

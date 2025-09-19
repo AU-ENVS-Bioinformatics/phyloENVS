@@ -18,7 +18,7 @@ vis_nmds(
   scale_circle = 0,
   circle_edge_size = 0.5,
   scale_plot = 0,
-  set_alpha = 0.5,
+  set_alpha = 0.8,
   arrow_text_offset = 0.01,
   arrow_text_size = 2
 )
