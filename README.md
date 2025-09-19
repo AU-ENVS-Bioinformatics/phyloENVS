@@ -101,7 +101,7 @@ abun_plot <- vis_abundance(physeq = qaanaaq_rRNA_sub,
 
 <div align="center">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="1000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_abundance.png" width="500"/>
 
 </div>
 
@@ -118,12 +118,13 @@ nmds_plot <- vis_nmds(qaanaaq_rRNA_sub,
                       fill_circle = TRUE,
                       smooth_circle = 0.05,
                       scale_circle = 0.05,
-                      scale_plot = 0.3)
+                      scale_plot = 0.3,
+                      circle_edge_size = 0)
 ```
 
 <div align="center">
 
-<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="1000"/>
+<img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/qaanaaq_nmds.png" width="500"/>
 
 </div>
 
