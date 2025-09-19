@@ -15,7 +15,7 @@
 #' @param circle_edge_size size of the circle edge. Default is 0.5.
 #' @param scale_plot value to scale the plot area. Default is 0.
 #' @param set_alpha value to control the degree of transparency of the data points. Default is 0.8.
-#' @param arrow_text_offset parameter controlling the distance from text to arrow. Default is 0.01.
+#' @param arrow_text_placement parameter controlling the placement of the arrow text relative to the tip of the arrow. Default is 0.5.
 #' @param arrow_text_size size of the enviromental factors text. Default is 2.
 #'
 #' @return PCoA plot created with ggplot.
@@ -39,6 +39,7 @@ vis_pcoa <- function(physeq,
                      group_circle = group_color,
                      env_factors = NULL,
                      env_labels = NULL,
+                     env_add_all = TRUE, #DOCUMENT!!!
                      convert_to_rel = TRUE,
                      encircle = FALSE,
                      fill_circle = FALSE,
@@ -47,7 +48,7 @@ vis_pcoa <- function(physeq,
                      circle_edge_size = 0.5,
                      scale_plot = 0,
                      set_alpha = 0.8,
-                     arrow_text_offset = 0.01,
+                     arrow_text_placement = 0.5,
                      arrow_text_size = 2){
 
   # ------------#
@@ -286,36 +287,34 @@ vis_pcoa <- function(physeq,
 
     # Set parameters for plotting arrow labels
     arrows <- arrows |>
-      mutate(xmid = MDS1 / 2,
-             ymid = MDS2 / 2,
-             angle = atan2(MDS2, MDS1) * 180 / pi,
-             xtext = xmid - arrow_text_offset * sin(atan2(MDS2, MDS1)),
-             ytext = ymid + arrow_text_offset * cos(atan2(MDS2, MDS1)),
-             angle = ifelse(angle < -90 | angle > 90, angle + 180, angle),
-             hjust = 0.5)
+      mutate(xlabel = cos(atan2(MDS2, MDS1)) * sqrt(MDS1^2 + MDS2^2) * arrow_text_placement,
+             ylabel = sin(atan2(MDS2, MDS1)) * sqrt(MDS1^2 + MDS2^2) * arrow_text_placement)
 
     # Sort out significant results
     arrows_sig <- subset(arrows, pval < 0.05)
 
     # Add the arrows to the plot
-    plot <- plot +
-      ggplot2::geom_segment(data = arrows,
-                            mapping = ggplot2::aes(x = 0,
-                                                   y = 0,
-                                                   xend = MDS1,
-                                                   yend = MDS2),
-                            arrow = arrow(length = unit(0.25, "cm")),
+    if (env_add_all){
+      plot <- plot +
+        ggplot2::geom_segment(data = arrows,
+                              mapping = ggplot2::aes(x = 0,
+                                                     y = 0,
+                                                     xend = MDS1,
+                                                     yend = MDS2),
+                              arrow = arrow(length = unit(0.25, "cm")),
+                              color = "#B9BBB6",
+                              inherit.aes = FALSE) +
+        ggplot2::geom_label(data = arrows,
+                            mapping = ggplot2::aes(x = xlabel,
+                                                   y = ylabel,
+                                                   label = factor_label),
                             color = "#B9BBB6",
-                            inherit.aes = FALSE) +
-      ggplot2::geom_text(data = arrows,
-                         mapping = ggplot2::aes(x = xtext,
-                                                y = ytext,
-                                                label = factor_label,
-                                                angle = angle,
-                                                hjust = hjust),
-                         color = "#B9BBB6",
-                         size = arrow_text_size,
-                         inherit.aes = FALSE) +
+                            fill = "white",
+                            size = arrow_text_size,
+                            inherit.aes = FALSE)
+    }
+
+    plot <- plot +
       ggplot2::geom_segment(data = arrows_sig,
                             mapping = ggplot2::aes(x = 0,
                                                    y = 0,
@@ -324,15 +323,14 @@ vis_pcoa <- function(physeq,
                             arrow = arrow(length = unit(0.25, "cm")),
                             color = "black",
                             inherit.aes = FALSE) +
-      ggplot2::geom_text(data = arrows_sig,
-                         mapping = ggplot2::aes(x = xtext,
-                                                y = ytext,
-                                                label = factor_label,
-                                                angle = angle,
-                                                hjust = hjust),
-                         color = "black",
-                         size = arrow_text_size,
-                         inherit.aes = FALSE)
+      ggplot2::geom_label(data = arrows_sig,
+                          mapping = ggplot2::aes(x = xlabel,
+                                                 y = ylabel,
+                                                 label = factor_label),
+                          color = "black",
+                          fill = "white",
+                          size = arrow_text_size,
+                          inherit.aes = FALSE)
   }
 
   if (!is.null(env_factors)){
