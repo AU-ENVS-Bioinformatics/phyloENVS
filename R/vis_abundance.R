@@ -149,6 +149,7 @@ vis_abundance <- function(physeq,
 
   # Define limit label only if > 0
   limit_label <- if (lower_limit > 0) paste0("< ", lower_limit, "%") else NULL
+  limit_label <- intersect(limit_label, levels(dplyr::pull(physeq_df, !!level_glom_sym)))
 
   # Identify which "special group" is present
   special_group <- intersect(c("Unassigned", "Unknown function", "Others"), group_unique)
@@ -158,13 +159,13 @@ vis_abundance <- function(physeq,
   levels_to_move <- levels_to_move[!is.null(levels_to_move)] # drop NULLs
 
   # Relevel factor
-  #if (!is.na(levels_to_move)){
+  if (length(limit_label) > 0) {
     physeq_df <- physeq_df |>
-      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, levels_to_move, after = 0))
-  #}
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, limit_label, after = 0))
+  }
 
   # Assign colors
-  if (!is.null(limit_label)) {
+  if (length(limit_label > 0)) {
     if (length(special_group > 0)) {
       group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num - 2, color_source)))
     } else {
