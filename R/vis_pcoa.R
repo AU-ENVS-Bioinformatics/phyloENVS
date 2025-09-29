@@ -5,8 +5,9 @@
 #' @param group_color the parameter in metadata to color by.
 #' @param group_shape the parameter in metadata to shape by.
 #' @param group_circle the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.
-#' @param env_factors vector with enviromental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.
-#' @param env_labels vector with labels for the enviromental factors in env_factors. If not applied, the env_factors will be used.
+#' @param env_factors vector with environmental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.
+#' @param env_labels vector with labels for the environmental factors in env_factors. If not applied, the env_factors will be used.
+#' @param env_add_all add both significant and non-significant results after fitting factors to the ordination. Default is TRUE.
 #' @param convert_to_rel convert counts to relative abundances. Default is TRUE.
 #' @param encircle encircle the points belonging to same group (as specified by group_color). Default is FALSE.
 #' @param fill_circle fill the encircled area. Default is FALSE.
@@ -39,7 +40,7 @@ vis_pcoa <- function(physeq,
                      group_circle = group_color,
                      env_factors = NULL,
                      env_labels = NULL,
-                     env_add_all = TRUE, #DOCUMENT!!!
+                     env_add_all = TRUE,
                      convert_to_rel = TRUE,
                      encircle = FALSE,
                      fill_circle = FALSE,

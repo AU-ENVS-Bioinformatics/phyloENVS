@@ -33,9 +33,11 @@ vis_pcoa(
 
 \item{group_circle}{the parameter in metadata to encircle (if encircle = TRUE). If not specified, the encircled groups will be similar to colored groups.}
 
-\item{env_factors}{vector with enviromental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.}
+\item{env_factors}{vector with environmental factors in the metadata to fit onto the ordination. See vegan::envfit() for details. Black arrows show significant fit.}
 
-\item{env_labels}{vector with labels for the enviromental factors in env_factors. If not applied, the env_factors will be used.}
+\item{env_labels}{vector with labels for the environmental factors in env_factors. If not applied, the env_factors will be used.}
+
+\item{env_add_all}{add both significant and non-significant results after fitting factors to the ordination. Default is TRUE.}
 
 \item{convert_to_rel}{convert counts to relative abundances. Default is TRUE.}
 
