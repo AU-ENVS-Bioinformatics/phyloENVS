@@ -133,10 +133,11 @@ nmds_plot <- vis_nmds(qaanaaq_rRNA_sub,
 The available color scales can be seen below. The colors are based on
 the AU design guide.
 
-<p align="left">
+<div align="left">
 
 <img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/color_scales.png" width="2000"/>
-:::
+
+</div>
 
 ## Acknowledgement
 
