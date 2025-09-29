@@ -3,7 +3,6 @@
 #'
 #' @param physeq a phyloseq object.
 #' @param group variable name in the corresponding sample_data of the phyloseq object.
-#' @param func function used to merge the values. Can be either the mean or the median. Default is "mean".
 #'
 #' @return merged phyloseq object.
 #' @export
@@ -17,8 +16,7 @@
 #'            group = "Group_ID")
 #'
 merge_data <- function(physeq,
-                       group,
-                       func = "mean"){
+                       group){
 
   # ------------#
   # Check inputs
@@ -36,14 +34,6 @@ merge_data <- function(physeq,
     stop(paste(group, "is not found in sample data"))
   }
 
-  if (!is.character(func)){
-    stop("`func` must be character")
-  }
-
-  if (!(func %in% c("mean", "median"))) {
-    stop(paste(func, "is not a possible merging function"))
-  }
-
   # ------------#
 
   # Convert character to symbol.
@@ -57,15 +47,8 @@ merge_data <- function(physeq,
   phyloseq::sample_data(physeq) <- phyloseq::sample_data(metadata)
 
   # Merge samples.
-  if (func == "mean"){
-    physeq <- suppressWarnings(phyloseq::merge_samples(physeq,
-                                                       group = group,
-                                                       fun = mean))
-  } else if (func == "median") {
-    physeq <- suppressWarnings(phyloseq::merge_samples(physeq,
-                                                       group = group,
-                                                       fun = median))
-  }
+  physeq <- suppressWarnings(phyloseq::merge_samples(physeq,
+                                                     group = group))
 
   # Make a customized merged metadata table.
   metadata_dense <- metadata |>

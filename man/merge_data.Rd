@@ -4,14 +4,12 @@
 \alias{merge_data}
 \title{Merge Data}
 \usage{
-merge_data(physeq, group, func = "mean")
+merge_data(physeq, group)
 }
 \arguments{
 \item{physeq}{a phyloseq object.}
 
 \item{group}{variable name in the corresponding sample_data of the phyloseq object.}
-
-\item{func}{function used to merge the values. Can be either the mean or the median. Default is "mean".}
 }
 \value{
 merged phyloseq object.
