@@ -124,7 +124,7 @@ ggsave("man/figures/qaanaaq_nmds.png",
 
 The available color scales can be seen below. The colors are based on the AU design guide.
 
-::: {align="center"}
+::: {align="left"}
 <img src="https://github.com/AU-ENVS-Bioinformatics/phyloENVS/blob/main/man/figures/color_scales.png" width="2000"/>
 :::
 
