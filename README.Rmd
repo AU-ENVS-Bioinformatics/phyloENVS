@@ -107,7 +107,7 @@ nmds_plot <- vis_nmds(qaanaaq_rRNA_sub,
                       fill_circle = TRUE,
                       smooth_circle = 0.05,
                       scale_circle = 0.05,
-                      scale_plot = 0.3,
+                      scale_plot = 0.2,
                       circle_edge_size = 0)
 ```
 
