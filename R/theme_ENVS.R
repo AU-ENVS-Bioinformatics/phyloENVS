@@ -33,7 +33,7 @@ theme_ENVS <- function() {
                                                             linetype = "solid"),
                    strip.text = ggplot2::element_text(color = "black",
                                                       face = "bold",
-                                                      margin = ggplot2::margin(t = 5, b = 5)),
+                                                      margin = ggplot2::margin(t = 5, b = 5, r = 5, l = 5)),
                    panel.spacing = ggplot2::unit(0.8, "lines"),
                    plot.margin = ggplot2::margin(20, 20, 20, 20))
 }
