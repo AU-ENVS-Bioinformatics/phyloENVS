@@ -14,22 +14,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates how phyloENVS can be used for a larger dataset with replicates.
+This vignette demonstrates how phyloENVS can be used for a larger dataset with replicates. If you have not used phyloENVS before, we recommend taking a look at the vignette called *Introduction to phyloENVS*.
 
 ## Data
 
-We will be using meta-transcriptomic data from the GENEPEASE II project. 
+We will be using meta-transcriptomic data from the GENEPEASE II project.
 
 ```{r setup, message=FALSE}
 library(phyloENVS)
 library(phyloseq)
 library(dplyr)
 library(tidyr)
+library(ggpubr)
 
 data("genepease_rRNA")
 ```
 
-This metadata describes the concentration and time group for each sample. For each combination of concentration and time, we got 3 replicates specified by a group ID as seen for the examples below.
+This metadata describes a concentration and time group for each sample. For each combination of concentration and time, we got 3 replicates specified by a group ID as seen for the examples below.
 
 ```{r}
 head(sample_data(genepease_rRNA), n = 9)
@@ -37,10 +38,13 @@ head(sample_data(genepease_rRNA), n = 9)
 
 ## Merge Samples
 
-We want to merge the replicates using `merge_data()` similar to `merge_samples()` from phyloseq. 
+We want to merge the replicates using `merge_data()` similar to `merge_samples()` from phyloseq by computing the avaerage read counts for each taxa.
 
 ```{r}
-genepease_rRNA_merged <- merge_data(genepease_rRNA, "Group_ID")
+genepease_rRNA_merged <- merge_data(genepease_rRNA, 
+                                    group = "Group_ID")
+
+test <- as.data.frame(otu_table(genepease_rRNA_merged))
 ```
 
 The resulting phyloseq object will merge the sample data as well and use the specified column as the new sample names.
@@ -60,14 +64,17 @@ vis_nmds(genepease_rRNA_merged,
          group_shape = "Timepoint")
 ```
 
-Afterwards, we look at the overall relative abundance.
+## Abundance For Subsets
+
+Afterwards, we look at the overall relative abundance. As all visualizations are generated with ggplot, which means they can be easily modified, and additional layers can be added on top of the defaults. For example, we might want to write the taxa in italics. This can be done by modifying the theme as shown below.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = genepease_rRNA_merged,
               group_x = "Timepoint",
               group_split = "Concentration",
               level_glom = "Phylum",
-              lower_limit = 2)
+              lower_limit = 2) +
+  theme(legend.text = element_text(face = "italic"))
 ```
 
 From the above, we can see that proteobacteria take over the community for large concentrations. Let's see what happens for the bacteria and the eukaryotes separately. The represented kingdoms can be seen below.
@@ -113,10 +120,11 @@ vis_abundance(physeq = genepease_rRNA_merged,
               level_glom = "Phylum",
               level_select = "Domain",
               group_select = "Eukaryotes",
-              lower_limit = 0.2)
+              lower_limit = 0.2) +
+  theme(legend.text = element_text(face = "italic"))
 ```
 
-In the same manner, we inspect the relative abundance of the prokaryotes, but we will agglomerate on order level to get a better understanding of the taxa taking over for higher concentrations. 
+In the same manner, we inspect the relative abundance of the prokaryotes, but we will agglomerate on order level to get a better understanding of the taxa taking over for higher concentrations.
 
 ```{r, fig.width=10, fig.height=5, out.width="80%", fig.align="center"}
 vis_abundance(physeq = genepease_rRNA_merged,
@@ -128,23 +136,52 @@ vis_abundance(physeq = genepease_rRNA_merged,
               lower_limit = 3) 
 ```
 
-## Richness With Specified Measure
+Depending on the question, it might be relevant to renormalize to relative abundances to bring subgroups up to 100 percent. This is possible with `normalize_by_group = TRUE`.
 
-Finally, we can visualize the alpha diversity focused on differences between concentrations, but we color by timepoint to look for patterns in the richness with respect to this variable. In the example below, we will use inverse Simpson to measure the diversity. 
+## Alpha Diversity With Specified Measure
+
+Finally, we can visualize the alpha diversity focused on differences between concentrations, but we color by timepoint to look for patterns in the richness with respect to this variable as well. In the example below, we will use inverse Simpson to measure the diversity. In addition, we will add the results from a Kruskal–Wallis test. A significant p-value indicates that at least one group has a different level of alpha diversity, but it does not specify which groups differ. Additional tests may be needed for pairwise comparisons.
 
 ```{r, fig.width=7, fig.height=5, out.width="80%", fig.align="center", warning=FALSE}
 vis_richness(physeq = genepease_rRNA_merged, 
              group_x = "Concentration", 
              group_color = "Timepoint",
-             measures = "InvSimpson")
+             measures = "InvSimpson") + 
+  stat_compare_means(mapping = aes(color = NULL),
+                     method = "kruskal.test",
+                     label.x.npc = "left",
+                     label.y.npc = "bottom",
+                     show.legend = FALSE) 
 ```
 
 ## Univariate Statistical Tests Across Taxa
 
-In the vignette "Introduction to phyloENVS", we show how differences in community structure between groups can be tested with PERMANOVA. It is also possible to make univariate tests for the abundance per taxon. The framework is build into the function `perform_univariate()`. We recommend visiting its documentation. 
+In the vignette *Introduction to phyloENVS*, we show how differences in community structure between groups can be tested with PERMANOVA. It is also possible to make univariate tests for the abundance per taxon. The framework is build into the function `perform_univariate()`. We recommend visiting its documentation.
 
 ```{r, eval=FALSE}
-perform_univariate(genepease_rRNA,
+perform_univariate(genepease_rRNA_merged,
                    stats_path = "results/",
-                   designs = c("Direction", "Wetness"))
+                   designs = "Concentration")
+```
+
+## Additional Features to Ordination Plots
+
+In addition to NMDS, the package also makes it possible to generate PCoA plots with `vis_pcoa()`. For both ordination methods, it is possible to correlate the resulting scores with environmental factors included in the metadata. Below, we show the results from fitting albedo onto the ordination as an example. This fit is not significant, and is colored in grey instead of black which would highlight significant correlations. 
+
+```{r, message=FALSE, fig.width=7, fig.height=5, out.width="80%", fig.align="center"}
+data("qaanaaq_rRNA")
+
+qaanaaq_rRNA_sub <- phyloseq::subset_samples(qaanaaq_rRNA,
+                                             Transect != "Non-transect") 
+
+vis_pcoa(physeq = qaanaaq_rRNA_sub,
+         group_color = "Wetness",
+         group_shape = "Wetness",
+         env_factors = "Albedo",
+         encircle = TRUE,
+         fill_circle = TRUE,
+         smooth_circle = 0.05,
+         scale_circle = 0.05,
+         scale_plot = 0.2,
+         circle_edge_size = 0)
 ```
