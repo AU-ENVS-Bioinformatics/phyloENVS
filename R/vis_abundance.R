@@ -133,7 +133,7 @@ vis_abundance <- function(physeq,
   if (!is.null(level_select) && !is.null(group_select)){
     order <- physeq_df |>
       dplyr::select(!!level_select_sym, !!level_glom_sym) |>
-      distinct() |>
+      dplyr::distinct() |>
       dplyr::arrange(!!level_select_sym, !!level_glom_sym) |>
       dplyr::pull(!!level_glom_sym) |>
       unique()
@@ -159,13 +159,13 @@ vis_abundance <- function(physeq,
   levels_to_move <- levels_to_move[!is.null(levels_to_move)] # drop NULLs
 
   # Relevel factor
-  if (length(limit_label) > 0) {
+  if (length(levels_to_move) > 0) {
     physeq_df <- physeq_df |>
-      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, limit_label, after = 0))
+      dplyr::mutate(!!level_glom := forcats::fct_relevel(!!level_glom_sym, levels_to_move, after = 0))
   }
 
   # Assign colors
-  if (length(limit_label > 0)) {
+  if (length(levels_to_move > 0)) {
     if (length(special_group > 0)) {
       group_color <- c("#878787", "#4b4b4a", rev(fetch_color(group_color_num - 2, color_source)))
     } else {
