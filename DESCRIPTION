@@ -35,8 +35,8 @@ Imports:
   broom
 Remotes:
   bioc::phyloseq,
-  bioc::microbiome
-  bioc::DESeq2
+  bioc::microbiome,
+  bioc::DESeq2,
   bioc::genefilter
 LazyData: true
 LazyDataCompression: xz
