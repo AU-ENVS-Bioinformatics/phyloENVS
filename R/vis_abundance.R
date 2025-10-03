@@ -156,7 +156,7 @@ vis_abundance <- function(physeq,
 
   # Build the vector of levels to move to front
   levels_to_move <- c(limit_label, special_group)
-  levels_to_move <- levels_to_move[!is.null(levels_to_move)] # drop NULLs
+  levels_to_move <- levels_to_move[!is.null(levels_to_move) & !is.na(levels_to_move)] # drop NULLs and NAs
 
   # Relevel factor
   if (length(levels_to_move) > 0) {
